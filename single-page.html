@@ -1,0 +1,171 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Pinball Website Template | single-page :: w3layouts</title>
+		<link href='css/style.css' rel='stylesheet' type='text/css' />
+		<meta name='viewport' content='width=device-width, initial-scale=1'>
+		<link rel='shortcut icon' type='image/x-icon' href='images/fav-icon.png' />
+		<script type='application/x-javascript'> addEventListener('load', function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+		</script>
+		<!----webfonts---->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+		<!----//webfonts---->
+		<!---start-click-drop-down-menu----->
+		<script src='js/jquery.min.js'></script>
+        <!----start-dropdown--->
+         <script type='text/javascript'>
+			var $ = jQuery.noConflict();
+				$(function() {
+					$('#activator').click(function(){
+						$('#box').animate({'top':'0px'},500);
+					});
+					$('#boxclose').click(function(){
+					$('#box').animate({'top':'-700px'},500);
+					});
+				});
+				$(document).ready(function(){
+				//Hide (Collapse) the toggle containers on load
+				$('.toggle_container').hide(); 
+				//Switch the 'Open' and 'Close' state per click then slide up/down (depending on open/close state)
+				$('.trigger').click(function(){
+					$(this).toggleClass('active').next().slideToggle('slow');
+						return false; //Prevent the browser jump to the link anchor
+				});
+									
+			});
+		</script>
+        <!----//End-dropdown--->
+	</head>
+	<body><div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=428311193974436&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+		<!---start-wrap---->
+			<!---start-header---->
+			<div class='header'>
+				<div class='wrap'>
+				<div class='logo'>
+					<a href='index.html'><img src='images/logo.png' title='pinbal' /></a>
+				</div>
+				<div class='nav-icon'>
+					 <a href='#' class='right_bt' id='activator'><span> </span> </a>
+				</div>
+				 <div class='box' id='box'>
+					 <div class='box_content'>        					                         
+						<div class='box_content_center'>
+						 	<div class='form_content'>
+								<div class='menu_box_list'>
+									<ul>
+										<li><a href='http://gdriv.es/aranews/'><span>home</span></a></li>
+										<li><a href='#'><span>About</span></a></li>
+										<li><a href='test1/index.html'><span>Music</span></a></li>
+										<li><a href='#'><span>Twitter</span></a></li>
+										<li><a href='https://www.facebook.com/moeCustom'><span>FaceBook</span></a></li>
+										<li><a href='contact.html'><span>Contact</span></a></li>
+										<div class='clear'> </div>
+									</ul>
+								</div>
+								<a class='boxclose' id='boxclose'> <span> </span></a>
+							</div>                                  
+						</div> 	
+					</div> 
+				</div>       	  
+				<div class='top-searchbar'>
+					<form>
+						<input type='text' /><input type='submit' value='' />
+					</form>
+				</div>
+				<div class='userinfo'>
+					<div class='user'>
+						<ul>
+							<li><a href='#'><img src='images/user-pic.png' title='user-name' /><span>Ipsum</span></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class='clear'> </div>
+			</div>
+		</div>
+		<!---//End-header---->
+		<!---start-content---->
+		<div class='content'>
+			<div class='wrap'>
+			<div class='single-page'>
+							<div class='single-page-artical'>
+								<div class='artical-content'>
+									 
+								    </div>
+								    <div class='artical-links'>
+		  						 	<ul>
+		  						 		<li><a href='#'><img src='images/blog-icon2.png' title='Admin'><span>admin</span></a></li>
+		  						 		<li><a href='#'><img src='images/blog-icon3.png' title='Comments'><span>No comments</span></a></li>
+		  						 		<li><a href='#'><img src='images/blog-icon4.png' title='Lables'><span>View posts</span></a></li>
+		  						 	</ul>
+		  						 </div>
+		  						 <div class='share-artical'>
+		  						 	<ul>
+		  						 		<li><a href='#'><img src='images/facebooks.png' title='facebook'>Facebook</a></li>
+		  						 		<li><a href='#'><img src='images/twiter.png' title='Twitter'>Twitter</a></li>
+		  						 		<li><a href='#'><img src='images/google+.png' title='google+'>Google+</a></li>
+		  						 		<li><a href='#'><img src='images/rss.png' title='rss'>Rss</a></li>
+		  						 	</ul>
+		  						 </div>
+		  						 <div class='clear'> </div>
+							</div>
+							<div class="fb-comments" data-href="" data-numposts="5" data-colorscheme="light"></div>
+						</div>
+						 </div>
+		</div>
+		<!----start-footer--->
+		<div class='footer'>
+			<p>Design by <a href='http://w3layouts.com/'>W3layouts</a></p>
+		</div>
+		<!----//End-footer--->
+		<!---//End-wrap---->
+<script>
+if(typeof(Storage) !== 'undefined') {
+   // Store
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split('&');
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split('=');
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+//
+
+// Retrieve
+var temp="<img src='images/single-post-pic.jpg' title='banner1'>									<h3><a href='#'>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</a></h3>									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> <p class='para1'>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p> <p class='para2'>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.								 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>";
+
+//document.getElementById('tiles').innerHTML = localStorage.getItem('lastname');
+//$('#tiles').append(localStorage.getItem('lastname'));
+//for( var i=1;i<=localStorage.length;i++){
+//alert('hi');
+var data= localStorage.getItem(getQueryVariable('id')).split('/@/');
+var temp2="<img src='"+data[0]+"' title='banner1'>									<h3><a href='#'>"+data[1]+"</a></h3>									<p>"+data[3]+"</p>";
+$('.artical-content').prepend(temp2);
+
+//}
+} else {
+    // Sorry! No Web Storage support..
+}
+$(document).ready(function(){
+
+$('.fb-comments').attr("data-href",window.location);
+});
+</script>
+	</body>
+</html>
+
