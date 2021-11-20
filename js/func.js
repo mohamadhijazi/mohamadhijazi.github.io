@@ -45,7 +45,8 @@ var Append=localStorage.getItem(i).split("/#/")
 
 var data= localStorage.getItem(i).split("/@/");
 
-//single("+i+")/*
+//single("+i+")
+	/*
 var temp2="<li style=\" display: list-item;position: absolute;top: 0px;left: 141px;\" onclick='location.href=\"single-page.html?id="+i+"&type=false\"'> <img src='"+ data[0]+"' width='282' height='210'><div class='post-info'><div class='post-basic-info'> <h3><a href='#'>"+data[1]+"</a></h3> <span><a href='#'><label> </label>"+data[2]+"</a></span>	<p>"+data[3]+"</p>	</div>	<div class='post-info-rate-share'>   			 	    <div class='fb-like post-share' style=\"float:none\" data-href='http://gdriv.es/aranews/single-page.html?id="+i+"&type=false\' data-layout='standard' data-action='like' data-show-faces='true' data-share='true'></div>   				 		<div class='clear'> </div>		   		</div>			        	</div>			        </li>";
 */
 var temp2="<li style=\" display: list-item;position: absolute;top: 0px;left: 141px;\" > <img src='"+ data[0]+"' width='282' height='210'><div class='post-info'><div class='post-basic-info'> <h3><a href='#'>"+data[1]+"</a></h3> <span><a href='#'><label> </label>"+data[2]+"</a></span>	<p>"+data[3]+"</p>	</div>	<div class='post-info-rate-share'>   			 	    <div class='fb-like post-share' style=\"float:none\" data-href='http://gdriv.es/aranews/single-page.html?id="+i+"&type=false\' data-layout='standard' data-action='like' data-show-faces='true' data-share='true'></div>   				 		<div class='clear'> </div>		   		</div>			        	</div>			        </li>";
