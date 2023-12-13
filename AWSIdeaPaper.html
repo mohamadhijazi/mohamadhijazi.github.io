@@ -1,0 +1,996 @@
+<html lang="en" class=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  
+  <title>Innovation</title>
+
+  <meta name="robots" content="noindex">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- Load required Bootstrap and BootstrapVue CSS -->
+<link type="text/css" rel="stylesheet" href="./NewsPaper_files/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="./NewsPaper_files/bootstrap-vue.min.css" />
+
+  <link href="./NewsPaper_files/css2.css" rel="stylesheet">
+  <link href="./NewsPaper_files/main.css" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+  <link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+/>
+<!-- Load polyfills to support older browsers -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+<!--  For Vue 3 -->
+<script src="./NewsPaper_files/vue@3.js"></script>
+<!-- Load Vue followed by BootstrapVue -->
+ <!-- <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>  -->
+<!-- <script src="https://unpkg.com/bootstrap-vue@2.23.0/dist/bootstrap-vue.js"></script> -->
+
+<!-- Load the following for BootstrapVueIcons support -->
+<!-- <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script> -->
+<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
+<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/vuetify@3.4.6/dist/vuetify.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vuetify@3.4.6/dist/vuetify.min.js"></script>
+<!--  Vuelidate -->
+<script src="./NewsPaper_files/vue-demi.js"></script>
+<script src="./NewsPaper_files/core.js"></script>
+<script src="./NewsPaper_files/validators.js"></script>
+
+
+  <style id="INLINE_PEN_STYLESHEET_ID">
+    .hide {
+    display: none;
+}
+    [v-cloak] {
+  display: none;
+}
+    :root {
+  --font: "EB Garamond", serif;
+  --font-title: "Playfair Display", serif;
+  --font-sans-serif: "Manrope", sans-serif;
+  --black: #1c1f33;
+  --black--acc: #222;
+  --gray: #eee;
+  --gray-1: #ededed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 1.1rem;
+  background: var(--preview-bg);
+  font-family: var(--font);
+  color: var(--black);
+  background: url('./NewsPaper_files/paper_fibers.png') repeat;
+  padding: 1rem 2rem;
+  line-height: 1.3;
+  text-align: justify;
+  column-break-inside: avoid;
+}
+
+a {
+  text-decoration: none;
+  display: block;
+  color: var(--black);
+}
+a:hover, a:focus, a:active, a:visited {
+  color: var(--black--acc);
+}
+
+.main__wrapper {
+  max-width: 1135px;
+  margin: auto;
+}
+
+h1 {
+  font: 50px/1 "Playfair Display SC";
+  text-align: center;
+}
+@media (min-width: 700px) {
+  h1 {
+    font: 70px/1 "Playfair Display SC";
+  }
+}
+
+h3 {
+  font: italic 20px var(--font-title);
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font: 20px/1.2 var(--font-title);
+}
+
+h5 {
+  font: 700 20px/1 var(--font);
+  transition: 0.3s ease;
+}
+
+p {
+  line-height: 1.3;
+}
+p a {
+  display: inline;
+}
+
+em {
+  font-style: italic;
+}
+
+.title--large {
+  font-family: var(--font-title);
+  font-size: 32px;
+  font-style: italic;
+  text-align: left;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 700px) {
+  .title--large {
+    font-size: 42px;
+    margin: 0;
+  }
+}
+
+@media (min-width: 700px) {
+  main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 23%;
+    grid-template-rows: repeat(5, auto);
+    grid-gap: 1.2rem;
+  }
+}
+main h1,
+main aside {
+  grid-column: 1/-1;
+}
+@media (min-width: 700px) {
+  main .main-title {
+    grid-column: 1/-1;
+  }
+}
+@media (min-width: 1024px) {
+  main .main-title {
+    grid-column: 1/-2;
+  }
+}
+@media (min-width: 700px) {
+  main .terrarium {
+    grid-column: 1/-1;
+  }
+}
+@media (min-width: 1024px) {
+  main .terrarium {
+    grid-column: 3/span 2;
+  }
+}
+@media (min-width: 700px) {
+  main .main-text {
+    grid-column: span 5;
+  }
+}
+@media (min-width: 1024px) {
+  main .main-text {
+    grid-column: span 2;
+  }
+}
+@media (min-width: 700px) {
+  main .sidebar {
+    grid-column: 1/-1;
+  }
+}
+@media (min-width: 1024px) {
+  main .sidebar {
+    grid-row: 3/9;
+    grid-column: 5/6;
+  }
+}
+main .social {
+  grid-column: 1/-2;
+  grid-row: 8/9;
+}
+main .article-bar-1 {
+  grid-row: span 4;
+}
+@media (min-width: 700px) {
+  main .hogwarts {
+    grid-row: span 3;
+  }
+}
+@media (min-width: 1024px) {
+  main .hogwarts {
+    grid-column: 3;
+    grid-row: span 2;
+  }
+}
+@media (min-width: 700px) {
+  main .menu {
+    grid-column: 1/-1;
+    grid-row: 13;
+  }
+}
+@media (min-width: 1024px) {
+  main .menu {
+    grid-row: 7/8;
+    grid-column: 2/4;
+  }
+}
+@media (min-width: 700px) and (max-width: 1024px) {
+  main .toggles {
+    grid-column: 3/6;
+    grid-row: 10/13;
+  }
+}
+@media (min-width: 700px) and (max-width: 1024px) {
+  main .plan {
+    grid-column: span 4;
+  }
+}
+@media (min-width: 700px) and (max-width: 1024px) {
+  main .style,
+main .magazine,
+main .pasta {
+    grid-column: 1/3;
+  }
+}
+main .cssgrid-collection {
+  grid-column: 1/-1;
+  grid-row: 9;
+}
+
+.span--2 {
+  grid-column: span 2;
+}
+
+.long--2 {
+  grid-row: span 2;
+}
+
+.long--4 {
+  grid-row: span 4;
+}
+
+.with-border {
+  border-top: 1px solid;
+  padding-top: 0.6rem;
+}
+
+img {
+  width: 100%;
+  filter: grayscale(95%);
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--black);
+  transition: 0.3s ease;
+}
+
+figcaption {
+  font-style: italic;
+  font-size: 90%;
+}
+
+aside {
+  text-align: center;
+  padding: 3px 0;
+  border: solid var(--black);
+  border-width: 2px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 1.5rem 0;
+}
+@media (min-width: 700px) {
+  aside {
+    margin: 0;
+  }
+}
+aside > div {
+  display: flex;
+  align-items: center;
+  border: solid var(--black);
+  border-width: 1px 0;
+}
+aside > div > div {
+  flex: 1;
+  padding: 8px;
+}
+
+@media (min-width: 700px) {
+  .multi-column {
+    column-count: 2;
+    column-gap: 1.3rem;
+    margin-top: 0.75rem;
+  }
+  .multi-column-3 {
+    column-count: 3;
+  }
+}
+.sidebar {
+  margin-top: 3rem;
+}
+@media (min-width: 700px) and (max-width: 1024px) {
+  .sidebar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0;
+  }
+  .sidebar h3 {
+    width: 100%;
+    text-align: center;
+  }
+  .sidebar > a {
+    flex: 0 1 48%;
+    margin: 1.5rem 0;
+    padding: 0;
+  }
+  .sidebar .slack-ui {
+    border-top: 0;
+  }
+  .sidebar .pie {
+    order: 3;
+  }
+}
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+    border-left: 1px solid;
+    padding-left: 1.2rem;
+    margin: 0;
+  }
+}
+
+.main-text.multi-column {
+  margin: 0;
+}
+.main-text.multi-column p {
+  margin-bottom: 0.8rem;
+}
+
+.hogwarts {
+  text-align: center;
+  height: 100%;
+  border: 2px solid transparent;
+  outline: 3px solid var(--black);
+  box-shadow: inset 0 0 0 1px var(--black);
+  width: calc(100% - 4px);
+  margin: 1.5rem auto;
+  overflow: hidden;
+}
+@media (min-width: 700px) {
+  .hogwarts {
+    margin: 0;
+  }
+}
+.hogwarts__title {
+  font: 800 24px/1 var(--font-sans-serif);
+  text-transform: uppercase;
+  background: var(--black);
+  color: var(--gray);
+  padding: 0.8rem 0.8rem 0.9rem;
+  transition: 0.2s ease;
+}
+@media (min-width: 700px) and (max-width: 1024px) {
+  .hogwarts__title {
+    font: 800 21px/1.2 var(--font-sans-serif);
+    padding: 1.5rem 0.5rem;
+  }
+}
+.hogwarts__image {
+  height: 100%;
+  position: relative;
+}
+.hogwarts__image img {
+  transform: rotate(60deg);
+  height: 150%;
+  position: absolute;
+  border: 0;
+  width: 250%;
+  left: -70%;
+  bottom: -35%;
+}
+@media (min-width: 700px) and (max-width: 1024px) {
+  .hogwarts__image img {
+    bottom: -20%;
+  }
+}
+.hogwarts__image span {
+  font-style: italic;
+  max-width: 110px;
+  position: absolute;
+  top: 7%;
+  left: 18%;
+  font-size: 22px;
+  line-height: 0.9;
+  transform: rotate(-5deg);
+}
+
+.terrarium {
+  margin: 1.5rem 0;
+}
+@media (min-width: 700px) {
+  .terrarium {
+    margin: 0 0 1.5rem;
+  }
+}
+.terrarium figure {
+  height: 100%;
+}
+.terrarium img {
+  height: 96%;
+  object-fit: cover;
+  object-position: right;
+}
+
+.pie {
+  line-height: 0;
+  color: var(--gray);
+  text-align: left;
+}
+.pie__image {
+  margin: 0;
+  border: 0;
+  max-height: 15rem;
+  object-fit: cover;
+}
+.pie__subtitle {
+  background: #999;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0.4rem 1rem;
+  font: 14px var(--font-sans-serif);
+  color: var(--gray);
+}
+.pie__content {
+  background: #666;
+  padding: 1rem 1rem 1.2rem;
+  color: var(--gray);
+}
+.pie__content p {
+  margin-top: 0.5rem;
+}
+
+.sidebar-item {
+  margin: 2rem 0;
+  padding: 2rem 0 0;
+}
+.sidebar-item h5 {
+  text-align: center;
+  width: 100%;
+  padding: 0.5rem;
+  margin: auto;
+}
+.sidebar-item p {
+  margin-top: 1rem;
+}
+.sidebar-item:hover h5 {
+  transition: 0.3s ease;
+  background: var(--black);
+  color: #fff;
+}
+
+.item-with-image {
+  margin-top: 1.5rem;
+}
+.item-with-image h4 {
+  font-size: 24px;
+  text-align: left;
+  margin-bottom: 0.5rem;
+  transition: 0.2s ease;
+}
+@media (min-width: 700px) {
+  .item-with-image {
+    margin: 0;
+  }
+}
+.item-with-image:not(.cssgrid-collection):hover h4 {
+  color: white !important;
+  background: var(--black);
+}
+.magazine {
+  border: 1px solid;
+  border-width: 1px 0;
+  padding-bottom: 1rem;
+}
+
+.menu {
+  margin: 1.5rem 0;
+}
+@media (min-width: 1024px) {
+  .menu {
+    margin: 0;
+  }
+}
+.menu figure {
+  height: 100%;
+}
+.menu img {
+  height: 90%;
+  object-fit: cover;
+  object-position: left;
+}
+
+.cssgrid-collection {
+  display: flex;
+  align-content: stretch;
+  border-top: 1px solid;
+  padding-top: 1rem;
+}
+.cssgrid-collection h4 {
+  margin: 0 0 0.8rem;
+}
+.cssgrid-collection__image {
+  flex: 0 0 32%;
+  margin-right: 1.5rem;
+}
+.cssgrid-collection img {
+  height: 100%;
+  object-fit: cover;
+  object-position: left;
+}
+.cssgrid-collection p a {
+  border-bottom: 1px dashed;
+}
+.cssgrid-collection p a:hover {
+  border-bottom: 1px solid;
+}
+
+@media (min-width: 1024px) {
+  .captcha {
+    margin-top: 0;
+  }
+}
+
+.workout {
+  border: 2px solid transparent;
+  outline: 3px solid var(--black);
+  box-shadow: inset 0 0 0 1px var(--black);
+  width: calc(100% - 4px);
+  margin: 3rem auto 0.2rem;
+}
+.workout__image {
+  padding: 2px;
+}
+.workout__image img {
+  height: 16rem;
+  object-fit: cover;
+  object-position: left;
+  border: none;
+}
+@media (min-width: 1024px) {
+  .workout__image img {
+    height: 25rem;
+  }
+}
+.workout__blurb {
+  font: 22px/1.1 var(--font-sans-serif);
+  text-align: center;
+  padding: 0.5rem;
+  color: var(--black);
+  margin: -1rem 0.5rem 0.3rem;
+}
+.workout__title {
+  font: 18px/1.1 var(--font-sans-serif);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem;
+  background: var(--black);
+  color: var(--gray);
+  transition: 0.2s ease;
+}
+
+.social {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: max-content auto;
+  color: var(--gray);
+  text-align: left;
+}
+.social__image {
+  margin: 0;
+  border: 0;
+  grid-row: span 2;
+  height: 100%;
+  object-fit: cover;
+}
+.social__subtitle {
+  background: #999;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0.4rem 1rem;
+  color: var(--gray);
+  font: 14px var(--font-sans-serif);
+}
+.social__content {
+  background: #666;
+  padding: 1rem;
+  color: var(--gray);
+  grid-column: 2;
+}
+
+.plan {
+  padding-bottom: 1rem;
+}
+@media (min-width: 700px) and (max-width: 1024px) {
+  .plan {
+    grid-column: span 3;
+    margin: 0 0 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .plan {
+    border-bottom: 1px solid;
+  }
+}
+
+.pie:hover img,
+.social:hover img,
+.menu:hover img,
+.terrarium:hover img,
+.plan:hover img,
+.toggles:hover img,
+.workout:hover img,
+.cssgrid-collection__image:hover img {
+  filter: grayscale(0);
+}
+
+.workout:hover .workout__title {
+  background: transparent;
+  color: var(--black);
+}
+
+.hogwarts:hover .hogwarts__title {
+  background: transparent;
+  color: var(--black);
+}
+  </style>
+
+  </head>
+
+<body>
+  
+<div v-cloak class="main__wrapper" id="app">
+  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-secondary active">
+      <input type="radio" name="options" id="option1" value="1" v-model="hideMain" autocomplete="off" > Edit
+    </label>
+    <label class="btn btn-secondary">
+      <input type="radio" name="options" id="option2" value="0" v-model="hideMain" autocomplete="off" checked> Preview
+    </label>
+  </div>
+  <main :class="{ hide: hideMain==1 }">
+    <h1>The Innovation Times</h1>
+    <aside> 
+      <div>
+        <div class="issue">Issue #1 </div>
+        <div class="date">{{formatDateIdeDate}}</div>
+        <div class="edition">{{team}}</div>
+      </div>
+    </aside>
+    <h2 class="title--large main-title">{{ title }}
+      
+</h2>
+    <div class="main-text multi-column">
+      <p>{{introparagraph}}</p>
+      
+    </div><a class="terrarium" href="javascript:void(0)" target="_self">
+      <figure><img src="./NewsPaper_files/todo.jpeg">
+        <figcaption>A list of succulents that grows bigger as you complete your tasks</figcaption>
+      </figure></a><a class="item-with-image plan span--2 long--2" href="javascript:void(0)" target="_self"><img src="./NewsPaper_files/groupworking.jpeg">
+      <h4>Problem solving content</h4>
+      <div class="multi-column">
+        <p>{{problemSolution}}</p>
+      </div></a><a class="item-with-image pasta with-border" href="javascript:void(0)" target="_self">
+      <h4>How the product/Service works</h4>
+      <p>{{howProductWork}}</p></a><a class="item-with-image magazine with-border" href="javascript:void(0)" target="_self">
+      <h4>Customer quote</h4>
+      <p>{{customer}}</p></a><a class="item-with-image style" href="javascript:void(0)" target="_self">
+      <h4>How to get started</h4>
+      <p>{{HowTostart}}</p></a><a class="item-with-image toggles" href="javascript:void(0)" target="_self"><img src="./NewsPaper_files/showcase-toggle.gif">
+      <h4>Toggles</h4>
+      <p v-html="toggles"></p></a>
+    <div class="item-with-image cssgrid-collection">
+      <div class="cssgrid-collection__content">
+        <h4> <a href="javascript:void(0)" target="_self">{{upcomingHeader}}</a></h4>
+        <div class="multi-column-3">
+          <p>{{upcomingbody}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <h3 class="title--big">Leader Quote</h3><a class="codepen-item pie" href="javascript:void(0)" target="_self"><img class="pie__image" src="./NewsPaper_files/showcase-pie.jpg">
+        <div class="pie__subtitle">{{leadername}}</div>
+        <div class="pie__content">
+          <h4>{{leaderQuoteheader}}</h4>
+          <p>{{leaderQuoteShort}}</p>
+        </div></a>
+        <a class="sidebar-item captcha" href="javascript:void(0)" target="_self">
+        <h5>“A leader is one who sees more than others see</h5>
+        <p>{{leaderQuote}}</p></a>
+        <a class="sidebar-item slack-ui with-border" href="javascript:void(0)" target="_self">
+        <h5>FAQ Internal</h5>
+        <ul>
+          <li v-for="n in internalFaq">{{ n.value }}</li>
+
+          </ul>
+       </a>
+       <a class="sidebar-item slack-ui with-border" href="javascript:void(0)" target="_self">
+        <h5>FAQ External</h5>
+        <ul>
+          <li v-for="n in externalFaq">{{ n.value }}</li>
+
+          </ul>
+       </a>
+        
+    </div>
+  </main>
+  <div id="editmode" :class="{ hide: hideMain==0 }">
+    <form>
+      <div class="row">
+        <div class="col-md-12">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        <label for="exampleInputEmail1">Title</label>
+        <input type="text" class="form-control" id="title" aria-describedby="title"  v-model="title">
+         
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+       
+        <v-text-field v-model="ideaDate" type="date" label="Date"></v-text-field>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        <label for="exampleInputEmail1">Team</label>
+        <input type="text" class="form-control" id="title" aria-describedby="Team"  v-model="team">
+         
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="Label" v-model="introparagraph"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="Problem Solution" v-model="problemSolution"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="How To Start" v-model="HowTostart"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="How Product Work" v-model="howProductWork"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="customer" v-model="customer"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="Toggles" v-model="toggles"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="upcoming Header" v-model="upcomingHeader"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="upcomingbody" v-model="upcomingbody"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="upcomingbody" v-model="upcomingbody"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        <label for="exampleInputEmail1">leadername</label>
+        <input type="text" class="form-control" id="title" aria-describedby="Team"  v-model="leadername">
+         
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="leaderQuoteheader" v-model="leaderQuoteheader"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="leader Quote short" v-model="leaderQuoteShort"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        
+    <v-textarea label="leaderQuote" v-model="leaderQuote"></v-textarea>
+        <div class="input-errors" v-for="error of v$.title.$errors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group" :class="{ error: v$.title.$errors.length }">
+        <label>Internal FAQ</label>
+        <v-btn append-icon="home" @click="addInternalFaq"> Add </v-btn>
+        <ul class="internalFaq">
+          <li v-for="(item, index)  in internalFaq" :key="internalFaq.id">
+            <input  type="text" class="form-control"  aria-describedby="title"  v-model="item.value"/>
+            <v-btn append-icon="$minus" @click="removeInternal(index)"> Remove </v-btn>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group" :class="{ error: v$.title.$errors.length }">
+          <label>External FAQ</label>
+          <v-btn append-icon="$minus" @click="addExternalFaq()"> Add </v-btn>
+          <ul class="externalFaq">
+            <li v-for="(item, index)  in externalFaq" :key="externalFaq.id">
+              <input  type="text" class="form-control"  aria-describedby="title"  v-model="item.value"/>
+              <v-btn append-icon="$minus" @click="removeExternal(index)"> Remove </v-btn>
+              </li>
+  
+            </ul>
+          </div>
+        </div>
+    </div>
+    </div>
+    </form>
+    
+  
+  </div>
+</div>
+
+
+
+<script>
+  const  {useVuelidate}  =Vuelidate;
+  const { required, email } =VuelidateValidators;
+  const { createApp, ref } = Vue;
+
+  const { createVuetify } = Vuetify;
+
+const vuetify = createVuetify();
+  //Vue.use(BootstrapVue);
+  createApp({
+    // setup() {
+    //   const title = ref('Introducing Amazon Echo Show 15: A smart display that blends into your home')
+    //   return {
+    //     title
+    //   }
+    // },
+     setup () {
+    return { v$: useVuelidate() }
+  },
+  computed: {
+    formatDateIdeDate() {
+        return new Date(this.ideaDate).toDateString();
+      }
+    },
+    methods:{
+addInternalFaq(){
+  this.internalFaq.push({id:this.internalFaq.length,value:""});
+},
+addExternalFaq(){
+  this.externalFaq.push({id:this.externalFaq.length,value:""});
+},
+removeInternal(index){
+  this.internalFaq .splice(index, 1)
+},
+removeExternal(index){
+  this.externalFaq .splice(index, 1)
+},
+    },
+  data () {
+    return {
+      hideMain:false,
+      title: 'Introducing Amazon Echo Show 15: A smart display that blends into your home',
+      team: 'IT PORTFOLIO TEAM',
+      ideaDate:'2023-12-15',
+      introparagraph:`The new Echo Show 15 lets you enjoy hands-free Alexa, video calls, entertainment, and more on a 15.6-inch display that doubles as a digital photo frame
+Seattle, WA - December 9, 2023 - Today, Amazon announced the Echo Show 15, a new smart display that can be mounted on a wall or placed on a stand, and offers a stunning 15.6-inch HD screen that can show your photos, videos, calendars, reminders, and more. The Echo Show 15 is the most versatile Echo device yet, allowing you to enjoy hands-free Alexa, make video calls with friends and family, watch your favorite shows and movies, listen to music, control your smart home devices, and much more.
+
+The Echo Show 15 is designed to blend into your home, with a sleek and minimalist design that can match any décor. You can choose from four colors: charcoal, glacier white, oak, or walnut. You can also customize the display with different clock faces, widgets, and wallpapers, or use your own photos as the background. The Echo Show 15 can automatically adjust the brightness and color temperature of the screen to match the ambient light in your room, so it always looks natural and comfortable.`,
+      problemSolution:'The Echo Show 15 is more than just a smart display - it’s a smart companion that can help you stay connected, organized, and entertained. With Alexa, you can ask questions, set timers and alarms, check the weather and traffic, get news and sports updates, and more. You can also use Alexa to control your compatible smart home devices, such as lights, cameras, thermostats, and locks, with just your voice. You can even create routines to automate your daily tasks, such as turning on the lights and playing music when you wake up, or locking the doors and turning off the TV when you go to bed.',
+      leadername:'MAXIME',
+      leaderQuoteheader:'Introduction for everyone!',
+      leaderQuoteShort:'“A leader is one who sees more than others see, who sees farther than others see, and who sees before others see.”',
+      leaderQuote:'“A leader is one who sees more than others see, who sees farther than others see, and who sees before others see.” — Leroy Eimes',
+      customer:'A tribute of sorts to an era of cool superhero movies, this is a Marvel-themed magazine! Recommended, because it took 45 hours, so you know some serious dedication has been poured into this.',
+      HowTostart:'Explore a style guide and various page layouts for a pet adoption site in the  <em>Style Guide</em> collection. Inspired by the <em>Atomic Design</em> principle, this 8-pen collection includes a 404 page concept, an admin dashboard and what a Twitter user calls a "media card zen garden". Each pen comes with five (yes, five) color themes, including the  precious dark mode.',
+      howProductWork:'Everybody loves pasta. It is impossible to not love them, so here are 15 recipes, served with GSAP. Note the easter egg — the menu icon changes according to the pasta that you choose.',
+      toggles:'Eight playful toggles to toggle on and off for your amusement. Is it possible to use these on your site and still adhere to assessibility rules? No. But there a really cute dog one you <em>have  </em>to see.',
+      upcomingHeader:'Upcoming next verion to be released in the same track as future ideas/ benefit realization',
+      upcomingbody:'Upcoming next veriosn to be released in the same track as future ideas Upcoming next veriosn to be released in the same track as future ideas Upcoming next veriosn to be released in the same track as future ideas Upcoming next veriosn to be released in the same track as future ideas Upcoming next veriosn to be released in the same track as future ideas Upcoming next veriosn to be released in the same track as future ideas Upcoming next veriosn to be released in the same track as future ideas Upcoming next veriosn to be released in the same track as future ideas',
+      internalFaq:[{id:1,value:"Another valiant effort to reverse engineer a web app. However, the UI is repurposed to showc"}
+      ,{id:2,value:"Another valiant effort to reverse engineer a web app. However, the UI is repurposed to showc"}
+      ,{id:3,value:"Another valiant effort to reverse engineer a web app. However, the UI is repurposed to showc"}
+      ,{id:4,value:"Another valiant effort to reverse engineer a web app. However, the UI is repurposed to showc"}],
+      externalFaq:[{id:1,value:"Another valiant effort to reverse engineer a web app. However, the UI is repurposed to showc"}
+      ,{id:3,value:"Another valiant effort to reverse engineer a web app. However, the UI is repurposed to showc"}],
+    }
+  },
+  validations () {
+    return {
+      title: { required }, // Matches this.firstName
+      lastName: { required }, // Matches this.lastName
+       
+    }
+  }
+  }).use(vuetify).mount('#app')
+</script>
+
+</body></html>

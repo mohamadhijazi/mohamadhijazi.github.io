@@ -32,7 +32,7 @@ synEntry('2', 'http://cnet4.cbsistatic.com/hub/i/r/2014/08/04/5c61cce9-7e6c-4519
 
 synEntry('3', 'https://raw.githubusercontent.com/mohamadhijazi/mohamadhijazi.github.io/master/images/sharepoint-infopath.jpg/@/<a href="https://mohamadhijazi.github.io/InfoPath/">File upload SharePoint InfoPath</a>/@/InfoPath/@/InfoPath web page with section that allow to upload files with drag and drop or upload selector to SharePoint Document library, and after upload will update the properties to map documents to submitted form./#/0');
 
-
+synEntry('4', 'http://cnet4.cbsistatic.com/hub/i/r/2014/08/04/5c61cce9-7e6c-4519-a6da-d64c787eea8a/resize/370xauto/7d32b03f89f0c46855b469343259ebe0/pvativbook92014.jpg/@/<a href="/NewsPage.html"> Press Release</a>/@/PR/@/Amazon Press release/#/0');
 
 // Retrieve
 var temp="<li onclick='location.href=\"single-page.html\";'> <img src='images/img3.jpg' width='282' height='210'><div class='post-info'><div class='post-basic-info'> <h3><a href='#'>Lorem Ipsum is simply</a></h3> <span><a href='#'><label> </label>Movies</a></span>	<p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>	</div>	<div class='post-info-rate-share'>   			<div class='rateit'>    <span> </span>	</div>	 	<div class='post-share'>        				<span> </span> 	</div>		<div class='clear'> </div>		   		</div>			        	</div>			        </li>";

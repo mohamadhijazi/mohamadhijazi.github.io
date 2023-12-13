@@ -1,0 +1,18 @@
+a {
+    text-decoration: none;
+    color: initial;
+}
+.internalFaq li input{
+    width: 80%;
+    float:left;
+}
+.internalFaq li button{
+    width: 10%;
+}
+.externalFaq li input{
+    width: 80%;
+    float:left;
+}
+.externalFaq li button{
+    width: 10%;
+}
