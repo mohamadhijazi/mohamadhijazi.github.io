@@ -529,6 +529,28 @@ Handlebars.registerHelper("each_upto", function(t, e, n) {
         r.push(n.fn(t[i]));
     return r.join("")
 });
+ i.fn.visible = function(t) {
+        var u = i(this)
+          , f = i(n)
+          , e = f.scrollTop()
+          , s = e + f.height()
+          , r = u.offset().top
+          , o = r + u.height()
+          , h = t === !0 ? o : r
+          , c = t === !0 ? r : o;
+        return c <= s && h >= e
+    }
+    ;
+    i.QueryString = function(n) {
+        var r, t, i;
+        if (n == "")
+            return {};
+        for (r = {},
+        t = 0; t < n.length; ++t)
+            (i = n[t].split("="),
+            i.length == 2) && (r[i[0].toLowerCase()] = decodeURIComponent(i[1].replace(/\+/g, " ")));
+        return r
+    }(n.location.search.substr(1).split("&"));
 Handlebars.registerHelper("queryString", function(n, t) {
     return i.QueryString[t]
 });
