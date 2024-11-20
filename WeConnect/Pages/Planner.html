@@ -1,206 +1,187 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)https://mohamadhijazi.github.io/NewsPage.html -->
-<html>
-
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Innovation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="manifest" href="../manifest.json">
-  <meta name="theme-color" content="white"/>
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />  
-<link rel="apple-touch-icon" href="images/hello-icon-152.png">   
-<meta name="theme-color" content="white"/>  
-<meta name="apple-mobile-web-app-capable" content="yes">  
-<meta name="apple-mobile-web-app-status-bar-style" content="black"> 
-<meta name="apple-mobile-web-app-title" content="Hello World"> 
-<meta name="msapplication-TileImage" content="images/hello-icon-144.png">  
-<meta name="msapplication-TileColor" content="#FFFFFF">
-
-  <!-- Load required Bootstrap and BootstrapVue CSS -->
-  <link type="text/css" rel="stylesheet" href="../Innovation_files/bootstrap.min.css">
-  <link type="text/css" rel="stylesheet" href="../Innovation_files/bootstrap-vue.min.css">
-
-  <link href="../Innovation_files/custom.css" rel="stylesheet">
-  <!-- Load polyfills to support older browsers -->
-  <script src="../Innovation_files/polyfill.min.js" crossorigin="anonymous"></script>
-  <!--  For Vue 3 -->
-  <script src="../Innovation_files/vue@3.js"></script>
-  <!-- Load Vue followed by BootstrapVue -->
-  <!-- <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>  -->
-  <!-- <script src="https://unpkg.com/bootstrap-vue@2.23.0/dist/bootstrap-vue.js"></script> -->
-
-  <!-- Load the following for BootstrapVueIcons support -->
-  <!-- <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script> -->
-  <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
-  <script src="../Innovation_files/bootstrap-vue.min.js"></script>
-
-  <link href="../Innovation_files/vuetify.min.css" rel="stylesheet">
-  <script src="../Innovation_files/vuetify.min.js"></script>
-  <!--  Vuelidate -->
-  <script src="../Innovation_files/vue-demi.js"></script>
-  <script src="../Innovation_files/core.js"></script>
-  <script src="../Innovation_files/validators.js"></script>
-
-  <script src="../Innovation_files/qrcode.vue.browser.min.js"></script>
-
-  <link href="../Innovation_files/addtohomescreen.css" rel="stylesheet">
-<body>
-  <div class="ath-container banner-top-center slideInUp animated">
-    <div class="ath-banner">
-        <div class="ath-banner-cell ath-banner-cell-md">
-            <img src="../Innovation_files/images/4.png" alt="PWA" class="ath-prompt-logo" style="
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect on LinkedIn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            transition: background-color 1s, color 1s;
+        }
+        .winter {
+            background-color: #e0f7fa; /* Light cyan */
+            color: #00796b; /* Teal */
+            position: relative;
+            overflow: hidden;
+        }
+        .summer {
+            background-color: #fff9c4; /* Light yellow */
+            color: #f57f17; /* Orange */
+            position: relative;
+            overflow: hidden;
+        }
+        .insta {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+        .qrcode {
+            margin-top: 20px;
+            animation: fadeIn 2s;
+            border: 2px dashed #00796b; /* Teal */
+            padding: 10px;
+            display: inline-block;
+            position: relative;
+        }
+        .hand {
+            position: absolute;
+            top: 50%;
+            left: -50px;
+            width: 50px;
+            height: 50px;
+            background: url('hand.png') no-repeat center center;
+            background-size: contain;
+            animation: point 1s infinite;
+        }
+        .circle {
             width: 100px;
-        ">
-        </div>
-        <div class="ath-banner-cell">
-            <button class="btn btn-cancel-ath btn-link">Not Now</button>
-        </div>
-        <div class="ath-banner-title">
-            <p>Install this as app?</p>
-        </div>
-        <div class="ath-banner-cell">
-            <button class="btn btn-install-ath btn-success">Install</button>
-        </div>
+            height: 100px;
+            background-color: #00796b; /* Teal */
+            border-radius: 50%;
+            display: inline-block;
+            margin: 10px;
+            animation: bounce 2s infinite;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 100px solid #f57f17; /* Orange */
+            display: inline-block;
+            margin: 10px;
+            animation: spin 2s infinite linear;
+        }
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: #bc1888; /* Purple */
+            display: inline-block;
+            margin: 10px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes snow {
+            0% { top: -10px; }
+            100% { top: 100%; }
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: snow 10s linear infinite;
+        }
+        @keyframes flowerFall {
+            0% { top: -10px; }
+            100% { top: 100%; }
+        }
+        .flower {
+            position: absolute;
+            top: -10px;
+            width: 20px;
+            height: 20px;
+            background: pink;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: flowerFall 10s linear infinite;
+        }
+        @keyframes point {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body class="winter">
+    <h1>Hi, let's connect on LinkedIn!</h1>
+    <p>Kindly scan my QR Code below:</p>
+    <div class="qrcode">
+        <img src="your-qr-code-url-here" alt="LinkedIn QR Code">
+        <div class="hand"></div>
     </div>
-</div>
-<div class="modal animate fadeIn" tabindex="-1" role="dialog"></div>
-
-
-<!-- <div class="row d-flex mx-5 my-2 justify-content-end">
-    <button class="btn btn-primary btn-clear" onClick="clearToken();">Clear Token</button>
-</div> -->
-<div class="row m-3">
-    <div class="log-target"></div>
-</div>
-
-  <!---start-content---->
-<div v-cloak class="main__wrapper" id="app">
-    
-</div>
-  <!---//End-content---->
-  <!----wookmark-scripts---->
-
-  <!----//wookmark-scripts---->
-<!----vue header-scripts---->
-  <script src="../Components/Master.js"></script>
-  <!----vue components-scripts---->
-  <script src="../Components/Header.js"></script>
-  <script src="../Components/BodyPlanner.js"></script>
-  <script src="../Components/Footer.js"></script>
-  <!----vue mount-scripts---->
-  <script src="../Components/mainEnd.js"></script>
-  
-  <script src="../Innovation_files/addtohomescreen.js"></script>
-  <script src="../Innovation_files/a2hs_prompt.js"></script>
-  <script>/*
-    if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('../sw.js', {
-        scope: '.' // <--- THIS BIT IS REQUIRED
-    }).then(function(registration) {
-        // Registration was successful
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-        // registration failed :(
-        console.log('ServiceWorker registration failed: ', err);
-    });
-}*/
-  </script>
-   <script>
-    
-
-    let $btnCancel = document.querySelector( ".btn-cancel-ath" ),
-        $btnInstall = document.querySelector( ".btn-install-ath" ),
-        $ath_prompt = document.querySelector( ".ath-container" ),
-        $a2hs_menu = document.querySelector( ".nav-btn-a2hs" ),
-        instance, platform,
-        session = {};
-
-    $btnCancel.addEventListener( "click", e => {
-
-        e.preventDefault();
-
-        $ath_prompt.classList.toggle( "d-flex" );
-
-        handleCancel();
-
-        return false;
-
-    } );
-
-    $btnInstall.addEventListener( "click", e => {
-
-        e.preventDefault();
-
-        if ( platform.beforeInstallPrompt ) {
-            triggerNativePrompt();
+    <div>
+        <div class="circle"></div>
+        <div class="triangle"></div>
+        <div class="square"></div>
+    </div>
+    <script>
+        // Function to change theme
+        function changeTheme(theme) {
+            document.body.className = theme;
+            if (theme === 'winter') {
+                createSnowflakes();
+            } else if (theme === 'summer') {
+                createFlowers();
+            } else {
+                clearElements();
+            }
         }
 
-        $ath_prompt.classList.toggle( "d-flex" );
-
-        return false;
-
-    } );
-
-    function handleCancel() {
-
-        //   instance.optOut();
-
-    }
-
-    function handleInstall() {
-
-
-    }
-
-    function triggerNativePrompt() {
-
-        platform.beforeInstallPrompt.prompt();
-
-        platform.beforeInstallPrompt.userChoice.then( function ( choiceResult ) {
-
-                console.log( choiceResult );
-
-            } )
-            .catch( function ( err ) {
-
-                console.error( err.message );
-
-            } );
-
-    }
-
-
-    if ( "serviceWorker" in navigator ) {
-
-        navigator.serviceWorker.register( "../sw.js" );
-
-        var ath = addToHomescreen( {
-            appId: "a2hs-demo-pwa",
-            logging: true,
-            onCanInstall: function ( p, instance ) {
-                console.log( "Platform: ", p );
-                console.log( "Instance: ", instance );
-
-                platform = p;
-
-                setTimeout( () => {
-
-                    $ath_prompt.classList.toggle( "d-flex" );
-
-                    $a2hs_menu.classList.toggle( "d-flex" );
-
-                }, 1000 );
-
-            },
-            onBeforeInstallPrompt: function ( platform ) {
-                console.log( "Platform: ", platform );
-
+        // Function to create snowflakes
+        function createSnowflakes() {
+            clearElements();
+            for (let i = 0; i < 50; i++) {
+                let snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.animationDuration = Math.random() * 3 + 7 + 's';
+                document.body.appendChild(snowflake);
             }
-        } );
+        }
 
-    }
-</script>
+        // Function to create flowers
+        function createFlowers() {
+            clearElements();
+            for (let i = 0; i < 50; i++) {
+                let flower = document.createElement('div');
+                flower.className = 'flower';
+                flower.style.left = Math.random() * 100 + 'vw';
+                flower.style.animationDuration = Math.random() * 3 + 7 + 's';
+                document.body.appendChild(flower);
+            }
+        }
+
+        // Function to clear existing elements
+        function clearElements() {
+            document.querySelectorAll('.snowflake, .flower').forEach(el => el.remove());
+        }
+    </script>
+    <div>
+        <button onclick="changeTheme('winter')">Winter Theme</button>
+        <button onclick="changeTheme('summer')">Summer Theme</button>
+        <button onclick="changeTheme('insta')">Instagram Theme</button>
+    </div>
 </body>
-
 </html>

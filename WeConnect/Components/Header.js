@@ -9,7 +9,7 @@ vueapp.component('HeaderComponenet', {
     <v-app-bar
       :order="order"
       color="grey-lighten-2"
-      title="We Connect"
+      title="ConnectMe"
       flat
     >
       <template v-slot:append>
