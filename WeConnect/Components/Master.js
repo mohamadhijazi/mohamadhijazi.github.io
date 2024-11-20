@@ -1,6 +1,4 @@
 
-// const {useVuelidate} = Vuelidate;
-// const {required, email} = VuelidateValidators;
  const {createApp, ref} = Vue;
 
  const {createVuetify} = Vuetify;
@@ -16,22 +14,28 @@
     QrcodeCanvas: QrcodeVue.QrcodeCanvas,
     QrcodeSvg: QrcodeVue.QrcodeSvg,
   },
+  mounted:function(){
+    
+    
+    
+
+  },
     
     template: `
     <v-layout ref="app" class="rounded rounded-md">
     <HeaderComponenet></HeaderComponenet>
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-    
+    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">    
     <BodyComponent></BodyComponent>
     </v-main>
     <v-footer
     name="footer"
     app
-  >
-   
+  >   
     <FooterCompenent></FooterCompenent>
     </v-footer>
     </v-layout>
     `
 });
+
+
 //vueapp.use(vuetify).mount('#app')
