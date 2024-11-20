@@ -14,7 +14,18 @@ vueapp.component('BodyComponent', {
       if(MyStorage.Data.Module1.length>0){
         this.qrurl=MyStorage.Data.Module1[0].link;
       }
+      console.log("hi");
+      console.log(localStorage.Module1);
       //this.Storage=MyStorage;
+    },
+    watch: {
+      Storage: {
+        handler(val, oldVal) {
+         // console.log('book list changed')
+          this.Storage.bulkUpdate(this.m);
+        },
+        deep: true
+      },
     },
     data() {
       return {
@@ -29,31 +40,31 @@ vueapp.component('BodyComponent', {
       },
       methods:{
         addItem(){
-          this.Storage.addItem(this.m,{title:"",link:'',type:"linkedin"});
-          this.Storage.Data.Module1.push({title:"",link:'',type:"linkedin"})
+         // this.Storage.addItem(this.m,{title:"",link:'',type:"linkedin"});
+          this.Storage.Data.Module1.push({title:"",link:'',type:"linkedin",id:this.Storage.Data.Module1.length});
         },
         removeItem(index){
-          this.Storage.deleteItem(this.m,this.Storage.Data.Module1[index]);
-          this.Storage.Data.Module1.splice(index, 1)
+        //  this.Storage.deleteItem(this.m,this.Storage.Data.Module1[index]);
+          this.Storage.Data.Module1.splice(index, 1);
         },
             },
             validations () {
               return {
                 title: { required }, // Matches this.firstName
-                lastName: { required }, // Matches this.lastName
+                link: { required }, // Matches this.lastName
                  
               }
             },
     template: `
     
-    <span>{{qrurl}}</span>
-    <div>
-    <div class="col-md-12">
+    <div class="container">
+    <div class="rox">
+    <div class="col-md-6">
         <div class="form-group" :class="{ error: v$.title.$errors.length }">
-          <label>Internal FAQ</label>
+          <label>Social media links</label>
           <v-btn append-icon="home" @click="addItem"> Add </v-btn>
           <ul class="internalFaq">
-            <li v-for="(item, index)  in Storage.Data.Module1"  :key="id">
+            <li v-for="(item, index)  in Storage.Data.Module1"  :key="item.id">
               <input  type="text" class="form-control"  aria-describedby="title"  v-model="item.title"/>
               <input  type="text" class="form-control"  aria-describedby="link"  v-model="item.link"/>
               <v-btn append-icon="$minus" @click="removeItem(index)"> Remove </v-btn>
@@ -62,15 +73,7 @@ vueapp.component('BodyComponent', {
             </ul>
           </div>
         </div>
-       
-    <ul>
-    <li v-for="item in Storage.Data.Module1">
-  {{ item.title }}
-   <qrcode-svg :value="item.link" level="H"></qrcode-svg>
-</li>
-    </ul>
-
-    
+           </div>
    </div>
     `
   });

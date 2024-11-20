@@ -25,6 +25,9 @@ MyStorage.init=function(){
       MyStorage.addItem("Module1",{"title":title,"link":link,"type":"linkedin"});
     }
 };
+MyStorage.bulkUpdate=function(m){
+    localStorage.setItem(m, JSON.stringify(MyStorage.Data[m]));
+};
 MyStorage.addItem=function(m,item){
   if(item.id){
     for(var i=0; i< MyStorage["Data"][m].length;i++){

@@ -30,7 +30,6 @@ vueapp.component('BodyComponent', {
           
     template: `
     
-    <span>{{qrurl}}</span>
     <div>
     <ul>
     <li v-for="item in Storage.Data.Module1">
