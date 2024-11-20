@@ -14,10 +14,10 @@ var filesToCache = [
 './Innovation_files/core.js',
 './Innovation_files/validators.js',
 './Innovation_files/qrcode.vue.browser.min.js',
-'./Components/master.js',
+'./Components/Master.js',
 './Components/Header.js',
 './Components/BodyCompoenet.js',
-'./Components/footer.js',
+'./Components/Footer.js',
 './Components/mainEnd.js',
 ];
 
