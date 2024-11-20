@@ -44,8 +44,35 @@
 
   <script src="../Innovation_files/qrcode.vue.browser.min.js"></script>
 
-
+  <link href="../Innovation_files/addtohomescreen.css" rel="stylesheet">
 <body>
+  <div class="ath-container banner-top-center slideInUp animated">
+    <div class="ath-banner">
+        <div class="ath-banner-cell ath-banner-cell-md">
+            <img src="../Innovation_files/images/4.png" alt="PWA" class="ath-prompt-logo" style="
+            width: 100px;
+        ">
+        </div>
+        <div class="ath-banner-cell">
+            <button class="btn btn-cancel-ath btn-link">Not Now</button>
+        </div>
+        <div class="ath-banner-title">
+            <p>Install this as app?</p>
+        </div>
+        <div class="ath-banner-cell">
+            <button class="btn btn-install-ath btn-success">Install</button>
+        </div>
+    </div>
+</div>
+<div class="modal animate fadeIn" tabindex="-1" role="dialog"></div>
+
+
+<!-- <div class="row d-flex mx-5 my-2 justify-content-end">
+    <button class="btn btn-primary btn-clear" onClick="clearToken();">Clear Token</button>
+</div> -->
+<div class="row m-3">
+    <div class="log-target"></div>
+</div>
 
   <!---start-content---->
 <div v-cloak class="main__wrapper" id="app">
@@ -64,8 +91,9 @@
   <!----vue mount-scripts---->
   <script src="../Components/mainEnd.js"></script>
   
-
-  <script>
+  <script src="../Innovation_files/addtohomescreen.js"></script>
+  <script src="../Innovation_files/a2hs_prompt.js"></script>
+  <script>/*
     if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('../sw.js', {
         scope: '.' // <--- THIS BIT IS REQUIRED
@@ -76,8 +104,113 @@
         // registration failed :(
         console.log('ServiceWorker registration failed: ', err);
     });
-}
+}*/
   </script>
+   <script>
+    let target = document.querySelector( ".log-target" );
+
+    if ( target ) {
+        target.innerText += "\r\nstandalone: " + window.navigator.standalone;
+    }
+
+    function clearToken() {
+
+        a2hsPrompt.clearSession(); // reset the user session
+
+    }
+
+    let $btnCancel = document.querySelector( ".btn-cancel-ath" ),
+        $btnInstall = document.querySelector( ".btn-install-ath" ),
+        $ath_prompt = document.querySelector( ".ath-container" ),
+        $a2hs_menu = document.querySelector( ".nav-btn-a2hs" ),
+        instance, platform,
+        session = {};
+
+    $btnCancel.addEventListener( "click", e => {
+
+        e.preventDefault();
+
+        $ath_prompt.classList.toggle( "d-flex" );
+
+        handleCancel();
+
+        return false;
+
+    } );
+
+    $btnInstall.addEventListener( "click", e => {
+
+        e.preventDefault();
+
+        if ( platform.beforeInstallPrompt ) {
+            triggerNativePrompt();
+        }
+
+        $ath_prompt.classList.toggle( "d-flex" );
+
+        return false;
+
+    } );
+
+    function handleCancel() {
+
+        //   instance.optOut();
+
+    }
+
+    function handleInstall() {
+
+
+    }
+
+    function triggerNativePrompt() {
+
+        platform.beforeInstallPrompt.prompt();
+
+        platform.beforeInstallPrompt.userChoice.then( function ( choiceResult ) {
+
+                console.log( choiceResult );
+
+            } )
+            .catch( function ( err ) {
+
+                console.error( err.message );
+
+            } );
+
+    }
+
+
+    if ( "serviceWorker" in navigator ) {
+
+        navigator.serviceWorker.register( "../sw.js" );
+
+        var ath = addToHomescreen( {
+            appId: "a2hs-demo-pwa",
+            logging: true,
+            onCanInstall: function ( p, instance ) {
+                console.log( "Platform: ", p );
+                console.log( "Instance: ", instance );
+
+                platform = p;
+
+                setTimeout( () => {
+
+                    $ath_prompt.classList.toggle( "d-flex" );
+
+                    $a2hs_menu.classList.toggle( "d-flex" );
+
+                }, 1000 );
+
+            },
+            onBeforeInstallPrompt: function ( platform ) {
+                console.log( "Platform: ", platform );
+
+            }
+        } );
+
+    }
+</script>
 </body>
 
 </html>
