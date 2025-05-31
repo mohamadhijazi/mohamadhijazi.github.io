@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOGAF Standard Mind Map (Textual)</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; margin: 20px; }
+        h1 { text-align: center; }
+        ul { list-style-type: none; padding-left: 20px; }
+        ul ul { padding-left: 30px; }
+        ul ul ul { padding-left: 40px; }
+        strong { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>TOGAF Standard Mind Map (Textual Representation)</h1>
+
+    <ul>
+        <li>
+            <strong>The TOGAF Standard</strong>
+            <ul>
+                <li>An open, industry consensus framework for Enterprise Architecture.</li>
+                <li>Provides a standard approach for developing, approving, using, and maintaining Enterprise Architectures.</li>
+                <li>Applies to all Enterprise Architecture practices.</li>
+                <li>Based on an iterative process model supported by best practices and re-usable assets.</li>
+                <li>Developed and maintained by The Open Group Architecture Forum.</li>
+                <li>Purpose: To guide effective change within an enterprise. Supports strategy, portfolio, project, or solution delivery.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>TOGAF Documentation Set Structure</strong>
+            <ul>
+                <li>Structured to address transition from universal concepts to unique configurations.</li>
+                <li>Includes the formal **TOGAF Standard** and the broader **TOGAF Library**.</li>
+                <li>Modular structure with a hierarchy.</li>
+                <li>Intent: Allows specialization and isolation of detailed areas.</li>
+                <li>
+                    <strong>The TOGAF Standard</strong>
+                    <ul>
+                        <li>Represents proven, stable, scalable best practices and concepts.</li>
+                        <li>Consists of:
+                            <ul>
+                                <li><strong>TOGAF Fundamental Content</strong>: Essential concepts and established best practices that are stable and enduring. Universally applicable. (See below for details)</li>
+                                <li><strong>TOGAF Series Guides</strong>: Build upon Fundamental Content. Provide extended guidance for specific topics, concerns, and use-cases. Proven, stable best practices. (See below for examples)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>The TOGAF Library</strong>
+                    <ul>
+                        <li>Contains additional resources accompanying the standard.</li>
+                        <li>Includes emerging ideas, guidelines, templates, patterns, and reference material.</li>
+                        <li>Purpose: Accelerate creation of new architectures.</li>
+                        <li>Material may include reference architectures developed by industry experts (e.g., IT4IT, Commercial Aviation, O-PAS).</li>
+                        <li>Documents can be used as-is or as a starting point for organizational EA.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <strong>TOGAF Fundamental Content</strong>
+            <ul>
+                <li>Consists of six documents.</li>
+                <li>
+                    <strong>Introduction and Core Concepts</strong>
+                    <ul>
+                        <li>Provides executive overview, documentation structure, core concepts, and terminology.</li>
+                        <li>Core Concepts mentioned include: ADM, EA Services, Deliverables/Artifacts/Building Blocks, Architecture Principles, Enterprise Continuum, Architecture Repository, EA Capability and Governance, Architecture Views/Viewpoints, Enterprise Agility, Risk Management.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>The Architecture Development Method (ADM)</strong>
+                    <ul>
+                        <li>**Central to the TOGAF Framework**.</li>
+                        <li>A tested and repeatable process for developing architectures.</li>
+                        <li>An iterative approach to developing an Enterprise Architecture.</li>
+                        <li>Designed to address business requirements.</li>
+                        <li>Includes establishing framework, developing content, transitioning, and governing realization.</li>
+                        <li>Driven by the Requirements Management process.</li>
+                        <li>**Phases**:
+                            <ul>
+                                <li>Preliminary Phase: Preparation and initiation activities for establishing an Architecture Capability, including framework tailoring and principles definition.</li>
+                                <li>Requirements Management: Process for managing architecture requirements throughout the ADM.</li>
+                                <li>Phase A: Architecture Vision: Initial phase, defining scope, identifying stakeholders, creating Architecture Vision, obtaining approval.</li>
+                                <li>Phase B: Business Architecture: Describes development of Business Architecture to support Architecture Vision.</li>
+                                <li>Phase C: Information Systems Architectures: Describes development of Data and Application Architectures.</li>
+                                <li>Phase D: Technology Architecture: Describes development of Technology Architecture.</li>
+                                <li>Phase E: Opportunities and Solutions: Identifying delivery vehicles (projects, programs) and initial implementation planning.</li>
+                                <li>Phase F: Migration Planning: Finalizing Implementation and Migration Plan from Baseline to Target Architectures.</li>
+                                <li>Phase G: Implementation Governance: Providing architectural oversight for implementation projects, ensuring conformance.</li>
+                                <li>Phase H: Architecture Change Management: Establishing procedures for managing change to the architecture.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>ADM Techniques</strong>
+                            <ul>
+                                <li>Collection of techniques for applying the TOGAF approach and ADM.</li>
+                                <li>Stakeholder Management: Discipline to win support, identify players, used throughout phases.</li>
+                                <li>Gap Analysis: Technique to highlight shortfalls between Baseline and Target Architectures, typically final step in a phase.</li>
+                                <li>Migration Planning Techniques: Support planning in Phases E/F. Includes Implementation Factor Catalog, Consolidated Gaps, Solutions, and Dependencies Matrix, Architecture Definition Increments Table, Transition Architecture State Evolution Table, Business Value Assessment Matrix.</li>
+                                <li>Risk Management: Technique used to mitigate risk during architecture/transformation projects. Involves classification, identification, assessment, mitigation, monitoring.</li>
+                                <li>Architecture Alternatives and Trade-Offs: Technique to identify alternative Target Architectures and understand competing forces.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Applying the ADM</strong>
+                            <ul>
+                                <li>Guidelines for adapting the ADM to various usage scenarios.</li>
+                                <li>Architecture Styles: Adapting framework to different architectural styles (focus, form, techniques, etc.).</li>
+                                <li>Iteration and the ADM: ADM supports various iteration concepts (Landscape, Cycle, Capability). Iterations can group related activities.</li>
+                                <li>Applying the ADM Across the Architecture Landscape: Using levels of detail to manage complexity (Strategic, Segment, Capability).</li>
+                                <li>Architecture Partitioning: Used to simplify development and management, reflecting organizational model.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Architecture Content</strong>
+                    <ul>
+                        <li>Describes the TOGAF Content Framework (metamodel) and typical deliverables/artifacts/ABBs.</li>
+                        <li>**Content Framework**: Detailed model of architectural work products to drive consistency, provide checklist, reduce risk, mandate standards.</li>
+                        <li>**Architectural Work Products**: Categories used to classify products.
+                            <ul>
+                                <li>Deliverable: Contractually specified work product, output of projects.</li>
+                                <li>Artifact: Architectural work product describing an aspect. Classified as catalogs, matrices, diagrams. Form content of Repository.</li>
+                                <li>Architecture Building Block (ABB): Potentially re-usable component capturing architecture requirements, directs SBB development/procurement.</li>
+                                <li>Solution Building Block (SBB): Implementation choice, conforms to ABB specification, defines implementation.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Architecture Repository</strong>
+                            <ul>
+                                <li>Provides a structural framework for managing and leveraging architectural work products.</li>
+                                <li>Central place for storing/accessing architectural assets.</li>
+                                <li>Part of the wider Enterprise Repository.</li>
+                            </ul>
+                        </li>
+                        <li>**The Enterprise Continuum**: Categorization mechanism for artifacts as they evolve from generic Foundation Architectures to Organization-Specific Architectures. Comprises Architecture Continuum and Solutions Continuum.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Enterprise Architecture Capability and Governance</strong>
+                    <ul>
+                        <li>Resources, guidelines, templates for establishing architecture practice and governance.</li>
+                        <li>Describes organization, processes, skills, roles, responsibilities for EA function.</li>
+                        <li>**Architecture Capability**: Ability to develop, use, maintain architecture and govern change. Need differs per organization. Has broad purposes (Support Strategy, Portfolio, Project, Solution Delivery). Consists of foundational and purpose-specific activities.</li>
+                        <li>**Architecture Governance**: Practice of managing and controlling Enterprise Architectures enterprise-wide. Ensures compliance with standards/regulations. Establishes decision structures and accountability.</li>
+                        <li>**Architecture Board**: Decision-making framework for architecture. Responsible for operational and governance items. Approves products, resolves conflicts, enforces compliance.</li>
+                        <li>**Architecture Contracts**: Joint agreements between development partners and sponsors on deliverables, quality, fitness-for-purpose. Ensure governed approach to implementation.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <strong>ADM Deliverables (Typical Baseline)</strong>
+            <ul>
+                <li>Work products typically created, used, or enriched in ADM phases.</li>
+                <li>Tailored Architecture Framework (Preliminary Phase output)</li>
+                <li>Organizational Model for Enterprise Architecture (Preliminary Phase output)</li>
+                <li>Architecture Principles (Preliminary Phase output)</li>
+                <li>Request for Architecture Work (Preliminary, Phase H output, ADM input)</li>
+                <li>Statement of Architecture Work (Phase A output, Phase H input)</li>
+                <li>Architecture Vision (Phase A output, Phase E, G, H input/updated)</li>
+                <li>Communications Plan (Phase A output)</li>
+                <li>Capability Assessment (Phase A output, Phase E, G, H input/updated)</li>
+                <li>Architecture Definition Document: Container for core architectural artifacts across domains and states (Phase A, B, C, D, E, F, G, H input/updated)</li>
+                <li>Architecture Requirements Specification: Quantitative statements outlining implementation requirements (Phase B, C, D, E, F, G output/input, Requirements Management input/output)</li>
+                <li>Architecture Roadmap: Lists work packages on a timeline to realize Target Architecture (Phase B, C, D, E, F output/input, Phase G, H input)</li>
+                <li>Architecture Building Blocks (ABBs): Capture requirements, guide development (Phase B, C, D, E, F, G output/input)</li>
+                <li>Solution Building Blocks (SBBs): Implementation choices (Phase E, F, G output/input)</li>
+                <li>Implementation and Migration Plan: Schedule of projects (Phase E, F output/input, Phase G, H input)</li>
+                <li>Transition Architecture: Describes an architecturally significant interim state (Phase E, F output/input)</li>
+                <li>Implementation Governance Model (Phase E, F output, Phase G, H input)</li>
+                <li>Architecture Contracts: Joint agreements on deliverables, quality, fitness-for-purpose (Phase G output, Phase H input)</li>
+                <li>Change Request: Initiates further architecture work due to changes/deviations (Phase G, H output/input)</li>
+                <li>Compliance Assessment: Review of implementation projects for alignment (Phase G output, Phase H input)</li>
+                <li>Requirements Impact Assessment: Assesses impact of new info/changes on requirements (Phase H output, Requirements Management output)</li>
+            </ul>
+        </li>
+        <li>
+            <strong>TOGAF Series Guides (Domain-Specific Guidance Examples)</strong>
+            <ul>
+                 <li>General How-To Guidance: Practitioners’ Approach, Using the TOGAF Standard in the Digital Enterprise, Digital Technology Adoption.</li>
+                 <li>Establishing an Enterprise Architecture Team Guidance: The TOGAF Leader’s Guide to Establishing and Evolving an EA Capability.</li>
+                <li>
+                    <strong>Security Architecture</strong>
+                    <ul>
+                        <li>Integrating Risk and Security within a TOGAF Enterprise Architecture guide.</li>
+                        <li>Security is a cross-cutting concern pervasive through EA.</li>
+                        <li>Risk is the "effect of uncertainty on objectives".</li>
+                        <li>Enterprise Risk Management (ERM) and Information Security Management (ISM) processes underpin Security Architecture.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Business Architecture</strong>
+                    <ul>
+                        <li>Includes guides on Business Models, Business Capabilities, Value Streams, Information Mapping, Organization Mapping, Business Scenarios.</li>
+                        <li>Business Models: Description of rationale for how an organization creates, delivers, and captures value. Starting point for innovation and strategy.</li>
+                        <li>**Business Capability**: **What** a business does or can do. A particular ability or capacity. Delineates *what* without explaining *how, why, or where*. Endures over longer planning horizons. Forms Business Capability Model/Map.</li>
+                        <li>**Value Stream**: **How** the business delivers value. An end-to-end collection of value-adding activities (stages) that create an overall result for a stakeholder. Describes the *how* value is delivered. Mapping helps assess effectiveness.</li>
+                        <li>Mapping: Value Streams can be mapped to Business Capabilities to show how activities utilize abilities.</li>
+                        <li>Information Mapping: Articulates, characterizes, and represents information critical to the business. Can be mapped to capabilities, value streams, organizations.</li>
+                        <li>Organization Mapping: Shows organizational units, partners, stakeholders, and their working relationships. Provides organizational context, can be mapped to capabilities.</li>
+                        <li>Business Scenarios: Technique to understand business requirements and align with IT needs. Describes process, environment, actors, desired outcome.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Data/Information Architecture</strong>
+                    <ul>
+                        <li>Includes guide on Customer Master Data Management (C-MDM).</li>
+                        <li>Purpose of C-MDM: Increase value of customer information shared across the organization.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Agile Methods</strong>
+                    <ul>
+                        <li>Includes guides on Enabling Enterprise Agility and Applying the TOGAF ADM using Agile Sprints.</li>
+                        <li>Enterprise agility characteristics: Responsiveness, value-driven, experimentation, empowered teams, customer collaboration, continuous improvement, respect for people. Important for reacting to change.</li>
+                        <li>Different levels of detail (Strategic, Segment, Capability) enable agility.</li>
+                        <li>Hierarchy of ADM cycles approach for Agile EA.</li>
+                        <li>Intentional Architecture: Planned strategies/initiatives to enhance solution design and provide guidance (often delivered as part of Capability Architecture).</li>
+                        <li>Agile Enterprise Architecture Collaboration Approaches: EA Development Agility, Solution Collaboration, Cross-Development Collaboration, Cross-Functional Agility.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Reference Models and Method</strong>
+                    <ul>
+                        <li>Includes guides on DBRM, GRM, Architecture Maturity Models, Architecture Project Management, Architecture Skills Framework.</li>
+                        <li>Digital Business Reference Model (DBRM): Industry-independent outline of core components for digital enterprise. Elements categorized into Digital, Strategic, Structural, Operational domains.</li>
+                        <li>Government Reference Model (GRM): Standard template to describe public sector businesses for transformational change. Provides taxonomy and common language.</li>
+                        <li>Architecture Maturity Models (CMMs): Techniques for evaluating organizational EA maturity. Provide method to improve change processes.</li>
+                        <li>Architecture Project Management: Guidelines for managing Architecture Projects using techniques from PRINCE2/PMBOK alongside ADM. Enhances success via planning, monitoring, communication.</li>
+                        <li>Architecture Skills Framework: Set of role, skill, and experience norms for EA work. Addresses lack of uniformity in EA roles/skills. Includes generic, business, EA, PM, IT general, technical IT, legal skills.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+         <li>
+            <strong>Supporting the Digital Enterprise</strong>
+            <ul>
+                <li>Based on the TOGAF Series Guide: Using the TOGAF Standard in the Digital Enterprise. Aligns with the Digital Practitioner Body of Knowledge™ (DPBoK™) Standard.</li>
+                <li>DPBoK Contexts (Emergence Model):
+                    <ul>
+                        <li>Context I: Individual/Founder: Bare minimum requirements of delivering digital value. Key topics: Conception of digital value, digital infrastructure, Agile development/continuous delivery. EA supports by communication, infrastructure description, risk understanding.</li>
+                        <li>Context II: Team: Collaborative Product team. Key topics: Product management, work execution management, operations management. EA supports by architecture models, depicting workflows/processes, communication/collaboration efficacy, risk understanding.</li>
+                        <li>Context III: Team of Teams: Coordinating across multiple teams. Key topics: Organization/cultural factors, coordination/process mechanisms, investment/portfolio consequences. EA helps resolve cultural issues, depict processes, support portfolio management. Continues to ensure risk is understood and communication is effective.</li>
+                        <li>Context IV: Enduring Enterprise: Managing a sustainable business over long periods. Key topics: Governance, risk, security, compliance, information management, architecture/portfolio management. EA expands role into strategy/governance, provides compliance criteria, supports information management, supports portfolio management.</li>
+                    </ul>
+                </li>
+                <li>Strategies to support digital enterprise success:
+                    <ul>
+                        <li>Peek-Ahead Strategy: Provide just enough guidance (risks, standards, best practices) while looking ahead to the next context transition.</li>
+                        <li>Enterprise Architecture as Services Strategy: Develop just enough architecture on demand to support digital effort's operations tempo. Provided in an enabling-consulting fashion.</li>
+                    </ul>
+                </li>
+                <li>TOGAF Principles mapped to DPBoK Contexts.</li>
+                <li>Enterprise Architecture Services mapped to DPBoK Contexts (EA Service Emergence Model).</li>
+            </ul>
+        </li>
+         <li>
+            <strong>Digital Technology Adoption</strong>
+            <ul>
+                <li>TOGAF Series Guide: Digital Technology Adoption: A Guide to Readiness Assessment and Roadmap Development.</li>
+                <li>Provides Digital Transformation Readiness Assessment (DTRA) technique. Assesses enterprise readiness for digital technology changes.</li>
+                <li>Factors Impacting Adoption (Categorized): Foundational, Impact, Sustaining. Examples: Vision, Sponsorship, IT Capability, Culture, Business Model Adaptability, Skills, Technology Maturity, Policy/Regulations, Funding, Governance, Value Realization.</li>
+                <li>Roadmap Process:
+                    <ul>
+                        <li>Step 1: Select the Adoption Approach (e.g., ABCD framework).</li>
+                        <li>Step 2: Perform the DTRA (using assessment toolkit).</li>
+                        <li>Step 3: Identify Factors Needing Management Attention (analyze output, understand implications of missing factors).</li>
+                        <li>Step 4: Address Shortcomings and Initiate Adoption (plug gaps, progressive/Agile approach recommended for lower readiness types).</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+</body>
+</html>
+```
