@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noor Dhikr App</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        .font-amiri { fontFamily: 'Amiri', serif; }
+        .font-kufi { fontFamily: 'Reem Kufi', sans-serif; }
+        
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in-up {
+            animation: fade-in-up 0.5s ease-out forwards;
+        }
+        
+        .animate-spin-slow {
+            animation: spin 60s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Pulse Animation Class for JS toggle */
+        .tap-pulse {
+            transform: scale(1.05);
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.6) !important;
+        }
+
+        .text-shadow-normal {
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .no-select {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="font-sans overflow-hidden transition-colors duration-700 min-h-screen flex flex-col no-select">
+
+    <!-- Radial Pattern Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none opacity-20 z-0">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] animate-spin-slow"
+             style="background-image: repeating-conic-gradient(#D4AF37 0% 0.5%, transparent 0.5% 5%); mask-image: radial-gradient(circle, black 30%, transparent 70%); -webkit-mask-image: radial-gradient(circle, black 30%, transparent 70%);">
+        </div>
+    </div>
+
+    <!-- App Container -->
+    <div id="root" class="relative z-10 flex-1 flex flex-col w-full h-full">
+        <!-- Content injected by JS -->
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- DATA ---
+        const DEFAULT_DHIKR = [
+            { id: 1, text: "سُبْحَانَ اللَّهِ", translation: "Glory be to Allah" },
+            { id: 2, text: "الْحَمْدُ لِلَّهِ", translation: "Praise be to Allah" },
+            { id: 3, text: "اللَّهُ أَكْبَرُ", translation: "Allah is the Greatest" },
+            { id: 4, text: "لَا إِلَهَ إِلَّا اللَّهُ", translation: "There is no god but Allah" },
+            { id: 5, text: "أَسْتَغْفِرُ اللَّهَ", translation: "I seek forgiveness from Allah" },
+            { id: 6, text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ سُبْحَانَ اللَّهِ الْعَظِيم", translation: "Glory and praise be to Allah" },
+            { id: 7, text: "اللهم إنك عفو تحب العفو فاعف عني", translation: "Oh God, You are the Pardoner and You love to forgive, so forgive me" },
+            { id: 8, text: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", translation: "There is no power nor strength except by Allah" },
+            { id: 9, text: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ", translation: "O Allah, send prayers upon Muhammad" },
+            { id: 10, text: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ", translation: "Allah is sufficient for us" }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        const state = {
+            view: 'home', // home, dhikr, stats
+            currentDhikrIndex: 0,
+            count: 0,
+            totalCount: 0,
+            dailyCount: 0,
+            dailyGoal: 100,
+            streak: 0,
+            favorites: [], // array of IDs
+            dhikrCounts: {}, // map ID -> count
+            showShareModal: false,
+            isDarkMode: true
+        };
+
+        // --- PERSISTENCE ---
+        function loadData() {
+            const storedTotal = localStorage.getItem('noor_total');
+            const storedStreak = localStorage.getItem('noor_streak');
+            const storedGoal = localStorage.getItem('noor_goal');
+            const storedFavs = localStorage.getItem('noor_favs');
+            const storedDhikrCounts = localStorage.getItem('noor_dhikr_counts');
+            const lastLogin = localStorage.getItem('noor_last_login');
+
+            if (storedTotal) state.totalCount = parseInt(storedTotal);
+            if (storedGoal) state.dailyGoal = parseInt(storedGoal);
+            if (storedFavs) state.favorites = JSON.parse(storedFavs);
+            if (storedDhikrCounts) state.dhikrCounts = JSON.parse(storedDhikrCounts);
+
+            // Streak Logic
+            const today = new Date().toDateString();
+            if (lastLogin !== today) {
+                state.dailyCount = 0; // Reset daily
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if (lastLogin === yesterday.toDateString()) {
+                    if (storedStreak) state.streak = parseInt(storedStreak);
+                } else {
+                    // Broken streak
+                    state.streak = 0;
+                }
+                localStorage.setItem('noor_last_login', today);
+            } else {
+                // Same day
+                if (storedStreak) state.streak = parseInt(storedStreak);
+                const storedDaily = localStorage.getItem('noor_daily');
+                if (storedDaily) state.dailyCount = parseInt(storedDaily);
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('noor_total', state.totalCount);
+            localStorage.setItem('noor_daily', state.dailyCount);
+            localStorage.setItem('noor_streak', state.streak);
+            localStorage.setItem('noor_favs', JSON.stringify(state.favorites));
+            localStorage.setItem('noor_dhikr_counts', JSON.stringify(state.dhikrCounts));
+        }
+
+        // --- ACTIONS ---
+        const app = {
+            init: () => {
+                loadData();
+                app.render();
+            },
+
+            setView: (view) => {
+                state.view = view;
+                app.render();
+            },
+
+            toggleTheme: () => {
+                state.isDarkMode = !state.isDarkMode;
+                app.render();
+            },
+
+            handleTap: () => {
+                // Streak Logic
+                const today = new Date().toDateString();
+                const lastPractice = localStorage.getItem('noor_last_practice');
+                
+                if (lastPractice !== today) {
+                    state.streak += 1;
+                    localStorage.setItem('noor_last_practice', today);
+                }
+
+                // Increment Counters
+                state.count++;
+                state.dailyCount++;
+                state.totalCount++;
+
+                const currentId = DEFAULT_DHIKR[state.currentDhikrIndex].id;
+                state.dhikrCounts[currentId] = (state.dhikrCounts[currentId] || 0) + 1;
+
+                // Vibration
+                if (navigator.vibrate) navigator.vibrate(10);
+
+                // Save
+                saveData();
+
+                // Efficient DOM update without full re-render for performance/animation
+                app.updateCountersDOM();
+                app.triggerAnimation();
+            },
+
+            updateCountersDOM: () => {
+                // Only update specific elements if they exist
+                const sessionEl = document.getElementById('count-session');
+                const dailyEl = document.getElementById('count-daily'); // progress bar
+                const totalEl = document.getElementById('count-total-dhikr');
+                const bgCountEl = document.getElementById('bg-count');
+
+                if (sessionEl) sessionEl.innerText = state.count;
+                if (bgCountEl) bgCountEl.innerText = state.count;
+                if (totalEl) {
+                    const currentId = DEFAULT_DHIKR[state.currentDhikrIndex].id;
+                    totalEl.innerText = state.dhikrCounts[currentId] || 0;
+                }
+                
+                // Update Progress Bar
+                const progressEl = document.getElementById('progress-bar');
+                if (progressEl) {
+                    const pct = Math.min((state.dailyCount / state.dailyGoal) * 100, 100);
+                    progressEl.style.width = `${pct}%`;
+                }
+            },
+
+            triggerAnimation: () => {
+                const textEl = document.getElementById('dhikr-text');
+                if (textEl) {
+                    textEl.classList.add('tap-pulse');
+                    setTimeout(() => {
+                        textEl.classList.remove('tap-pulse');
+                    }, 150);
+                }
+            },
+
+            changeDhikr: (direction) => {
+                // Fade out text
+                const textContainer = document.getElementById('text-container');
+                if(textContainer) {
+                    textContainer.style.opacity = '0';
+                    textContainer.style.transform = 'scale(0.9)';
+                    textContainer.style.filter = 'blur(4px)';
+                }
+
+                setTimeout(() => {
+                    if (direction === 'next') {
+                        state.currentDhikrIndex = (state.currentDhikrIndex + 1) % DEFAULT_DHIKR.length;
+                    } else if (direction === 'random') {
+                        const rnd = Math.floor(Math.random() * DEFAULT_DHIKR.length);
+                        state.currentDhikrIndex = rnd;
+                    } else {
+                        state.currentDhikrIndex = (state.currentDhikrIndex - 1 + DEFAULT_DHIKR.length) % DEFAULT_DHIKR.length;
+                    }
+                    state.count = 0; // Reset session
+                    app.render(); // Re-render to update text and IDs
+                }, 300);
+            },
+
+            resetSession: () => {
+                state.count = 0;
+                app.render();
+            },
+
+            toggleFavorite: () => {
+                const currentId = DEFAULT_DHIKR[state.currentDhikrIndex].id;
+                if (state.favorites.includes(currentId)) {
+                    state.favorites = state.favorites.filter(id => id !== currentId);
+                } else {
+                    state.favorites.push(currentId);
+                }
+                saveData();
+                app.render();
+            },
+            
+            selectFavorite: (id) => {
+                const idx = DEFAULT_DHIKR.findIndex(d => d.id === id);
+                state.currentDhikrIndex = idx;
+                state.count = 0;
+                app.setView('dhikr');
+            },
+
+            toggleShareModal: (show) => {
+                state.showShareModal = show;
+                app.render();
+            },
+
+            copyText: () => {
+                const dhikr = DEFAULT_DHIKR[state.currentDhikrIndex];
+                const text = `${dhikr.text}\n\n${dhikr.translation}\n\nتطبيق نور للأذكار`;
+                navigator.clipboard.writeText(text);
+                alert('تم نسخ الذكر للنشر!');
+                app.toggleShareModal(false);
+            }
+        };
+
+        // --- RENDERERS ---
+
+        function getCommonStyles() {
+            const isDark = state.isDarkMode;
+            return {
+                bgClass: isDark 
+                    ? "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a1f1c] to-black"
+                    : "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 via-teal-50 to-white",
+                textPrimary: isDark ? "text-emerald-50" : "text-emerald-900",
+                textSecondary: isDark ? "text-emerald-200/70" : "text-emerald-700/70",
+                cardBg: isDark ? "bg-black/30 border-white/10" : "bg-white/60 border-emerald-900/10",
+                shadow: isDark ? '0 0 20px rgba(251, 191, 36, 0.3)' : 'none'
+            };
+        }
+
+        function renderHeader() {
+            const s = getCommonStyles();
+            return `
+            <header class="relative z-10 p-6 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center ${state.isDarkMode ? 'bg-emerald-500/20' : 'bg-emerald-600'} text-white shadow-lg">
+                        <i data-lucide="${state.isDarkMode ? 'moon' : 'sun'}" width="20"></i>
+                    </div>
+                    <span class="text-xl font-bold font-kufi ${s.textPrimary}">نُور</span>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button onclick="app.setView('${state.view === 'stats' ? 'home' : 'stats'}')" class="p-2 rounded-full transition-colors ${s.textSecondary} hover:text-amber-400">
+                        <i data-lucide="trophy" width="24"></i>
+                    </button>
+                    <button onclick="app.toggleTheme()" class="p-2 rounded-full transition-colors ${s.textSecondary} hover:text-amber-400">
+                        <i data-lucide="${state.isDarkMode ? 'sun' : 'moon'}" width="24"></i>
+                    </button>
+                </div>
+            </header>
+            `;
+        }
+
+        function renderHome() {
+            const s = getCommonStyles();
+            return `
+            <div class="flex flex-col items-center gap-12 w-full animate-fade-in-up">
+                <div class="text-center space-y-2">
+                    <h1 class="text-5xl font-amiri font-bold ${s.textPrimary} drop-shadow-lg">أَلَا بِذِكْرِ اللَّهِ</h1>
+                    <h2 class="text-3xl font-amiri ${s.textSecondary}">تَطْمَئِنُّ الْقُلُوبُ</h2>
+                </div>
+
+                <div class="relative group cursor-pointer" onclick="app.setView('dhikr'); app.changeDhikr('random');">
+                    <div class="absolute inset-0 bg-amber-400 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 animate-pulse"></div>
+                    <button 
+                        class="relative w-48 h-48 rounded-full bg-gradient-to-br from-emerald-600 to-teal-800 border-4 border-amber-400/50 shadow-2xl flex items-center justify-center transform transition-transform duration-300 hover:scale-105 active:scale-95 overflow-hidden"
+                    >
+                        <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');"></div>
+                        <span class="text-3xl font-amiri font-bold text-white relative z-10">اذْكُرِ اللَّهَ</span>
+                    </button>
+                </div>
+
+                <div class="flex justify-between w-full px-8">
+                    <div class="text-center ${s.textSecondary}">
+                        <div class="text-sm font-kufi opacity-70">هدفي اليومي</div>
+                        <div class="text-2xl font-bold font-kufi text-emerald-500">${state.dailyGoal}</div>
+                    </div>
+                    <div class="text-center ${s.textSecondary}">
+                        <div class="text-sm font-kufi opacity-70">مجموع الأذكار</div>
+                        <div class="text-2xl font-bold font-kufi text-amber-500">${state.dailyCount}</div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderDhikr() {
+            const s = getCommonStyles();
+            const current = DEFAULT_DHIKR[state.currentDhikrIndex];
+            const isFav = state.favorites.includes(current.id);
+            const specificCount = state.dhikrCounts[current.id] || 0;
+
+            const boxStyle1 = state.isDarkMode ? 'bg-emerald-900/30 border-emerald-500/30' : 'bg-emerald-50 border-emerald-200';
+            const boxStyle2 = state.isDarkMode ? 'bg-amber-900/20 border-amber-500/30' : 'bg-amber-50 border-amber-200';
+
+            return `
+            <div class="w-full h-full flex flex-col justify-between py-4 animate-fade-in-up">
+                
+                <!-- Top Controls -->
+                <div class="flex justify-between items-center mb-4 px-2">
+                    <button onclick="app.setView('home')" class="p-2 rounded-full ${s.cardBg} backdrop-blur-md ${s.textSecondary} hover:bg-white/10">
+                        <i data-lucide="x" width="20"></i>
+                    </button>
+                    <div class="px-4 py-1 rounded-full ${s.cardBg} backdrop-blur-md ${s.textPrimary} font-kufi text-sm flex items-center gap-2">
+                        <i data-lucide="flame" width="14" class="text-amber-500 fill-amber-500"></i>
+                        <span>${state.streak} يوم</span>
+                    </div>
+                    <button onclick="app.toggleFavorite()" class="p-2 rounded-full ${s.cardBg} backdrop-blur-md transition-colors hover:bg-white/10 ${isFav ? 'text-red-500 fill-red-500' : s.textSecondary}">
+                        <i data-lucide="heart" width="20" class="${isFav ? 'fill-current' : ''}"></i>
+                    </button>
+                </div>
+
+                <!-- Main Card -->
+                <div 
+                    class="flex-1 flex flex-col items-center justify-start md:justify-center pt-12 md:pt-0 relative cursor-pointer select-none"
+                    onclick="app.handleTap()"
+                >
+                    <!-- Background Count -->
+                    <div class="absolute inset-0 flex items-start md:items-center justify-center pt-12 md:pt-0 pointer-events-none opacity-5">
+                        <span id="bg-count" class="text-[10rem] md:text-[12rem] font-bold font-kufi">${state.count}</span>
+                    </div>
+
+                    <div id="text-container" class="transition-all duration-300 text-center px-4 w-full relative z-10">
+                        <div 
+                            id="dhikr-text"
+                            class="text-4xl md:text-5xl lg:text-7xl font-amiri leading-relaxed transition-transform duration-100 ${s.textPrimary}"
+                            style="text-shadow: ${s.shadow};"
+                        >
+                            ${current.text}
+                        </div>
+                        ${current.translation ? `
+                        <div class="mt-4 md:mt-8 font-kufi text-lg ${s.textSecondary} opacity-60">
+                            ${current.translation}
+                        </div>` : ''}
+
+                        <!-- Counters -->
+                        <div class="mt-8 flex gap-4 justify-center animate-fade-in-up">
+                            <div class="px-4 py-2 rounded-xl backdrop-blur-md border ${boxStyle1} flex flex-col items-center min-w-[80px] shadow-lg">
+                                <span class="text-xs font-kufi ${s.textSecondary} opacity-80">الجلسة</span>
+                                <span id="count-session" class="text-xl font-bold font-kufi ${s.textPrimary}">${state.count}</span>
+                            </div>
+                            <div class="px-4 py-2 rounded-xl backdrop-blur-md border ${boxStyle2} flex flex-col items-center min-w-[80px] shadow-lg">
+                                <span class="text-xs font-kufi ${s.textSecondary} opacity-80">المجموع</span>
+                                <span id="count-total-dhikr" class="text-xl font-bold font-kufi ${s.textPrimary}">${specificCount}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-10 text-sm font-kufi ${s.textSecondary} opacity-50 animate-pulse hidden md:block">
+                        اضغط في أي مكان للعد
+                    </div>
+                </div>
+
+                <!-- Bottom Controls -->
+                <div class="flex flex-col gap-4 md:gap-6 mt-2 md:mt-6 px-2">
+                    
+                    <!-- Progress -->
+                    <div class="w-full h-1 bg-gray-200/20 rounded-full overflow-hidden">
+                        <div 
+                            id="progress-bar"
+                            class="h-full bg-gradient-to-r from-amber-400 to-amber-600 transition-all duration-300"
+                            style="width: ${Math.min((state.dailyCount / state.dailyGoal) * 100, 100)}%"
+                        ></div>
+                    </div>
+
+                    <div class="flex justify-between items-center gap-4">
+                        <button onclick="app.toggleShareModal(true)" class="flex-1 px-6 py-3 rounded-2xl transition-all duration-300 transform active:scale-95 font-bold flex items-center justify-center gap-2 shadow-lg bg-white/10 backdrop-blur-md text-emerald-100 border border-white/20 hover:bg-white/20">
+                            <i data-lucide="share-2" width="18"></i>
+                            <span class="font-kufi">مشاركة</span>
+                        </button>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="app.changeDhikr('prev')" class="p-4 rounded-2xl ${s.cardBg} backdrop-blur-md ${s.textSecondary} hover:bg-emerald-500/20 active:scale-95 transition-all">
+                                <i data-lucide="chevron-right" width="24"></i>
+                            </button>
+                            <button onclick="app.resetSession()" class="p-4 rounded-2xl ${s.cardBg} backdrop-blur-md ${s.textSecondary} hover:bg-emerald-500/20 active:scale-95 transition-all">
+                                <i data-lucide="rotate-ccw" width="24"></i>
+                            </button>
+                            <button onclick="app.changeDhikr('next')" class="p-4 rounded-2xl ${s.cardBg} backdrop-blur-md ${s.textSecondary} hover:bg-emerald-500/20 active:scale-95 transition-all">
+                                <i data-lucide="chevron-left" width="24"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderStats() {
+            const s = getCommonStyles();
+            
+            const favoritesList = state.favorites.length > 0 
+                ? state.favorites.map(favId => {
+                    const dhikr = DEFAULT_DHIKR.find(d => d.id === favId);
+                    return `
+                    <div class="flex justify-between items-center p-3 rounded-lg bg-black/5 hover:bg-black/10 cursor-pointer transition-colors" onclick="app.selectFavorite(${favId})">
+                         <span class="font-amiri text-lg ${s.textPrimary}">${dhikr.text}</span>
+                         <i data-lucide="chevron-left" width="16" class="${s.textSecondary}"></i>
+                     </div>
+                    `;
+                }).join('') 
+                : `<div class="text-center py-8 ${s.textSecondary} font-kufi text-sm opacity-60">لم تقم بإضافة أي أذكار للمفضلة بعد</div>`;
+
+            return `
+            <div class="w-full h-full flex flex-col animate-fade-in-up">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-kufi font-bold ${s.textPrimary}">إحصائياتي</h2>
+                    <button onclick="app.setView('home')" class="p-2 rounded-full ${s.cardBg} ${s.textSecondary}">
+                        <i data-lucide="x" width="20"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="${s.cardBg} backdrop-blur-md rounded-2xl p-4 flex flex-col items-center gap-2">
+                        <i data-lucide="flame" width="24" class="text-amber-500"></i>
+                        <span class="text-3xl font-bold font-kufi ${s.textPrimary}">${state.streak}</span>
+                        <span class="text-xs ${s.textSecondary} font-kufi">أيام متتالية</span>
+                    </div>
+                    <div class="${s.cardBg} backdrop-blur-md rounded-2xl p-4 flex flex-col items-center gap-2">
+                        <i data-lucide="target" width="24" class="text-emerald-500"></i>
+                        <span class="text-3xl font-bold font-kufi ${s.textPrimary}">${state.dailyCount}</span>
+                        <span class="text-xs ${s.textSecondary} font-kufi">اليوم</span>
+                    </div>
+                </div>
+                
+                <div class="${s.cardBg} backdrop-blur-md rounded-2xl p-6 flex-1 flex flex-col gap-4 overflow-y-auto">
+                    <h3 class="font-kufi font-bold ${s.textPrimary} mb-2 border-b border-gray-500/20 pb-2">المفضلة</h3>
+                    ${favoritesList}
+                </div>
+            </div>
+            `;
+        }
+
+        function renderShareModal() {
+            if (!state.showShareModal) return '';
+            const current = DEFAULT_DHIKR[state.currentDhikrIndex];
+            
+            return `
+            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6" onclick="app.toggleShareModal(false)">
+                <div class="bg-gradient-to-br from-slate-900 to-emerald-950 border border-amber-500/30 rounded-3xl p-8 max-w-sm w-full text-center relative shadow-2xl" onclick="event.stopPropagation()">
+                    <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 bg-amber-400 rounded-full flex items-center justify-center shadow-lg border-4 border-slate-900">
+                        <div class="text-3xl">📿</div>
+                    </div>
+                    
+                    <div class="mt-8 mb-6">
+                        <h3 class="text-emerald-200 font-kufi text-sm mb-4 tracking-widest uppercase">تذكير اليوم</h3>
+                        <p class="text-3xl font-amiri text-white leading-relaxed">
+                            ${current.text}
+                        </p>
+                        <p class="mt-4 text-emerald-400/60 font-kufi text-sm">
+                            ${current.translation}
+                        </p>
+                    </div>
+
+                    <div class="text-amber-500/50 text-xs font-kufi mb-6">
+                        تمت القراءة ${state.count} مرة اليوم
+                    </div>
+
+                    <button onclick="app.copyText()" class="w-full px-6 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg bg-gradient-to-r from-amber-400 to-amber-600 text-white shadow-amber-500/30 hover:shadow-amber-500/50 transition-all active:scale-95">
+                        نسخ النص
+                    </button>
+                </div>
+            </div>
+            `;
+        }
+
+        // --- MAIN RENDER LOOP ---
+        app.render = () => {
+            const root = document.getElementById('root');
+            const s = getCommonStyles();
+
+            // Apply body classes
+            document.body.className = `font-sans overflow-hidden transition-colors duration-700 min-h-screen flex flex-col no-select ${s.bgClass}`;
+            
+            let content = renderHeader();
+            content += '<main class="flex-1 relative z-10 flex flex-col items-center justify-center p-6 w-full max-w-md mx-auto">';
+            
+            if (state.view === 'home') content += renderHome();
+            else if (state.view === 'dhikr') content += renderDhikr();
+            else if (state.view === 'stats') content += renderStats();
+            
+            content += '</main>';
+            content += renderShareModal();
+
+            root.innerHTML = content;
+            
+            // Re-initialize icons
+            lucide.createIcons();
+        };
+
+        // Initialize App
+        app.init();
+
+    </script>
+</body>
+</html>
