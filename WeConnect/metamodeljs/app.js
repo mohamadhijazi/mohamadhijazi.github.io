@@ -773,7 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Format labels with HTML
             const nameLabel = `<b>${classObj.name}</b>`;
-            const captionLabel = classObj.caption !== classObj.name ? `\n<font color="#94a3b8" size="10"><i>${classObj.caption}</i></font>` : '';
+            const captionLabel = classObj.caption !== classObj.name ? `\n<i>${classObj.caption}</i>` : '';
             
             const nodeConfig = {
                 id: className,
