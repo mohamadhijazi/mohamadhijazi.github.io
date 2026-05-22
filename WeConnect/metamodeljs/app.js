@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedClass: null,   // Active class name
         canvasClasses: new Set(), // Classes currently rendered in the graph
         depth: 1,              // Neighborhood network depth (1 or 2)
-        physicsEnabled: true,  // Toggle physics force simulation
+        physicsEnabled: false,  // Toggle physics force simulation
         layoutMode: 'force',   // 'force', 'hierarchical-ud', 'hierarchical-lr'
         
         // Vis.js Network instances
