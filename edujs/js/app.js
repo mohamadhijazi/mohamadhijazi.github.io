@@ -593,15 +593,22 @@ let state = {
 // Initialization & LocalStorage Hooks
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  initAppState();
-  bindGlobalEvents();
-  renderApp();
+  
+  try {
+    initAppState();
+    bindGlobalEvents();
+    renderApp();
 
-  // Handle Android Chrome dynamic toolbar
-  handleDynamicViewport();
+    // Handle Android Chrome dynamic toolbar
+    handleDynamicViewport();
 
-  // Trigger initial chatbot greeting based on local time
-  chatbotInit();
+    // Trigger initial chatbot greeting based on local time
+    chatbotInit();
+    
+  } catch (error) {
+    console.error("Error during app initialization:", error);
+  }
+  
 });
 
 function initAppState() {
