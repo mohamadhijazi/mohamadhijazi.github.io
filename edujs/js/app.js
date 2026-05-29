@@ -567,6 +567,8 @@ let state = {
   knowledgeBase: null,
   activeFilter: 'all',
   searchQuery: '',
+  feedItemsPerPage: 10,
+  feedRenderLimit: 10,
   // Comments Modal State
   activeCommentPostId: null,
   // Chatbot Creator State
@@ -734,6 +736,7 @@ function bindGlobalEvents() {
   // Search input
   document.getElementById("global-search").addEventListener("input", (e) => {
     state.searchQuery = e.target.value.toLowerCase().trim();
+    state.feedRenderLimit = state.feedItemsPerPage;
     renderFeedPosts();
   });
 
@@ -746,6 +749,7 @@ function bindGlobalEvents() {
     pill.classList.add("active");
 
     state.activeFilter = pill.getAttribute("data-category");
+    state.feedRenderLimit = state.feedItemsPerPage;
     renderFeedPosts();
   });
 
@@ -914,10 +918,14 @@ function renderFeedPosts() {
 
   if (posts.length === 0) {
     container.innerHTML = `<div class="empty-feed-msg">${state.currentLang === 'ar' ? 'لم يتم العثور على مواضيع.' : 'No topics found matching current filters.'}</div>`;
+    disconnectFeedObserver();
     return;
   }
 
-  posts.forEach(post => {
+  state.feedRenderLimit = Math.min(state.feedRenderLimit, posts.length);
+  const visiblePosts = posts.slice(0, state.feedRenderLimit);
+
+  visiblePosts.forEach(post => {
     const isLiked = isPostLikedLocally(post.id);
     const following = isFollowingAuthor(post.author);
 
@@ -996,6 +1004,48 @@ function renderFeedPosts() {
 
     container.appendChild(card);
   });
+
+  if (posts.length > state.feedRenderLimit) {
+    const sentinel = document.createElement('div');
+    sentinel.id = 'feed-lazy-sentinel';
+    sentinel.className = 'lazy-sentinel';
+    sentinel.textContent = state.currentLang === 'ar' ? 'جارٍ تحميل المزيد...' : 'Loading more posts...';
+    container.appendChild(sentinel);
+    observeFeedSentinel();
+  } else {
+    disconnectFeedObserver();
+  }
+}
+
+let feedObserver = null;
+
+function observeFeedSentinel() {
+  if (!('IntersectionObserver' in window)) return;
+  const sentinel = document.getElementById('feed-lazy-sentinel');
+  if (!sentinel) return;
+
+  disconnectFeedObserver();
+
+  feedObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        state.feedRenderLimit += state.feedItemsPerPage;
+        renderFeedPosts();
+      }
+    });
+  }, {
+    rootMargin: '200px',
+    threshold: 0.1
+  });
+
+  feedObserver.observe(sentinel);
+}
+
+function disconnectFeedObserver() {
+  if (feedObserver) {
+    feedObserver.disconnect();
+    feedObserver = null;
+  }
 }
 
 function handleDoubleTapLike(cardBody, postId) {

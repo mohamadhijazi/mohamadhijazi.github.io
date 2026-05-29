@@ -468,6 +468,14 @@ h1, h2, h3, h4, h5, h6 {
   gap: 24px;
 }
 
+.lazy-sentinel {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 20px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
 .feed-card {
   display: flex;
   flex-direction: column;
