@@ -631,7 +631,53 @@ function initAppState() {
 function loadSeeds() {
   // Load seeds from json.js loaded in window
   if (typeof INITIAL_KNOWLEDGE_BASE !== 'undefined') {
-    state.knowledgeBase = JSON.parse(JSON.stringify(INITIAL_KNOWLEDGE_BASE));
+    // MERGE INITIAL_pbi_KNOWLEDGE_BASE and INITIAL_KNOWLEDGE_BASE topics & edges
+    // Ensures no duplicates by ID, allowing base seed set + updates without data loss
+    let mergedTopics = [];
+    let mergedEdges = [];
+
+    // Add topics from INITIAL_KNOWLEDGE_BASE (primary base)
+    if (INITIAL_KNOWLEDGE_BASE && INITIAL_KNOWLEDGE_BASE.topics) {
+      mergedTopics.push(...INITIAL_KNOWLEDGE_BASE.topics);
+      mergedTopics.push(...INITIAL_databricks_KNOWLEDGE_BASE.topics);
+      mergedTopics.push(...INITIAL_health_KNOWLEDGE_BASE.topics);
+      mergedTopics.push(...INITIAL_pbi_KNOWLEDGE_BASE.topics);
+      mergedTopics.push(...INITIAL_pmp_KNOWLEDGE_BASE.topics);
+      mergedTopics.push(...INITIAL_powerplatform_KNOWLEDGE_BASE.topics);
+    }
+
+    // Add topics from INITIAL_pbi_KNOWLEDGE_BASE without duplicates by ID
+    // if (typeof INITIAL_pbi_KNOWLEDGE_BASE !== 'undefined' && INITIAL_pbi_KNOWLEDGE_BASE.topics) {
+    //   INITIAL_pbi_KNOWLEDGE_BASE.topics.forEach(topic => {
+    //     if (!mergedTopics.some(t => t.id === topic.id)) {
+    //       mergedTopics.push(topic);
+    //     }
+    //   });
+    // }
+
+    // Add edges from INITIAL_KNOWLEDGE_BASE (primary base)
+    if (INITIAL_KNOWLEDGE_BASE && INITIAL_KNOWLEDGE_BASE.edges) {
+      mergedEdges.push(...INITIAL_KNOWLEDGE_BASE.edges);
+        mergedEdges.push(...INITIAL_databricks_KNOWLEDGE_BASE.edges);
+        mergedEdges.push(...INITIAL_health_KNOWLEDGE_BASE.edges);
+        mergedEdges.push(...INITIAL_pbi_KNOWLEDGE_BASE.edges);
+        mergedEdges.push(...INITIAL_pmp_KNOWLEDGE_BASE.edges);
+        mergedEdges.push(...INITIAL_powerplatform_KNOWLEDGE_BASE.edges);        
+    }
+
+    // Add edges from INITIAL_pbi_KNOWLEDGE_BASE without duplicates (by from+to pair)
+    // if (typeof INITIAL_pbi_KNOWLEDGE_BASE !== 'undefined' && INITIAL_pbi_KNOWLEDGE_BASE.edges) {
+    //   INITIAL_pbi_KNOWLEDGE_BASE.edges.forEach(edge => {
+    //     if (!mergedEdges.some(e => e.from === edge.from && e.to === edge.to)) {
+    //       mergedEdges.push(edge);
+    //     }
+    //   });
+    // }
+
+    state.knowledgeBase = {
+      topics: mergedTopics,
+      edges: mergedEdges
+    };
   } else {
     // Fail-safe default
     state.knowledgeBase = { topics: [], edges: [] };
