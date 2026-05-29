@@ -44,7 +44,7 @@
   --bg-glass: rgba(255, 255, 255, 0.8);
   --border-glass: rgba(0, 0, 0, 0.08);
   --text-primary: #111827;
-  --text-secondary: #4b5563;
+  --text-secondary: #0b0b0b;
   --text-muted: #9ca3af;
 
   /* Brand Accents */
@@ -1102,7 +1102,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
   text-align: center;
   margin-bottom: 16px;
-  color: #ffffff;
+  color: var(--text-secondary);
 }
 
 .reactivity-log-list {
