@@ -694,6 +694,10 @@ function saveDBToLocalStorage() {
 // Event Binding & Dynamic View Routing
 // ==========================================
 function bindGlobalEvents() {
+  // Initialize AudioContext on first user interaction (iOS requirement)
+  document.addEventListener('click', initAudioContext, { once: true });
+  document.addEventListener('touchstart', initAudioContext, { once: true });
+
   // Tab Navigation Links (Sidebar & Bottom-bar synced)
   const navElements = document.querySelectorAll(".nav-item, .bottom-nav-item");
   navElements.forEach(elem => {
@@ -1377,11 +1381,37 @@ function renderApp() {
 }
 
 // ==========================================
+// Global AudioContext (iOS requires user gesture to create)
+let globalAudioContext = null;
+
+// Initialize AudioContext on first user interaction
+function initAudioContext() {
+  if (!globalAudioContext) {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) {
+        globalAudioContext = new AudioContext();
+      }
+    } catch (e) {
+      console.warn("AudioContext not supported on this device", e);
+    }
+  }
+  return globalAudioContext;
+}
+
 // Simulated Activity & Push Notifications
 // ==========================================
 function playNotificationSound() {
   try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const audioCtx = initAudioContext();
+    if (!audioCtx) return; // Audio not available
+
+    // iOS requires context to be resumed on user interaction
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(err => console.warn("Could not resume audio context:", err));
+      return; // Will play on next call
+    }
+
     const now = audioCtx.currentTime;
 
     // First chime (A5 note)
@@ -1408,7 +1438,7 @@ function playNotificationSound() {
     osc2.start(now + 0.1);
     osc2.stop(now + 0.5);
   } catch (e) {
-    console.error("Audio Context initialization failed or blocked.", e);
+    console.warn("Audio playback failed (may be blocked on iOS):", e);
   }
 }
 
@@ -1551,7 +1581,7 @@ function simulateRandomActivity() {
       label: "relates to"
     });
 
-    saveDBToLocalStorage();
+    //saveDBToLocalStorage();
     renderApp();
 
     fireNotificationAlert(
@@ -1577,7 +1607,7 @@ function simulateRandomActivity() {
         text: replyText
       });
 
-      saveDBToLocalStorage();
+      //saveDBToLocalStorage();
       renderApp();
 
       fireNotificationAlert(
@@ -1604,7 +1634,7 @@ function simulateRandomComment(user) {
     text: commentText
   });
 
-  saveDBToLocalStorage();
+  ////saveDBToLocalStorage();
   renderApp();
 
   fireNotificationAlert(
@@ -1618,4 +1648,4 @@ function simulateRandomComment(user) {
 // Start Simulator Timer: Simulate action periodically (every 60s for live demo, representing hourly actions)
 setInterval(() => {
   simulateRandomActivity();
-}, 60000);
+}, 120000);
