@@ -1409,7 +1409,7 @@ h1, h2, h3, h4, h5, h6 {
 .chatbot-container {
   max-width: 600px;
   margin: 0 auto;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 300x);
   display: flex;
   flex-direction: column;
   overflow: hidden;
