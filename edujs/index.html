@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduJS - Social EdTech Platform</title>
+  <!-- Google Fonts: Outfit for headers, Inter for UI/Body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- App Wrapper -->
+  <div class="app-container">
+    
+    <!-- Desktop Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo">💡</div>
+        <h1 class="brand-title">EduJS</h1>
+      </div>
+      
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active" data-tab="feed" id="nav-feed-btn">
+          <span class="nav-icon">📱</span>
+          <span class="nav-label" data-i18n="nav_feed">Feed</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="labs" id="nav-labs-btn">
+          <span class="nav-icon">🧪</span>
+          <span class="nav-label" data-i18n="nav_labs">Labs</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="graph" id="nav-graph-btn">
+          <span class="nav-icon">🕸️</span>
+          <span class="nav-label" data-i18n="nav_graph">Graph</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="chatbot" id="nav-chat-btn">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-label" data-i18n="nav_chatbot">AI Chat</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="settings" id="nav-settings-btn">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label" data-i18n="nav_settings">Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="theme-toggle-sidebar" class="btn-icon" title="Toggle Theme">🌓</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Frame -->
+    <main class="main-content">
+      
+      <!-- Top Header Bar -->
+      <header class="app-header">
+        <div class="header-left">
+          <h2 id="current-tab-title" data-i18n="feed_title">Educational Feed</h2>
+        </div>
+        
+        <!-- Search and Category Filter -->
+        <div class="header-center">
+          <div class="search-bar-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="global-search" placeholder="Search topics, tags..." data-i18n-placeholder="search_placeholder">
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Multi-language Selector -->
+          <div class="lang-selector-wrapper">
+            <span class="lang-icon">🌐</span>
+            <select id="lang-selector" class="select-input">
+              <option value="en">English</option>
+              <option value="ar">العربية (Arabic)</option>
+              <option value="fr">Français (French)</option>
+              <option value="ur">اردو (Urdu)</option>
+              <option value="es">Español (Spanish)</option>
+            </select>
+          </div>
+          
+          <!-- Desktop Theme Toggle -->
+          <button id="theme-toggle-header" class="btn-theme-toggle">🌓</button>
+        </div>
+      </header>
+
+      <!-- Viewports for each Tab -->
+      <div class="tab-view-container">
+        
+        <!-- ================= FEED TAB ================= -->
+        <section id="feed-tab" class="tab-view active">
+          <!-- Category Filter Pills -->
+          <div class="category-pills" id="category-pills-container">
+            <button class="pill active" data-category="all" data-i18n="cat_all">All</button>
+            <button class="pill" data-category="Tech" data-i18n="cat_tech">Tech / Enterprise</button>
+            <button class="pill" data-category="Science" data-i18n="cat_science">Science</button>
+            <button class="pill" data-category="Math" data-i18n="cat_math">Math</button>
+            <button class="pill" data-category="Biology" data-i18n="cat_biology">Biology</button>
+            <button class="pill" data-category="Physics" data-i18n="cat_physics">Physics</button>
+            <button class="pill" data-category="Chemistry" data-i18n="cat_chemistry">Chemistry</button>
+            <button class="pill" data-category="History" data-i18n="cat_history">History</button>
+          </div>
+
+          <!-- Social media feed grid -->
+          <div class="feed-grid" id="feed-posts-container">
+            <!-- Feed cards will be injected dynamically via JS -->
+          </div>
+        </section>
+
+        <!-- ================= LABS TAB ================= -->
+        <section id="labs-tab" class="tab-view">
+          <!-- Sub nav for Labs -->
+          <div class="labs-sub-nav">
+            <button class="sub-nav-item active" data-lab="geometry" data-i18n="lab_geometry">📐 Geometry</button>
+            <button class="sub-nav-item" data-lab="physics" data-i18n="lab_physics">⚡ Physics</button>
+            <button class="sub-nav-item" data-lab="biology" data-i18n="lab_biology">🫁 Biology</button>
+            <button class="sub-nav-item" data-lab="chemistry" data-i18n="lab_chemistry">🧪 Chemistry</button>
+            <button class="sub-nav-item" data-lab="geography" data-i18n="lab_geography">🗺️ Geography</button>
+            <button class="sub-nav-item" data-lab="code" data-i18n="lab_code">💻 Code Sandbox</button>
+          </div>
+
+          <div class="lab-workspace">
+            
+            <!-- LAB 1: Math Geometry -->
+            <div id="lab-geometry" class="lab-module active">
+              <div class="lab-grid-layout">
+                <div class="lab-panel-left glass-card">
+                  <h3 class="panel-title" data-i18n="geom_triangle_title">Draggable Triangle Solver</h3>
+                  <p class="panel-desc" data-i18n="geom_triangle_desc">Drag points A, B, and C to reshape the triangle. Coordinates, side lengths, angles, and area update in real-time.</p>
+                  
+                  <div class="canvas-wrapper">
+                    <canvas id="geometry-canvas" width="450" height="350"></canvas>
+                  </div>
+                  
+                  <div class="stats-grid" id="geometry-stats">
+                    <div class="stat-card">
+                      <div class="stat-lbl" data-i18n="geom_side_a">Side AB</div>
+                      <div class="stat-val" id="geom-val-ab">0.00</div>
+                    </div>
+                    <div class="stat-card">
+                      <div class="stat-lbl" data-i18n="geom_side_b">Side BC</div>
+                      <div class="stat-val" id="geom-val-bc">0.00</div>
+                    </div>
+                    <div class="stat-card">
+                      <div class="stat-lbl" data-i18n="geom_side_c">Side CA</div>
+                      <div class="stat-val" id="geom-val-ca">0.00</div>
+                    </div>
+                    <div class="stat-card accent-card">
+                      <div class="stat-lbl" data-i18n="geom_area">Area</div>
+                      <div class="stat-val" id="geom-val-area">0.00</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="lab-panel-right glass-card">
+                  <h3 class="panel-title" data-i18n="geom_calc_title">Function Graphing Calculator</h3>
+                  <p class="panel-desc" data-i18n="geom_calc_desc">Plot customized mathematical functions. Write an algebraic equation in terms of `x` (e.g. `Math.sin(x) * 5` or `0.05 * x * x`).</p>
+                  
+                  <div class="form-group">
+                    <label for="calc-formula" data-i18n="geom_formula_lbl">f(x) = </label>
+                    <input type="text" id="calc-formula" value="Math.sin(x) * 4" class="text-input">
+                    <button id="calc-plot-btn" class="btn-primary" data-i18n="geom_plot_btn">Plot</button>
+                  </div>
+
+                  <div class="canvas-wrapper">
+                    <canvas id="calculator-canvas" width="450" height="280"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAB 2: Physics Motion & Gravity -->
+            <div id="lab-physics" class="lab-module">
+              <div class="lab-grid-layout">
+                <div class="lab-panel-left glass-card">
+                  <h3 class="panel-title" data-i18n="phys_gravity_title">Gravity Drop Zone (v = gt)</h3>
+                  <p class="panel-desc" data-i18n="phys_gravity_desc">Simulate falling objects in real time. Adjust local gravity (Earth vs Moon vs Space) and mass, and track drop speeds.</p>
+                  
+                  <div class="physics-control-panel">
+                    <div class="control-row">
+                      <label for="phys-gravity-slider" class="slider-lbl">
+                        <span data-i18n="phys_gravity_lbl">Gravity:</span> <span id="val-phys-gravity">9.8</span> m/s²
+                      </label>
+                      <input type="range" id="phys-gravity-slider" min="0" max="25" step="0.1" value="9.8" class="slider-input">
+                    </div>
+                    <div class="control-row">
+                      <label for="phys-mass-slider" class="slider-lbl">
+                        <span data-i18n="phys_mass_lbl">Mass:</span> <span id="val-phys-mass">5</span> kg
+                      </label>
+                      <input type="range" id="phys-mass-slider" min="0.5" max="50" step="0.5" value="5" class="slider-input">
+                    </div>
+                    <div class="button-row">
+                      <button id="phys-drop-btn" class="btn-primary" data-i18n="phys_drop_btn">Drop Object</button>
+                      <button id="phys-reset-btn" class="btn-secondary" data-i18n="phys_reset_btn">Reset</button>
+                    </div>
+                  </div>
+                  
+                  <div class="canvas-wrapper">
+                    <canvas id="gravity-canvas" width="450" height="280"></canvas>
+                  </div>
+                  
+                  <div class="stats-grid">
+                    <div class="stat-card">
+                      <div class="stat-lbl" data-i18n="phys_time">Time (t)</div>
+                      <div class="stat-val" id="phys-time-val">0.00 s</div>
+                    </div>
+                    <div class="stat-card">
+                      <div class="stat-lbl" data-i18n="phys_velocity">Velocity (v)</div>
+                      <div class="stat-val" id="phys-velocity-val">0.00 m/s</div>
+                    </div>
+                    <div class="stat-card">
+                      <div class="stat-lbl" data-i18n="phys_height">Distance (d)</div>
+                      <div class="stat-val" id="phys-dist-val">0.00 m</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="lab-panel-right glass-card">
+                  <h3 class="panel-title" data-i18n="phys_force_title">Force, Mass & Friction (F = ma)</h3>
+                  <p class="panel-desc" data-i18n="phys_force_desc">Push a block along a friction plane. See how force, mass, and surface friction dictate acceleration and velocity.</p>
+                  
+                  <div class="physics-control-panel">
+                    <div class="control-row">
+                      <label for="phys-force-slider" class="slider-lbl">
+                        <span data-i18n="phys_force_lbl">Pushing Force:</span> <span id="val-phys-force">20</span> N
+                      </label>
+                      <input type="range" id="phys-force-slider" min="-50" max="50" step="1" value="20" class="slider-input">
+                    </div>
+                    <div class="control-row">
+                      <label for="phys-friction-slider" class="slider-lbl">
+                        <span data-i18n="phys_friction_lbl">Friction Coeff:</span> <span id="val-phys-friction">0.15</span>
+                      </label>
+                      <input type="range" id="phys-friction-slider" min="0" max="0.8" step="0.01" value="0.15" class="slider-input">
+                    </div>
+                    <div class="button-row">
+                      <button id="phys-push-btn" class="btn-primary" data-i18n="phys_push_btn">Push / Stop</button>
+                      <button id="phys-push-reset-btn" class="btn-secondary" data-i18n="phys_reset_btn">Reset</button>
+                    </div>
+                  </div>
+                  
+                  <div class="canvas-wrapper">
+                    <canvas id="force-canvas" width="450" height="200"></canvas>
+                  </div>
+                  
+                  <div class="stats-grid">
+                    <div class="stat-card">
+                      <div class="stat-lbl" data-i18n="phys_accel">Accel (a)</div>
+                      <div class="stat-val" id="phys-accel-val">0.00 m/s²</div>
+                    </div>
+                    <div class="stat-card">
+                      <div class="stat-lbl" data-i18n="phys_speed">Speed (v)</div>
+                      <div class="stat-val" id="phys-speed-val">0.00 m/s</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAB 3: Biology Body Systems -->
+            <div id="lab-biology" class="lab-module">
+              <div class="lab-grid-layout">
+                <div class="lab-panel-left glass-card biology-visual-panel">
+                  <h3 class="panel-title" data-i18n="bio_systems_title">Human Body Systems Navigator</h3>
+                  <p class="panel-desc" data-i18n="bio_systems_desc">Select a biological system below. Click components on the SVG layout to view interactive details and run neon system animations.</p>
+                  
+                  <div class="bio-systems-picker">
+                    <button class="bio-btn active" data-system="respiratory" data-i18n="bio_sys_respiratory">🫁 Respiratory</button>
+                    <button class="bio-btn" data-system="circulatory" data-i18n="bio_sys_circulatory">❤️ Circulatory</button>
+                    <button class="bio-btn" data-system="nervous" data-i18n="bio_sys_nervous">🧠 Nervous</button>
+                    <button class="bio-btn" data-system="digestive" data-i18n="bio_sys_digestive">🍕 Digestive</button>
+                  </div>
+
+                  <div class="anatomy-svg-wrapper">
+                    <!-- Beautifully stylized vector outline of the body & internal organs -->
+                    <svg id="anatomy-svg" viewBox="0 0 300 500" width="100%" height="400">
+                      <!-- Body Outline Shadow & Background -->
+                      <path class="body-outline-bg" d="M150,20 C190,20 180,80 180,90 C180,90 220,110 240,160 C260,210 240,240 220,240 C220,240 220,320 210,380 C200,440 215,480 215,480 L195,480 C195,480 180,430 170,360 L130,360 C120,430 105,480 105,480 L85,480 C85,480 100,440 90,380 C80,320 80,240 80,240 C60,240 40,210 60,160 C80,110 120,90 120,90 C120,80 110,20 150,20 Z" />
+                      
+                      <!-- Organ Groupings with distinct neon properties toggled by active category -->
+                      
+                      <!-- System 1: Respiratory (Trachea and Lungs) -->
+                      <g id="bio-grp-respiratory" class="bio-system-group active">
+                        <!-- Trachea -->
+                        <path class="organ-path trachea-tube" d="M150,90 L150,115" stroke-width="4" stroke="#00F2FE" fill="none" />
+                        <!-- Left Lung -->
+                        <path class="organ-path lung-left" d="M150,115 C135,115 120,125 120,150 C120,175 140,185 148,180 C150,178 150,130 150,115 Z" fill="#00F2FE" fill-opacity="0.3" stroke="#00F2FE" stroke-width="2" />
+                        <!-- Right Lung -->
+                        <path class="organ-path lung-right" d="M150,115 C165,115 180,125 180,150 C180,175 160,185 152,180 C150,178 150,130 150,115 Z" fill="#00F2FE" fill-opacity="0.3" stroke="#00F2FE" stroke-width="2" />
+                      </g>
+
+                      <!-- System 2: Circulatory (Heart & Major Vessels) -->
+                      <g id="bio-grp-circulatory" class="bio-system-group">
+                        <!-- Red Arteries -->
+                        <path class="organ-path artery-main" d="M150,135 C130,135 110,160 105,200 M150,135 L150,230 M150,135 C170,120 190,110 210,140" fill="none" stroke="#FF007A" stroke-width="2" />
+                        <!-- Blue Veins -->
+                        <path class="organ-path vein-main" d="M145,140 C125,140 100,165 95,210 M145,140 L145,230 M145,140 C165,125 185,115 205,145" fill="none" stroke="#00F2FE" stroke-width="1.5" />
+                        <!-- Heart -->
+                        <path class="organ-path heart-pulse" d="M148,135 C146,131 140,129 136,132 C131,135 133,143 148,151 C163,143 165,135 160,132 C156,129 150,131 148,135 Z" fill="#FF007A" stroke="#FFFFFF" stroke-width="1" />
+                      </g>
+
+                      <!-- System 3: Nervous (Brain, Spinal Cord, Nerve Networks) -->
+                      <g id="bio-grp-nervous" class="bio-system-group">
+                        <!-- Brain -->
+                        <path class="organ-path brain-glow" d="M135,50 C130,55 132,70 140,75 C145,77 155,77 160,75 C168,70 170,55 165,50 C160,42 140,42 135,50 Z" fill="#00E5FF" fill-opacity="0.4" stroke="#00E5FF" stroke-width="2" />
+                        <!-- Spine -->
+                        <path class="organ-path spine-cord" d="M150,75 L150,280" fill="none" stroke="#00E5FF" stroke-width="3" />
+                        <!-- Branching Nerves -->
+                        <path class="organ-path nerve-branch" d="M150,100 L110,120 M150,100 L190,120 M150,160 L100,190 M150,160 L200,190 M150,220 L110,270 M150,220 L190,270 M150,280 L120,380 M150,280 L180,380" fill="none" stroke="#00E5FF" stroke-width="1" stroke-dasharray="3,3" />
+                      </g>
+
+                      <!-- System 4: Digestive (Stomach, Esophagus, Intestines) -->
+                      <g id="bio-grp-digestive" class="bio-system-group">
+                        <!-- Esophagus -->
+                        <line class="organ-path esophagus-tube" x1="150" y1="90" x2="148" y2="185" stroke="#FFA726" stroke-width="3" />
+                        <!-- Stomach -->
+                        <path class="organ-path stomach-bag" d="M148,185 C145,185 130,190 130,205 C130,225 155,230 160,210 C165,195 155,185 148,185 Z" fill="#FFA726" fill-opacity="0.3" stroke="#FFA726" stroke-width="2" />
+                        <!-- Intestines (Squiggly) -->
+                        <path class="organ-path gut-loop" d="M148,215 C135,220 135,235 150,240 C165,245 165,255 150,260 C135,265 135,275 150,280 C160,280 170,270 165,250 C170,230 160,215 148,215 Z" fill="none" stroke="#FFA726" stroke-width="3.5" />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div class="lab-panel-right glass-card bio-info-panel">
+                  <h3 class="panel-title" id="bio-info-title">Respiratory System</h3>
+                  <div class="bio-detail-card">
+                    <p class="bio-desc" id="bio-info-text">The respiratory system takes in oxygen from the air and releases carbon dioxide. The lungs exchange these gases in tiny air sacs called alveoli.</p>
+                    
+                    <h4 class="sub-lbl" data-i18n="bio_key_organs">Key Organs</h4>
+                    <ul class="bullet-list" id="bio-organs-list">
+                      <li>Trachea (Windpipe) - Connects larynx to bronchi</li>
+                      <li>Bronchi - Main passageway branching into lungs</li>
+                      <li>Lungs (Left & Right) - Primary organs of gas exchange</li>
+                      <li>Diaphragm - Muscle contracting to pull in air</li>
+                    </ul>
+
+                    <div class="bio-fun-fact">
+                      <strong>💡 <span data-i18n="bio_fun_fact_lbl">Fun Fact:</span></strong>
+                      <span id="bio-fun-fact-text">Your lungs contain almost 1,500 miles of airways and 300 million alveoli, maximizing the surface area for diffusion.</span>
+                    </div>
+
+                    <div class="action-row">
+                      <button id="bio-animate-btn" class="btn-primary" data-i18n="bio_animate_btn">Trigger Animation</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAB 4: Chemistry Lab -->
+            <div id="lab-chemistry" class="lab-module">
+              <div class="lab-grid-layout">
+                <div class="lab-panel-left glass-card">
+                  <h3 class="panel-title" data-i18n="chem_title">Chemical Titration & Reactions</h3>
+                  <p class="panel-desc" data-i18n="chem_desc">Experiment with acids, bases, and indicators. Observe pH adjustments, color indicators, neutralization reactions, and gas releases.</p>
+                  
+                  <div class="beaker-container">
+                    <div class="dropper-holder">
+                      <button class="dropper-btn acid" data-liquid="acid">🧪 +Acid</button>
+                      <button class="dropper-btn base" data-liquid="base">🧪 +Base</button>
+                      <button class="dropper-btn indicator" data-liquid="indicator">💧 Indicator</button>
+                    </div>
+                    
+                    <!-- SVG Beaker -->
+                    <div class="beaker-wrapper">
+                      <svg viewBox="0 0 100 120" width="160" height="200" id="beaker-svg">
+                        <!-- Fluid Liquid -->
+                        <path id="beaker-liquid" d="M22,100 L78,100 L78,55 L22,55 Z" fill="#4CAF50" opacity="0.8" />
+                        <!-- Bubbles Particle Container (drawn dynamically or styled in CSS) -->
+                        <g id="beaker-bubbles"></g>
+                        <!-- Glass Outline -->
+                        <path d="M20,15 L20,30 L22,30 L22,102 C22,107 26,110 32,110 L68,110 C74,110 78,107 78,102 L78,30 L80,30 L80,15 M20,15 L80,15" stroke="#FFFFFF" stroke-width="2" fill="none" />
+                        <!-- Measurement Lines -->
+                        <line x1="25" y1="40" x2="35" y2="40" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1" />
+                        <line x1="25" y1="60" x2="40" y2="60" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1" />
+                        <line x1="25" y1="80" x2="35" y2="80" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1" />
+                        <line x1="25" y1="100" x2="45" y2="100" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div class="button-row center-row">
+                    <button id="chem-reset-btn" class="btn-secondary" data-i18n="chem_reset_btn">Wash Beaker</button>
+                  </div>
+                </div>
+
+                <div class="lab-panel-right glass-card">
+                  <h3 class="panel-title" data-i18n="chem_log_title">Reactivity Log</h3>
+                  <div class="chem-stats">
+                    <div class="chem-gauge-row">
+                      <div class="gauge-card">
+                        <div class="gauge-lbl" data-i18n="chem_ph">pH Level</div>
+                        <div class="gauge-val" id="chem-val-ph">7.0</div>
+                      </div>
+                      <div class="gauge-card">
+                        <div class="gauge-lbl" data-i18n="chem_state">State</div>
+                        <div class="gauge-val text-cyan" id="chem-val-state">Neutral</div>
+                      </div>
+                    </div>
+
+                    <h4 class="sub-lbl" data-i18n="chem_equation">Active Reaction Equation</h4>
+                    <div class="equation-box" id="chem-equation-box">
+                      H₂O (Water Solution)
+                    </div>
+
+                    <h4 class="sub-lbl" data-i18n="chem_reactions_tested">Reaction Log</h4>
+                    <div class="reactivity-log-list" id="chem-log-list">
+                      <div class="log-entry system-msg">Beaker filled with water (pH 7.0).</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAB 6: Geographic Map -->
+            <div id="lab-geography" class="lab-module">
+              <div class="lab-grid-layout">
+                <div class="lab-panel-left glass-card">
+                  <h3 class="panel-title" data-i18n="geo_map_title">Interactive Global Map</h3>
+                  <p class="panel-desc" data-i18n="geo_map_desc">Explore countries, cities, ports, supply chain routes, and weather patterns. Use compass to navigate directions.</p>
+                  
+                  <div class="map-controls">
+                    <div class="control-row">
+                      <label for="geo-zoom-slider" class="slider-lbl">
+                        <span data-i18n="geo_zoom">Zoom:</span> <span id="geo-zoom-level">1.0</span>x
+                      </label>
+                      <input type="range" id="geo-zoom-slider" min="0.5" max="3" step="0.1" value="1" class="slider-input">
+                    </div>
+                    <div class="control-row">
+                      <label for="geo-layer-toggle" class="slider-lbl">
+                        <span data-i18n="geo_layers">Display Layers:</span>
+                      </label>
+                      <div class="checkbox-group">
+                        <label><input type="checkbox" class="geo-layer-checkbox" data-layer="countries" checked> Countries</label>
+                        <label><input type="checkbox" class="geo-layer-checkbox" data-layer="cities" checked> Cities</label>
+                        <label><input type="checkbox" class="geo-layer-checkbox" data-layer="ports" checked> Ports</label>
+                        <label><input type="checkbox" class="geo-layer-checkbox" data-layer="roads" checked> Supply Routes</label>
+                        <label><input type="checkbox" class="geo-layer-checkbox" data-layer="weather" checked> Weather</label>
+                      </div>
+                    </div>
+                    <div class="button-row">
+                      <button id="geo-reset-btn" class="btn-secondary" data-i18n="geo_reset">Reset View</button>
+                    </div>
+                  </div>
+                  
+                  <div class="canvas-wrapper">
+                    <canvas id="geography-canvas" width="450" height="500"></canvas>
+                  </div>
+                </div>
+                
+                <div class="lab-panel-right glass-card">
+                  <h3 class="panel-title" data-i18n="geo_compass_title">Navigation Compass</h3>
+                  <p class="panel-desc" data-i18n="geo_compass_desc">Real-time compass showing cardinal directions. Select locations to view details and weather information.</p>
+                  
+                  <div class="compass-container">
+                    <svg id="compass-svg" viewBox="0 0 200 200" width="200" height="200">
+                      <!-- Compass Rose Background -->
+                      <circle cx="100" cy="100" r="95" fill="rgba(0, 242, 254, 0.05)" stroke="#00f2fe" stroke-width="2"/>
+                      
+                      <!-- Cardinal Directions -->
+                      <g id="compass-cardinal">
+                        <text x="100" y="20" text-anchor="middle" font-size="18" font-weight="bold" fill="#ff007a">N</text>
+                        <text x="180" y="108" text-anchor="middle" font-size="18" font-weight="bold" fill="#00f2fe">E</text>
+                        <text x="100" y="185" text-anchor="middle" font-size="18" font-weight="bold" fill="#00f2fe">S</text>
+                        <text x="20" y="108" text-anchor="middle" font-size="18" font-weight="bold" fill="#00f2fe">W</text>
+                      </g>
+                      
+                      <!-- Degree Markers -->
+                      <g id="compass-degrees" stroke="#888888" stroke-width="1">
+                        <line x1="100" y1="15" x2="100" y2="25"/>
+                        <line x1="100" y1="175" x2="100" y2="185"/>
+                        <line x1="15" y1="100" x2="25" y2="100"/>
+                        <line x1="175" y1="100" x2="185" y2="100"/>
+                      </g>
+                      
+                      <!-- Needle/Pointer -->
+                      <g id="compass-needle">
+                        <circle cx="100" cy="100" r="8" fill="#ff007a"/>
+                        <polygon points="100,35 105,100 100,95 95,100" fill="#ff007a" opacity="0.8"/>
+                      </g>
+                    </svg>
+                  </div>
+                  
+                  <div class="location-info glass-card">
+                    <h4 class="info-lbl" data-i18n="geo_selected_location">Selected Location:</h4>
+                    <div class="location-details">
+                      <div class="detail-row">
+                        <span class="detail-lbl">Name:</span>
+                        <span class="detail-val" id="geo-location-name">None Selected</span>
+                      </div>
+                      <div class="detail-row">
+                        <span class="detail-lbl">Type:</span>
+                        <span class="detail-val" id="geo-location-type">-</span>
+                      </div>
+                      <div class="detail-row">
+                        <span class="detail-lbl">Coordinates:</span>
+                        <span class="detail-val" id="geo-location-coords">-</span>
+                      </div>
+                      <div class="detail-row">
+                        <span class="detail-lbl">Weather:</span>
+                        <span class="detail-val" id="geo-location-weather">-</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAB 5: Code Sandbox -->
+            <div id="lab-code" class="lab-module">
+              <div class="code-viewer-layout">
+                
+                <div class="editor-pane glass-card">
+                  <div class="pane-header">
+                    <span class="pane-lbl" data-i18n="sandbox_editor">Code Sandbox Editor</span>
+                    
+                    <div class="editor-controls">
+                      <select id="code-sample-selector" class="select-input">
+                        <option value="pulse" selected>Sample 1: Canvas Mouse Pulse</option>
+                        <option value="heart">Sample 2: SVG Beating Heart</option>
+                        <option value="glass">Sample 3: Glass Card Hover</option>
+                        <option value="plotter">Sample 4: Sin Wave Grapher</option>
+                        <option value="neonwave">Sample 5: Neon Wave Simulator</option>
+                      </select>
+                      
+                      <button id="code-run-btn" class="btn-primary">▶ Run Code</button>
+                    </div>
+                  </div>
+
+                  <div class="textarea-container">
+                    <div class="line-numbers" id="editor-line-numbers"></div>
+                    <textarea id="code-editor-textarea" spellcheck="false"></textarea>
+                  </div>
+                </div>
+                
+                <div class="preview-pane glass-card">
+                  <div class="pane-header">
+                    <span class="pane-lbl" data-i18n="sandbox_preview">Live Preview Output</span>
+                  </div>
+                  <div class="preview-frame-container">
+                    <iframe id="code-live-preview"></iframe>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ================= GRAPH TAB ================= -->
+        <section id="graph-tab" class="tab-view">
+          <div class="graph-wrapper">
+            <!-- Fullscreen Knowledge Graph Container -->
+            <canvas id="knowledge-graph-canvas"></canvas>
+            
+            <!-- Graph Controls Overlay -->
+            <div class="graph-overlay-controls glass-card">
+              <button id="graph-btn-zoom-in" class="btn-icon" title="Zoom In">➕</button>
+              <button id="graph-btn-zoom-out" class="btn-icon" title="Zoom Out">➖</button>
+              <button id="graph-btn-reset" class="btn-icon" title="Reset View">🔄</button>
+              <div class="slider-group">
+                <label for="graph-physics-strength" data-i18n="graph_repulsion">Elastic Repulsion:</label>
+                <input type="range" id="graph-physics-strength" min="10" max="150" value="60">
+              </div>
+            </div>
+
+            <!-- Active Node Sidebar Info -->
+            <div class="graph-node-sidebar glass-card" id="graph-node-sidebar">
+              <button class="close-sidebar-btn" id="graph-sidebar-close">×</button>
+              <h3 class="node-title" id="node-sidebar-title">Select a Node</h3>
+              <span class="node-category-tag" id="node-sidebar-category">General</span>
+              <p class="node-desc" id="node-sidebar-desc">Click any circle in the interactive knowledge graph to view its connections, references, and related educational materials.</p>
+              
+              <h4 class="sub-lbl" data-i18n="node_connections">Connected Concepts</h4>
+              <div class="node-connections-list" id="node-sidebar-connections">
+                <span class="empty-msg">No connections selected</span>
+              </div>
+              
+              <div class="node-action-footer">
+                <button class="btn-primary" id="node-sidebar-view-feed-btn" data-i18n="node_view_post">View in Feed</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= CHATBOT TAB ================= -->
+        <section id="chatbot-tab" class="tab-view">
+          <div class="chatbot-container glass-card">
+            
+            <div class="chat-header">
+              <div class="chat-bot-avatar">🤖</div>
+              <div class="chat-bot-details">
+                <h3 class="chat-bot-name">EduBot</h3>
+                <span class="chat-bot-status" data-i18n="bot_online">Guided Creator Wizard</span>
+              </div>
+            </div>
+
+            <!-- Chat Message Feed -->
+            <div class="chat-messages-area" id="chat-messages-container">
+              <!-- Default welcome text injected dynamically based on local time -->
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="chat-input-bar">
+              <input type="text" id="chat-user-input" placeholder="Type title/description or reply..." data-i18n-placeholder="chat_placeholder">
+              <button id="chat-send-btn" class="btn-primary" data-i18n="chat_send">Send</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SETTINGS TAB ================= -->
+        <section id="settings-tab" class="tab-view">
+          <div class="settings-container">
+            
+            <!-- Section 1: UI Customization -->
+            <div class="settings-card glass-card">
+              <h3 class="settings-title" data-i18n="set_heading_ui">Interface Adjustments</h3>
+              
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-name" data-i18n="set_theme_title">Theme Mode</div>
+                  <div class="setting-desc" data-i18n="set_theme_desc">Switch between immersive dark mode and high contrast light mode.</div>
+                </div>
+                <div class="setting-action">
+                  <button id="theme-toggle-settings" class="btn-secondary" data-i18n="set_theme_toggle_btn">Toggle Theme</button>
+                </div>
+              </div>
+
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-name" data-i18n="set_lang_title">Language Setting</div>
+                  <div class="setting-desc" data-i18n="set_lang_desc">Modify interface dictionary translating tags, labels, and wizard prompts.</div>
+                </div>
+                <div class="setting-action">
+                  <select id="settings-lang-selector" class="select-input">
+                    <option value="en">English</option>
+                    <option value="ar">العربية (Arabic)</option>
+                    <option value="fr">Français (French)</option>
+                    <option value="ur">اردو (Urdu)</option>
+                    <option value="es">Español (Spanish)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Local Database Sync -->
+            <div class="settings-card glass-card">
+              <h3 class="settings-title" data-i18n="set_heading_sync">Wi-Fi Data Sharing & Backup</h3>
+              <p class="settings-desc" data-i18n="set_sync_desc">Browser localStorage is sandboxed. To share your interactive Knowledge Graph with family members on the same Wi-Fi network, download the graph JSON and import it on their device.</p>
+              
+              <div class="settings-actions-group">
+                <button id="sync-export-btn" class="btn-primary">📥 <span data-i18n="set_btn_export">Export Graph JSON</span></button>
+                
+                <div class="file-upload-wrapper">
+                  <label for="sync-import-file" class="btn-secondary">📤 <span data-i18n="set_btn_import">Import Graph JSON</span></label>
+                  <input type="file" id="sync-import-file" accept=".json" style="display: none;">
+                </div>
+                
+                <button id="sync-reset-btn" class="btn-danger">⚠️ <span data-i18n="set_btn_reset">Reset to Defaults</span></button>
+              </div>
+            </div>
+
+            <!-- Section 3: Simulated Activity & Push Notifications -->
+            <div class="settings-card glass-card">
+              <h3 class="settings-title" data-i18n="set_heading_notifications">Activity Simulator & Notifications</h3>
+              <p class="settings-desc" data-i18n="set_notifications_desc">Simulate periodic educational updates. Enabling browser notifications will fire standard OS popups when you are tagged or receive comment replies.</p>
+              
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-name" data-i18n="set_notify_perm_title">Browser OS Alerts</div>
+                  <div class="setting-desc" data-i18n="set_notify_perm_desc">Request permission to display standard system push notifications.</div>
+                </div>
+                <div class="setting-action">
+                  <button id="settings-request-notify-btn" class="btn-secondary">Enable OS Alerts</button>
+                </div>
+              </div>
+
+              <div class="setting-row">
+                <div class="setting-info">
+                  <div class="setting-name" data-i18n="set_notify_sim_title">Trigger Hourly Action Now</div>
+                  <div class="setting-desc" data-i18n="set_notify_sim_desc">Manually trigger a random network activity (e.g. tag, comment, or reply) to test notifications instantly.</div>
+                </div>
+                <div class="setting-action">
+                  <button id="settings-trigger-sim-btn" class="btn-primary">⚡ Simulate Action</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 4: App Stats -->
+            <div class="settings-card glass-card">
+              <h3 class="settings-title" data-i18n="set_heading_stats">Knowledge Base Status</h3>
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <div class="stat-lbl" data-i18n="set_stat_nodes">Total Nodes</div>
+                  <div class="stat-val" id="stats-total-nodes">0</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-lbl" data-i18n="set_stat_edges">Total Connections</div>
+                  <div class="stat-val" id="stats-total-edges">0</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-lbl" data-i18n="set_stat_likes">Total Feed Likes</div>
+                  <div class="stat-val" id="stats-total-likes">0</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <a href="#" class="bottom-nav-item active" data-tab="feed">
+        <span class="nav-icon">📱</span>
+        <span class="nav-label" data-i18n="nav_feed">Feed</span>
+      </a>
+      <a href="#" class="bottom-nav-item" data-tab="labs">
+        <span class="nav-icon">🧪</span>
+        <span class="nav-label" data-i18n="nav_labs">Labs</span>
+      </a>
+      <a href="#" class="bottom-nav-item" data-tab="graph">
+        <span class="nav-icon">🕸️</span>
+        <span class="nav-label" data-i18n="nav_graph">Graph</span>
+      </a>
+      <a href="#" class="bottom-nav-item" data-tab="chatbot">
+        <span class="nav-icon">🤖</span>
+        <span class="nav-label" data-i18n="nav_chatbot">AI Chat</span>
+      </a>
+      <a href="#" class="bottom-nav-item" data-tab="settings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label" data-i18n="nav_settings">Settings</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- Social Comments Modal Overlay -->
+  <div class="modal-overlay" id="comments-modal">
+    <div class="comments-modal-card glass-card">
+      <div class="modal-header">
+        <h3 data-i18n="comments_heading">Comments</h3>
+        <button class="close-modal-btn" id="close-comments-btn">×</button>
+      </div>
+      <div class="comments-list" id="modal-comments-list">
+        <!-- Comments will be injected here -->
+      </div>
+      <div class="modal-footer">
+        <input type="text" id="modal-comment-input" placeholder="Add a comment..." class="text-input" data-i18n-placeholder="add_comment_placeholder">
+        <button id="modal-comment-submit" class="btn-primary" data-i18n="comment_post_btn">Post</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-app Push Notifications Container -->
+  <div class="push-notifications-container" id="in-app-notifications"></div>
+
+  <!-- Share Graph Popup Alert -->
+  <div class="toast-notification" id="toast-notify">
+    Copied Link!
+  </div>
+
+  <!-- Scripts -->
+  <script src="json.js"></script>
+  <script src="js/graph.js"></script>
+  <script src="js/labs.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
