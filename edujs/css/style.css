@@ -1409,7 +1409,7 @@ h1, h2, h3, h4, h5, h6 {
 .chatbot-container {
   max-width: 600px;
   margin: 0 auto;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 180px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1784,7 +1784,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .main-content {
-    height: calc(100vh - 60px - max(10px, env(safe-area-inset-bottom)));
+    height: calc(100vh - 120px - max(10px, env(safe-area-inset-bottom)));
   }
   
   .app-header {
