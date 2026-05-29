@@ -597,6 +597,9 @@ document.addEventListener("DOMContentLoaded", () => {
   bindGlobalEvents();
   renderApp();
 
+  // Handle Android Chrome dynamic toolbar
+  handleDynamicViewport();
+
   // Trigger initial chatbot greeting based on local time
   chatbotInit();
 });
@@ -1397,6 +1400,41 @@ function initAudioContext() {
     }
   }
   return globalAudioContext;
+}
+
+// Handle Android Chrome dynamic toolbar (bottom URL bar)
+function handleDynamicViewport() {
+  if (!window.visualViewport) return;
+
+  const updateLayout = () => {
+    const vh = window.visualViewport.height;
+    const mainContent = document.querySelector('.main-content');
+    const bottomNav = document.querySelector('.bottom-nav');
+    
+    if (mainContent && bottomNav && bottomNav.style.display !== 'none') {
+      // Adjust for bottom navigation height (60px)
+      mainContent.style.height = `${vh - 60}px`;
+      
+      // Prevent content from scrolling behind the toolbar
+      const tabViewContainer = document.querySelector('.tab-view-container');
+      if (tabViewContainer) {
+        // Scroll content up slightly when viewport shrinks
+        tabViewContainer.scrollTop = Math.min(tabViewContainer.scrollTop, tabViewContainer.scrollHeight - vh);
+      }
+    }
+  };
+
+  // Listen for viewport resize (keyboard/toolbar appears/disappears)
+  window.visualViewport.addEventListener('resize', updateLayout);
+  window.visualViewport.addEventListener('scroll', updateLayout);
+  
+  // Handle orientation change
+  window.addEventListener('orientationchange', () => {
+    setTimeout(updateLayout, 100);
+  });
+  
+  // Initial call
+  updateLayout();
 }
 
 // Simulated Activity & Push Notifications
