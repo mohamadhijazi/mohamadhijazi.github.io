@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Alma's Catch Game 🌟</title>
+<meta name="description" content="A fun, colorful catching game for kids! Move the smiley face to catch the stars.">
+<style>
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0a0a1a;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none;
+    cursor: none;
+    font-family: 'Segoe UI', 'Arial Rounded MT Bold', 'Comic Sans MS', sans-serif;
+  }
+
+  #game-wrapper {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a1a;
+  }
+
+  #game-canvas {
+    display: block;
+  }
+
+  /* TV-safe margins: inset UI by ~5% from edges for overscan */
+  #ui-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 5vh 5vw;
+  }
+
+  #score-display {
+    font-size: clamp(48px, 6vw, 120px);
+    font-weight: 900;
+    color: #ffd93d;
+    text-shadow:
+      0 0 30px rgba(255, 217, 61, 0.8),
+      0 0 60px rgba(255, 217, 61, 0.4),
+      3px 3px 0 #1a0a2e;
+    letter-spacing: 3px;
+    transition: transform 0.15s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
+  #score-display.pulse {
+    transform: scale(1.35);
+  }
+
+  #gamepad-status {
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-size: clamp(16px, 2.5vw, 36px);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  #gamepad-status.disconnected {
+    background: linear-gradient(135deg, #2a1a1a, #3d1a1a);
+    color: #ff6b6b;
+    border: 3px solid #ff6b6b;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+  }
+
+  #gamepad-status.connected {
+    background: linear-gradient(135deg, #1a2a1a, #1a3d1a);
+    color: #6bff6b;
+    border: 3px solid #6bff6b;
+    box-shadow: 0 0 20px rgba(107, 255, 107, 0.4);
+  }
+
+  /* Hide cursor completely for TV */
+  * { cursor: none !important; }
+</style>
+</head>
+<body>
+<div id="game-wrapper">
+  <canvas id="game-canvas"></canvas>
+</div>
+<div id="ui-overlay">
+  <div id="score-display">⭐ 0</div>
+  <div id="gamepad-status" class="disconnected">🎮 Press any button to connect!</div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ─── Canvas Setup ───
+  const canvas = document.getElementById('game-canvas');
+  const ctx = canvas.getContext('2d');
+  const scoreEl = document.getElementById('score-display');
+  const gamepadStatusEl = document.getElementById('gamepad-status');
+
+  let W, H;
+
+  // ─── Scale factor for TV: all game entities scale relative to screen size ───
+  function getScale() {
+    // Base design is 1920x1080. Scale entities proportionally.
+    return Math.min(W, H) / 1080;
+  }
+
+  function resize() {
+    // Fullscreen canvas — fill the entire screen for TV
+    W = window.innerWidth;
+    H = window.innerHeight;
+
+    // Use devicePixelRatio for crisp rendering on high-DPI displays
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // Update entity sizes based on new scale
+    const s = getScale();
+    player.r = 70 * s;
+    player.speed = 8 * s;
+    target.r = 50 * s;
+
+    // Keep player & target in bounds after resize
+    if (player) {
+      player.x = Math.max(player.r, Math.min(W - player.r, player.x));
+      player.y = Math.max(player.r, Math.min(H - player.r, player.y));
+    }
+    if (target) {
+      target.x = Math.max(target.r + 10, Math.min(W - target.r - 10, target.x));
+      target.y = Math.max(target.r + 10, Math.min(H - target.r - 10, target.y));
+    }
+  }
+
+  window.addEventListener('resize', resize);
+
+  // ─── Fullscreen helpers for TV ───
+  let hasGoneFullscreen = false;
+
+  function goFullscreen() {
+    if (hasGoneFullscreen) return;
+    hasGoneFullscreen = true;
+    const el = document.documentElement;
+    const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+    if (rfs) {
+      rfs.call(el).catch(function() { /* silently fail if blocked */ });
+    }
+  }
+
+  // ─── Web Audio API Setup ───
+  let audioCtx = null;
+
+  function ensureAudio() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playDing() {
+    ensureAudio();
+    if (!audioCtx) return;
+
+    const now = audioCtx.currentTime;
+
+    // Happy ascending ding
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    const gain2 = audioCtx.createGain();
+
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(523.25, now);      // C5
+    osc1.frequency.setValueAtTime(659.25, now + 0.08); // E5
+    osc1.frequency.setValueAtTime(783.99, now + 0.16); // G5
+    gain1.gain.setValueAtTime(0.4, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc1.connect(gain1).connect(audioCtx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.5);
+
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(1046.5, now + 0.1); // C6
+    gain2.gain.setValueAtTime(0.2, now + 0.1);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+    osc2.connect(gain2).connect(audioCtx.destination);
+    osc2.start(now + 0.1);
+    osc2.stop(now + 0.6);
+  }
+
+  // ─── Game State ───
+  let score = 0;
+  let gamepadConnected = false;
+  let lastGamepadId = null;
+
+  // ─── Player (sizes set by resize()) ───
+  const player = {
+    x: 0, y: 0,
+    r: 70,
+    speed: 8,
+    vx: 0, vy: 0,
+    bobPhase: 0
+  };
+
+  // ─── Target (sizes set by resize()) ───
+  const target = {
+    x: 0, y: 0,
+    r: 50,
+    rotation: 0,
+    pulsePhase: 0,
+    spawnAnim: 1
+  };
+
+  function spawnTarget() {
+    const margin = target.r + 60;
+    target.x = margin + Math.random() * (W - margin * 2);
+    target.y = margin + Math.random() * (H - margin * 2);
+    target.spawnAnim = 0;
+
+    // Ensure it doesn't spawn right on top of the player
+    const dx = target.x - player.x;
+    const dy = target.y - player.y;
+    if (Math.sqrt(dx * dx + dy * dy) < player.r + target.r + 100) {
+      spawnTarget();
+    }
+  }
+
+  // ─── Particles ───
+  const particles = [];
+
+  const PARTICLE_COLORS = [
+    '#ff6ec7', '#ffd93d', '#6bff6b', '#4dc9f6',
+    '#f67280', '#c06cf6', '#ff9f43', '#00d2d3',
+    '#ff6b6b', '#48dbfb', '#feca57', '#ff9ff3'
+  ];
+
+  function burstParticles(x, y, count) {
+    const s = getScale();
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.5;
+      const speed = (3 + Math.random() * 6) * s;
+      particles.push({
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: (8 + Math.random() * 16) * s,
+        color: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
+        life: 1.0,
+        decay: 0.010 + Math.random() * 0.012
+      });
+    }
+  }
+
+  // ─── Background Stars ───
+  const bgStars = [];
+  function initBgStars() {
+    bgStars.length = 0;
+    for (let i = 0; i < 80; i++) {
+      bgStars.push({
+        x: Math.random(),
+        y: Math.random(),
+        r: 0.5 + Math.random() * 2.5,
+        twinklePhase: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.01 + Math.random() * 0.03
+      });
+    }
+  }
+
+  // ─── Neon Border Colors (for drawing inside canvas) ───
+  const borderColors = ['#ff6ec7', '#ffd93d', '#6bff6b', '#4dc9f6', '#f67280', '#c06cf6'];
+
+  // ─── Input ───
+  const keys = {};
+  window.addEventListener('keydown', function(e) {
+    keys[e.code] = true;
+    ensureAudio();
+    e.preventDefault();
+  });
+  window.addEventListener('keyup', function(e) {
+    keys[e.code] = false;
+    e.preventDefault();
+  });
+
+  // Prevent context menu
+  window.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
+  // Ensure audio + fullscreen on first interaction
+  window.addEventListener('pointerdown', function() {
+    ensureAudio();
+    goFullscreen();
+  }, { once: true });
+
+  // ─── Gamepad ───
+  window.addEventListener('gamepadconnected', function(e) {
+    gamepadConnected = true;
+    lastGamepadId = e.gamepad.index;
+    gamepadStatusEl.textContent = '🎮 Connected!';
+    gamepadStatusEl.className = 'connected';
+    ensureAudio();
+    goFullscreen();
+  });
+
+  window.addEventListener('gamepaddisconnected', function(e) {
+    if (e.gamepad.index === lastGamepadId) {
+      gamepadConnected = false;
+      lastGamepadId = null;
+      gamepadStatusEl.textContent = '🎮 Press any button to connect!';
+      gamepadStatusEl.className = 'disconnected';
+    }
+  });
+
+  const DEADZONE = 0.15;
+
+  function readGamepad() {
+    const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+    let gp = null;
+
+    for (let i = 0; i < gamepads.length; i++) {
+      if (gamepads[i]) {
+        gp = gamepads[i];
+
+        if (!gamepadConnected) {
+          // Check if any button is pressed
+          let anyPressed = false;
+          for (let b = 0; b < gp.buttons.length; b++) {
+            if (gp.buttons[b].pressed) { anyPressed = true; break; }
+          }
+          for (let a = 0; a < gp.axes.length; a++) {
+            if (Math.abs(gp.axes[a]) > DEADZONE) { anyPressed = true; break; }
+          }
+          if (anyPressed) {
+            gamepadConnected = true;
+            lastGamepadId = gp.index;
+            gamepadStatusEl.textContent = '🎮 Connected!';
+            gamepadStatusEl.className = 'connected';
+            ensureAudio();
+            goFullscreen();
+          }
+        }
+        break;
+      }
+    }
+
+    if (!gp) return { x: 0, y: 0 };
+
+    let x = 0, y = 0;
+
+    // Left analog stick (Axes 0, 1)
+    if (gp.axes.length >= 2) {
+      const ax = gp.axes[0];
+      const ay = gp.axes[1];
+      if (Math.abs(ax) > DEADZONE) x = ax;
+      if (Math.abs(ay) > DEADZONE) y = ay;
+    }
+
+    // D-Pad fallback (buttons 12=Up, 13=Down, 14=Left, 15=Right)
+    if (x === 0 && y === 0 && gp.buttons.length >= 16) {
+      if (gp.buttons[12].pressed) y = -1; // Up
+      if (gp.buttons[13].pressed) y = 1;  // Down
+      if (gp.buttons[14].pressed) x = -1; // Left
+      if (gp.buttons[15].pressed) x = 1;  // Right
+    }
+
+    return { x, y };
+  }
+
+  // ─── Drawing Helpers ───
+
+  let borderPhase = 0;
+
+  function drawBackground() {
+    // Gradient background
+    const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.7);
+    grad.addColorStop(0, '#1a1a3e');
+    grad.addColorStop(0.5, '#12122a');
+    grad.addColorStop(1, '#0a0a1a');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Twinkling stars
+    for (const star of bgStars) {
+      star.twinklePhase += star.twinkleSpeed;
+      const alpha = 0.3 + 0.7 * Math.abs(Math.sin(star.twinklePhase));
+      ctx.beginPath();
+      ctx.arc(star.x * W, star.y * H, star.r * getScale(), 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.fill();
+    }
+
+    // Animated neon border inside the canvas
+    borderPhase += 0.008;
+    const bw = 5 * getScale(); // border thickness scales with screen
+    const segments = 120;
+
+    for (let i = 0; i < segments; i++) {
+      const t = i / segments;
+      const colorIdx = Math.floor((t + borderPhase) * borderColors.length) % borderColors.length;
+      const nextColorIdx = (colorIdx + 1) % borderColors.length;
+      const blend = ((t + borderPhase) * borderColors.length) % 1;
+
+      ctx.strokeStyle = borderColors[colorIdx];
+      ctx.lineWidth = bw;
+      ctx.globalAlpha = 0.6 + 0.4 * Math.sin((t + borderPhase) * Math.PI * 4);
+
+      // Perimeter: top → right → bottom → left
+      const perimeter = 2 * (W + H);
+      const start = t * perimeter;
+      const end = (t + 1 / segments) * perimeter;
+
+      ctx.beginPath();
+      const pts = perimeterPoints(start, end);
+      if (pts.length >= 2) {
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let j = 1; j < pts.length; j++) {
+          ctx.lineTo(pts[j].x, pts[j].y);
+        }
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Soft glow on the border edges
+    const glowSize = 15 * getScale();
+
+    // Top glow
+    const tGlow = ctx.createLinearGradient(0, 0, 0, glowSize);
+    tGlow.addColorStop(0, 'rgba(255, 110, 199, 0.15)');
+    tGlow.addColorStop(1, 'rgba(255, 110, 199, 0)');
+    ctx.fillStyle = tGlow;
+    ctx.fillRect(0, 0, W, glowSize);
+
+    // Bottom glow
+    const bGlow = ctx.createLinearGradient(0, H, 0, H - glowSize);
+    bGlow.addColorStop(0, 'rgba(77, 201, 246, 0.15)');
+    bGlow.addColorStop(1, 'rgba(77, 201, 246, 0)');
+    ctx.fillStyle = bGlow;
+    ctx.fillRect(0, H - glowSize, W, glowSize);
+
+    // Left glow
+    const lGlow = ctx.createLinearGradient(0, 0, glowSize, 0);
+    lGlow.addColorStop(0, 'rgba(107, 255, 107, 0.12)');
+    lGlow.addColorStop(1, 'rgba(107, 255, 107, 0)');
+    ctx.fillStyle = lGlow;
+    ctx.fillRect(0, 0, glowSize, H);
+
+    // Right glow
+    const rGlow = ctx.createLinearGradient(W, 0, W - glowSize, 0);
+    rGlow.addColorStop(0, 'rgba(192, 108, 246, 0.12)');
+    rGlow.addColorStop(1, 'rgba(192, 108, 246, 0)');
+    ctx.fillStyle = rGlow;
+    ctx.fillRect(W - glowSize, 0, glowSize, H);
+  }
+
+  function perimeterPoints(start, end) {
+    // Maps a linear position along the rectangle perimeter to x,y
+    const pts = [];
+    const positions = [start, end];
+    for (const pos of positions) {
+      let p = pos;
+      if (p < W) {
+        // Top edge
+        pts.push({ x: p, y: 0 });
+      } else if (p < W + H) {
+        // Right edge
+        pts.push({ x: W, y: p - W });
+      } else if (p < 2 * W + H) {
+        // Bottom edge
+        pts.push({ x: W - (p - W - H), y: H });
+      } else {
+        // Left edge
+        pts.push({ x: 0, y: H - (p - 2 * W - H) });
+      }
+    }
+    return pts;
+  }
+
+  function drawPlayer(p) {
+    const bobY = Math.sin(p.bobPhase) * 4 * getScale();
+    const px = p.x;
+    const py = p.y + bobY;
+    const r = p.r;
+
+    // Glow
+    ctx.save();
+    ctx.shadowColor = '#ffd93d';
+    ctx.shadowBlur = 35 * getScale();
+
+    // Body
+    const bodyGrad = ctx.createRadialGradient(px - r * 0.3, py - r * 0.3, r * 0.1, px, py, r);
+    bodyGrad.addColorStop(0, '#fff176');
+    bodyGrad.addColorStop(0.5, '#ffd93d');
+    bodyGrad.addColorStop(1, '#f0a500');
+    ctx.beginPath();
+    ctx.arc(px, py, r, 0, Math.PI * 2);
+    ctx.fillStyle = bodyGrad;
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+    // Outline
+    ctx.lineWidth = 4 * getScale();
+    ctx.strokeStyle = '#d4890a';
+    ctx.stroke();
+
+    // Eyes
+    const eyeOffX = r * 0.28;
+    const eyeOffY = -r * 0.15;
+    const eyeR = r * 0.14;
+
+    // Left eye white
+    ctx.beginPath();
+    ctx.arc(px - eyeOffX, py + eyeOffY, eyeR + 3 * getScale(), 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+    // Left pupil
+    ctx.beginPath();
+    ctx.arc(px - eyeOffX + 1 * getScale(), py + eyeOffY + 1 * getScale(), eyeR * 0.7, 0, Math.PI * 2);
+    ctx.fillStyle = '#2d1b00';
+    ctx.fill();
+    // Left pupil shine
+    ctx.beginPath();
+    ctx.arc(px - eyeOffX - 1 * getScale(), py + eyeOffY - 2 * getScale(), eyeR * 0.3, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+
+    // Right eye white
+    ctx.beginPath();
+    ctx.arc(px + eyeOffX, py + eyeOffY, eyeR + 3 * getScale(), 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+    // Right pupil
+    ctx.beginPath();
+    ctx.arc(px + eyeOffX + 1 * getScale(), py + eyeOffY + 1 * getScale(), eyeR * 0.7, 0, Math.PI * 2);
+    ctx.fillStyle = '#2d1b00';
+    ctx.fill();
+    // Right pupil shine
+    ctx.beginPath();
+    ctx.arc(px + eyeOffX - 1 * getScale(), py + eyeOffY - 2 * getScale(), eyeR * 0.3, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+
+    // Blush cheeks
+    ctx.beginPath();
+    ctx.arc(px - r * 0.52, py + r * 0.18, r * 0.16, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 130, 100, 0.35)';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(px + r * 0.52, py + r * 0.18, r * 0.16, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 130, 100, 0.35)';
+    ctx.fill();
+
+    // Smile
+    ctx.beginPath();
+    ctx.arc(px, py + r * 0.05, r * 0.45, 0.15 * Math.PI, 0.85 * Math.PI);
+    ctx.lineWidth = 4 * getScale();
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#8B5E00';
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function drawStar(cx, cy, spikes, outerR, innerR, rotation) {
+    let rot = rotation - Math.PI / 2;
+    const step = Math.PI / spikes;
+
+    ctx.beginPath();
+    for (let i = 0; i < spikes * 2; i++) {
+      const r = i % 2 === 0 ? outerR : innerR;
+      const angle = rot + i * step;
+      const sx = cx + Math.cos(angle) * r;
+      const sy = cy + Math.sin(angle) * r;
+      if (i === 0) ctx.moveTo(sx, sy);
+      else ctx.lineTo(sx, sy);
+    }
+    ctx.closePath();
+  }
+
+  function drawTarget(t) {
+    const scale = Math.min(1, t.spawnAnim * 1.2);
+    const pulse = 1 + Math.sin(t.pulsePhase) * 0.08;
+    const r = t.r * scale * pulse;
+
+    ctx.save();
+
+    // Glow
+    ctx.shadowColor = '#ff6b6b';
+    ctx.shadowBlur = (25 + Math.sin(t.pulsePhase * 1.5) * 10) * getScale();
+
+    // Star shape
+    drawStar(t.x, t.y, 5, r, r * 0.45, t.rotation);
+    const starGrad = ctx.createRadialGradient(t.x - r * 0.2, t.y - r * 0.2, r * 0.1, t.x, t.y, r);
+    starGrad.addColorStop(0, '#ff9999');
+    starGrad.addColorStop(0.4, '#ff4757');
+    starGrad.addColorStop(1, '#c0392b');
+    ctx.fillStyle = starGrad;
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+    ctx.lineWidth = 3 * getScale();
+    ctx.strokeStyle = '#ff8888';
+    ctx.stroke();
+
+    // Inner sparkle
+    ctx.beginPath();
+    ctx.arc(t.x, t.y, r * 0.22, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function drawParticles() {
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.97;
+      p.vy *= 0.97;
+      p.vy += 0.06; // Gentle gravity
+      p.life -= p.decay;
+
+      if (p.life <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.life * 0.85;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  // ─── Collision Detection ───
+  function checkCollision() {
+    const dx = player.x - target.x;
+    const dy = player.y - target.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    return dist < player.r + target.r * 0.7;
+  }
+
+  // ─── Main Loop ───
+  function update() {
+    // Keyboard input
+    let kx = 0, ky = 0;
+    if (keys['ArrowLeft'] || keys['KeyA']) kx -= 1;
+    if (keys['ArrowRight'] || keys['KeyD']) kx += 1;
+    if (keys['ArrowUp'] || keys['KeyW']) ky -= 1;
+    if (keys['ArrowDown'] || keys['KeyS']) ky += 1;
+
+    // Gamepad input
+    const gp = readGamepad();
+
+    // Combine inputs (prefer whichever is active)
+    let mx = kx || gp.x;
+    let my = ky || gp.y;
+
+    // Normalize diagonal movement
+    const mag = Math.sqrt(mx * mx + my * my);
+    if (mag > 1) {
+      mx /= mag;
+      my /= mag;
+    }
+
+    // Move player
+    player.x += mx * player.speed;
+    player.y += my * player.speed;
+
+    // Boundary clamping
+    player.x = Math.max(player.r, Math.min(W - player.r, player.x));
+    player.y = Math.max(player.r, Math.min(H - player.r, player.y));
+
+    // Player bob
+    player.bobPhase += 0.04;
+
+    // Target animation
+    target.rotation += 0.02;
+    target.pulsePhase += 0.06;
+    target.spawnAnim = Math.min(1, target.spawnAnim + 0.04);
+
+    // Collision
+    if (checkCollision()) {
+      score++;
+      scoreEl.textContent = '⭐ ' + score;
+
+      // Pulse score
+      scoreEl.classList.add('pulse');
+      setTimeout(function() { scoreEl.classList.remove('pulse'); }, 200);
+
+      // Particles
+      burstParticles(target.x, target.y, 30);
+
+      // Sound
+      playDing();
+
+      // Respawn target
+      spawnTarget();
+    }
+  }
+
+  function draw() {
+    drawBackground();
+    drawParticles();
+    drawTarget(target);
+    drawPlayer(player);
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  // ─── Initialize ───
+  resize();
+  initBgStars();
+
+  player.x = W / 2;
+  player.y = H / 2;
+  spawnTarget();
+
+  loop();
+})();
+</script>
+</body>
+</html>
