@@ -68,6 +68,14 @@
     transition: transform 0.15s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   }
 
+  #instruction-text {
+    margin-top: 10px;
+    font-size: clamp(24px, 3vw, 48px);
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+    font-weight: 700;
+  }
+
   #score-display.pulse {
     transform: scale(1.35);
   }
@@ -141,6 +149,7 @@
 </div>
 <div id="ui-overlay">
   <div id="score-display">⭐ 0</div>
+  <div id="instruction-text">Catch the letter C!</div>
   <div id="gamepad-status" class="disconnected">🎮 Press any button to connect!</div>
 </div>
 <button id="fullscreen-btn" title="Enter Fullscreen">⤢</button>
@@ -153,6 +162,7 @@
   const canvas = document.getElementById('game-canvas');
   const ctx = canvas.getContext('2d');
   const scoreEl = document.getElementById('score-display');
+  const instructionEl = document.getElementById('instruction-text');
   const gamepadStatusEl = document.getElementById('gamepad-status');
 
   let W, H;
@@ -301,6 +311,27 @@
   let score = 0;
   let gamepadConnected = false;
   let lastGamepadId = null;
+  let faceMood = 'happy';
+  let letters = [];
+  let targetLetter = 'C';
+
+  const DISTRACTOR_LETTERS = ['A', 'B', 'D', 'E', 'G', 'O', 'P', 'R', 'S', 'U'];
+  const ALL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  function setTargetLetter(letter) {
+    targetLetter = letter;
+    if (instructionEl) {
+      instructionEl.textContent = `Catch the letter ${letter}!`;
+    }
+  }
+
+  function pickNewTargetLetter() {
+    let next = targetLetter;
+    while (next === targetLetter) {
+      next = ALL_LETTERS[Math.floor(Math.random() * ALL_LETTERS.length)];
+    }
+    return next;
+  }
 
   // ─── Dynamic Colors (button-triggered for toddler feedback) ───
   let faceColorIndex = 0;
@@ -357,6 +388,53 @@
     const dy = target.y - player.y;
     if (Math.sqrt(dx * dx + dy * dy) < player.r + target.r + 100) {
       spawnTarget();
+    }
+  }
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  function spawnLetters() {
+    letters.length = 0;
+    const choices = [targetLetter];
+    const distractors = DISTRACTOR_LETTERS.slice();
+    shuffle(distractors);
+    for (let i = 0; i < 3; i++) choices.push(distractors[i]);
+    shuffle(choices);
+
+    const margin = target.r + 60;
+    const positions = [];
+
+    for (let i = 0; i < 4; i++) {
+      let x, y;
+      let safe = false;
+      while (!safe) {
+        x = margin + Math.random() * (W - margin * 2);
+        y = margin + Math.random() * (H - margin * 2);
+        safe = true;
+        if (Math.hypot(x - player.x, y - player.y) < player.r + target.r + 120) safe = false;
+        for (const pos of positions) {
+          if (Math.hypot(x - pos.x, y - pos.y) < target.r * 3) {
+            safe = false;
+            break;
+          }
+        }
+      }
+      positions.push({ x, y });
+      letters.push({
+        x,
+        y,
+        r: target.r,
+        rotation: Math.random() * Math.PI * 2,
+        pulsePhase: Math.random() * Math.PI * 2,
+        spawnAnim: 0,
+        letter: choices[i],
+        colorIndex: Math.floor(Math.random() * STAR_COLORS.length)
+      });
     }
   }
 
@@ -701,9 +779,13 @@
     ctx.fillStyle = 'rgba(255, 130, 100, 0.35)';
     ctx.fill();
 
-    // Smile
+    // Smile / frown
     ctx.beginPath();
-    ctx.arc(px, py + r * 0.05, r * 0.45, 0.15 * Math.PI, 0.85 * Math.PI);
+    if (faceMood === 'happy') {
+      ctx.arc(px, py + r * 0.05, r * 0.45, 0.15 * Math.PI, 0.85 * Math.PI);
+    } else {
+      ctx.arc(px, py + r * 0.18, r * 0.35, 1.1 * Math.PI, 1.9 * Math.PI, true);
+    }
     ctx.lineWidth = 4 * getScale();
     ctx.lineCap = 'round';
     ctx.strokeStyle = fc.smile;
@@ -733,7 +815,7 @@
     const pulse = 1 + Math.sin(t.pulsePhase) * 0.08;
     const r = t.r * scale * pulse;
 
-    const sc = STAR_COLORS[starColorIndex];
+    const sc = STAR_COLORS[t.colorIndex];
     ctx.save();
 
     // Glow
@@ -759,6 +841,13 @@
     ctx.arc(t.x, t.y, r * 0.22, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
     ctx.fill();
+
+    // Letter label
+    ctx.font = `bold ${Math.round(r * 0.7)}px Comic Sans MS, Arial, sans-serif`;
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(t.letter, t.x, t.y + r * 0.05);
 
     ctx.restore();
   }
@@ -789,10 +878,16 @@
 
   // ─── Collision Detection ───
   function checkCollision() {
-    const dx = player.x - target.x;
-    const dy = player.y - target.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    return dist < player.r + target.r * 0.7;
+    for (let i = 0; i < letters.length; i++) {
+      const t = letters[i];
+      const dx = player.x - t.x;
+      const dy = player.y - t.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < player.r + t.r * 0.7) {
+        return t;
+      }
+    }
+    return null;
   }
 
   // ─── Main Loop ───
@@ -834,30 +929,49 @@
     target.pulsePhase += 0.06;
     target.spawnAnim = Math.min(1, target.spawnAnim + 0.04);
 
+    // Letters animation
+    letters.forEach(function(letter) {
+      letter.rotation += 0.02;
+      letter.pulsePhase += 0.06;
+      letter.spawnAnim = Math.min(1, letter.spawnAnim + 0.04);
+    });
+
     // Collision
-    if (checkCollision()) {
-      score++;
-      scoreEl.textContent = '⭐ ' + score;
+    const hit = checkCollision();
+    if (hit) {
+      if (hit.letter === targetLetter) {
+        score++;
+        faceMood = 'happy';
+        scoreEl.textContent = '⭐ ' + score;
 
-      // Pulse score
-      scoreEl.classList.add('pulse');
-      setTimeout(function() { scoreEl.classList.remove('pulse'); }, 200);
+        // Pulse score
+        scoreEl.classList.add('pulse');
+        setTimeout(function() { scoreEl.classList.remove('pulse'); }, 200);
 
-      // Particles
-      burstParticles(target.x, target.y, 30);
+        // Particles
+        burstParticles(hit.x, hit.y, 30);
 
-      // Sound
-      playDing();
+        // Sound
+        playDing();
 
-      // Respawn target
-      spawnTarget();
+        // Change the target letter for the next round
+        setTargetLetter(pickNewTargetLetter());
+        spawnLetters();
+      } else {
+        faceMood = 'sad';
+        burstParticles(hit.x, hit.y, 16);
+        letters.splice(letters.indexOf(hit), 1);
+        if (letters.length === 0) {
+          spawnLetters();
+        }
+      }
     }
   }
 
   function draw() {
     drawBackground();
     drawParticles();
-    drawTarget(target);
+    letters.forEach(drawTarget);
     drawPlayer(player);
   }
 
@@ -873,7 +987,7 @@
 
   player.x = W / 2;
   player.y = H / 2;
-  spawnTarget();
+  spawnLetters();
 
   loop();
 })();
