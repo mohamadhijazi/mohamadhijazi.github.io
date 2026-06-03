@@ -96,6 +96,41 @@
     box-shadow: 0 0 20px rgba(107, 255, 107, 0.4);
   }
 
+  /* Fullscreen toggle button */
+  #fullscreen-btn {
+    position: fixed;
+    bottom: 5vh;
+    right: 5vw;
+    z-index: 20;
+    width: clamp(48px, 6vw, 90px);
+    height: clamp(48px, 6vw, 90px);
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    background: rgba(20, 20, 40, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: clamp(22px, 3vw, 44px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    line-height: 1;
+  }
+
+  #fullscreen-btn:hover {
+    background: rgba(40, 40, 80, 0.9);
+    border-color: rgba(255, 217, 61, 0.6);
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(255, 217, 61, 0.3);
+  }
+
+  #fullscreen-btn:active {
+    transform: scale(0.95);
+  }
+
   /* Hide cursor completely for TV */
   * { cursor: none !important; }
 </style>
@@ -108,6 +143,7 @@
   <div id="score-display">⭐ 0</div>
   <div id="gamepad-status" class="disconnected">🎮 Press any button to connect!</div>
 </div>
+<button id="fullscreen-btn" title="Enter Fullscreen">⤢</button>
 
 <script>
 (function() {
@@ -172,6 +208,34 @@
     }
   }
 
+  function toggleFullscreen() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      var exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+      if (exitFs) exitFs.call(document).catch(function() {});
+    } else {
+      var el = document.documentElement;
+      var rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+      if (rfs) rfs.call(el).catch(function() {});
+    }
+  }
+
+  function updateFullscreenBtn() {
+    var btn = document.getElementById('fullscreen-btn');
+    if (btn) {
+      var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      btn.textContent = isFs ? '⤡' : '⤢';
+      btn.title = isFs ? 'Exit Fullscreen' : 'Enter Fullscreen';
+    }
+  }
+
+  document.addEventListener('fullscreenchange', updateFullscreenBtn);
+  document.addEventListener('webkitfullscreenchange', updateFullscreenBtn);
+
+  document.getElementById('fullscreen-btn').addEventListener('click', function() {
+    toggleFullscreen();
+    ensureAudio();
+  });
+
   // ─── Web Audio API Setup ───
   let audioCtx = null;
 
@@ -215,10 +279,54 @@
     osc2.stop(now + 0.6);
   }
 
+  function playButtonSound() {
+    ensureAudio();
+    if (!audioCtx) return;
+
+    var now = audioCtx.currentTime;
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    var notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
+    osc.frequency.setValueAtTime(notes[Math.floor(Math.random() * notes.length)], now);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  }
+
   // ─── Game State ───
   let score = 0;
   let gamepadConnected = false;
   let lastGamepadId = null;
+
+  // ─── Dynamic Colors (button-triggered for toddler feedback) ───
+  let faceColorIndex = 0;
+  let starColorIndex = 0;
+  const prevButtons = [];
+
+  const FACE_COLORS = [
+    { light: '#fff176', mid: '#ffd93d', dark: '#f0a500', outline: '#d4890a', glow: '#ffd93d', smile: '#8B5E00' },
+    { light: '#ff99cc', mid: '#ff6b9d', dark: '#d4478a', outline: '#a0356a', glow: '#ff6b9d', smile: '#8B2050' },
+    { light: '#99ddff', mid: '#6bb5ff', dark: '#4780d4', outline: '#3560a0', glow: '#6bb5ff', smile: '#1a3a6b' },
+    { light: '#99ffbb', mid: '#6bff8b', dark: '#47d460', outline: '#35a048', glow: '#6bff8b', smile: '#1a5b2a' },
+    { light: '#cc99ff', mid: '#a06bff', dark: '#7847d4', outline: '#5a35a0', glow: '#a06bff', smile: '#3a1a6b' },
+    { light: '#ffcc99', mid: '#ff9d6b', dark: '#d47847', outline: '#a05a35', glow: '#ff9d6b', smile: '#6b3a1a' },
+    { light: '#99ffff', mid: '#6bffee', dark: '#47d4c4', outline: '#35a098', glow: '#6bffee', smile: '#1a5b55' },
+    { light: '#ff9999', mid: '#ff6b6b', dark: '#d44747', outline: '#a03535', glow: '#ff6b6b', smile: '#6b1a1a' },
+  ];
+
+  const STAR_COLORS = [
+    { light: '#ff9999', mid: '#ff4757', dark: '#c0392b', outline: '#ff8888', glow: '#ff6b6b' },
+    { light: '#99ddff', mid: '#4799ff', dark: '#2b60c0', outline: '#88bbff', glow: '#6b9dff' },
+    { light: '#ffff99', mid: '#ffee47', dark: '#c0b02b', outline: '#ffee88', glow: '#ffe06b' },
+    { light: '#ff99ff', mid: '#ff47ee', dark: '#c02bb0', outline: '#ff88ee', glow: '#ff6bdd' },
+    { light: '#99ffbb', mid: '#47ff77', dark: '#2bc050', outline: '#88ff99', glow: '#6bff7b' },
+    { light: '#ffcc99', mid: '#ff9947', dark: '#c0702b', outline: '#ffbb88', glow: '#ff8b6b' },
+    { light: '#cc99ff', mid: '#9947ff', dark: '#6b2bc0', outline: '#bb88ff', glow: '#a06bff' },
+  ];
 
   // ─── Player (sizes set by resize()) ───
   const player = {
@@ -371,6 +479,21 @@
 
     if (!gp) return { x: 0, y: 0 };
 
+    // Detect button presses for color changes (toddler feedback)
+    for (let b = 0; b < gp.buttons.length; b++) {
+      const isPressed = gp.buttons[b].pressed;
+      const wasPressed = prevButtons[b] || false;
+
+      if (isPressed && !wasPressed) {
+        // New button press: cycle colors + burst particles + play note
+        faceColorIndex = (faceColorIndex + 1) % FACE_COLORS.length;
+        starColorIndex = (starColorIndex + 1) % STAR_COLORS.length;
+        burstParticles(player.x, player.y, 10);
+        playButtonSound();
+      }
+      prevButtons[b] = isPressed;
+    }
+
     let x = 0, y = 0;
 
     // Left analog stick (Axes 0, 1)
@@ -509,15 +632,16 @@
     const r = p.r;
 
     // Glow
+    const fc = FACE_COLORS[faceColorIndex];
     ctx.save();
-    ctx.shadowColor = '#ffd93d';
+    ctx.shadowColor = fc.glow;
     ctx.shadowBlur = 35 * getScale();
 
     // Body
     const bodyGrad = ctx.createRadialGradient(px - r * 0.3, py - r * 0.3, r * 0.1, px, py, r);
-    bodyGrad.addColorStop(0, '#fff176');
-    bodyGrad.addColorStop(0.5, '#ffd93d');
-    bodyGrad.addColorStop(1, '#f0a500');
+    bodyGrad.addColorStop(0, fc.light);
+    bodyGrad.addColorStop(0.5, fc.mid);
+    bodyGrad.addColorStop(1, fc.dark);
     ctx.beginPath();
     ctx.arc(px, py, r, 0, Math.PI * 2);
     ctx.fillStyle = bodyGrad;
@@ -527,7 +651,7 @@
 
     // Outline
     ctx.lineWidth = 4 * getScale();
-    ctx.strokeStyle = '#d4890a';
+    ctx.strokeStyle = fc.outline;
     ctx.stroke();
 
     // Eyes
@@ -582,7 +706,7 @@
     ctx.arc(px, py + r * 0.05, r * 0.45, 0.15 * Math.PI, 0.85 * Math.PI);
     ctx.lineWidth = 4 * getScale();
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#8B5E00';
+    ctx.strokeStyle = fc.smile;
     ctx.stroke();
 
     ctx.restore();
@@ -609,24 +733,25 @@
     const pulse = 1 + Math.sin(t.pulsePhase) * 0.08;
     const r = t.r * scale * pulse;
 
+    const sc = STAR_COLORS[starColorIndex];
     ctx.save();
 
     // Glow
-    ctx.shadowColor = '#ff6b6b';
+    ctx.shadowColor = sc.glow;
     ctx.shadowBlur = (25 + Math.sin(t.pulsePhase * 1.5) * 10) * getScale();
 
     // Star shape
     drawStar(t.x, t.y, 5, r, r * 0.45, t.rotation);
     const starGrad = ctx.createRadialGradient(t.x - r * 0.2, t.y - r * 0.2, r * 0.1, t.x, t.y, r);
-    starGrad.addColorStop(0, '#ff9999');
-    starGrad.addColorStop(0.4, '#ff4757');
-    starGrad.addColorStop(1, '#c0392b');
+    starGrad.addColorStop(0, sc.light);
+    starGrad.addColorStop(0.4, sc.mid);
+    starGrad.addColorStop(1, sc.dark);
     ctx.fillStyle = starGrad;
     ctx.fill();
 
     ctx.shadowBlur = 0;
     ctx.lineWidth = 3 * getScale();
-    ctx.strokeStyle = '#ff8888';
+    ctx.strokeStyle = sc.outline;
     ctx.stroke();
 
     // Inner sparkle
