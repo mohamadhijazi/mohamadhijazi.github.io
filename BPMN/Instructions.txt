@@ -1,0 +1,59 @@
+Role: Expert Full-Stack Developer and UI/UX Specialist
+
+Objective: Create a modern, single-page web application for a BPMN modeling experience using bpmn-js. The application must integrate a custom AI Copilot feature for automated process generation.
+
+1. UI/UX Design & Theming:
+
+Base Theme: Apply a Microsoft Power Apps design language. Use clean, professional enterprise layouts, standard Microsoft typography (Segoe UI), and standard structural spacing.
+
+Accents & Copilot Styling: Apply Microsoft Copilot styling to specific interactive elements.
+
+Borders: Use subtle, animated gradient borders (blues, purples, cyans) for active panels and AI popups.
+
+Animations: Include smooth, glowing transitions for AI state changes and generating states.
+
+Top Panel: Create a persistent top navigation bar that houses a Breadcrumb navigation component and an AI Bot icon.
+
+2. Core bpmn-js Implementation:
+
+Full Modeler: Initialize the bpmn-js modeler with full editing, view capabilities and standard extensions enabled (e.g., properties panel).
+
+UI Components:
+
+Implement an accessible side panel for process properties.
+
+Build a "Version Compare" toggle/view to diff between process iterations.
+
+Event Listeners:
+
+Attach an event listener for double-click (element.dblclick) on canvas elements to trigger custom properties or detail modals.
+
+Attach an event listener to detect when a new sub-process is created (shape.added or commandStack.shape.create.postExecute where type is bpmn:SubProcess) to handle nested process logic.
+
+3. AI Copilot Integration:
+
+Trigger: Add a distinct Bot icon to the top panel.
+
+Popup UI: Clicking the icon must open a modal/popup styled with the Copilot gradient and glow feeling.
+
+Interaction Model:
+
+The popup should ask the user to describe the process they want to model.
+
+No Chat, No Streaming: The interaction is a single-turn prompt-to-result request. There is no chat history or streaming text.
+
+Output: The system should return a single, complete BPMN output and instantly render it on the canvas.
+
+Fallback Controls: After generation, display two distinct action buttons:
+
+Retry: Re-runs the exact same prompt to generate a new variation.
+
+Modify Prompt: Returns the user to the input state with their original text so they can adjust their request.
+
+4. Technical Constraints:
+
+Use modern JavaScript (ES6+) and ensure the layout is fully responsive.
+
+Mock the AI generation backend function so it returns a valid, simple BPMN 2.0 XML string for testing the UI flow.
+
+Ensure all CSS for the Copilot animations uses performant transitions (e.g., transform, opacity).

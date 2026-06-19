@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BPMN Modeler - Power Apps Theme</title>
+
+  <!-- BPMN.js CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@12.0.0/dist/assets/diagram-js.css" />
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@12.0.0/dist/assets/bpmn-font/css/bpmn.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./styles.css" />
+
+  <!-- BPMN.js Modeler (Vanilla UMD) -->
+  <script src="https://unpkg.com/bpmn-js@12.0.0/dist/bpmn-modeler.development.js"></script>
+</head>
+
+<body>
+
+  <!-- Top Navigation Panel -->
+  <header class="top-panel">
+    <div id="breadcrumb-container" class="breadcrumb">
+      <span class="breadcrumb-link">Home</span>
+      <span class="breadcrumb-separator">➔</span>
+      <span class="breadcrumb-current">Main Process</span>
+    </div>
+
+    <div class="actions">
+      <button id="version-compare-btn" class="secondary-btn">Version Compare</button>
+      <button id="copilot-btn" class="copilot-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a2 2 0 0 1 2 2c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2z" />
+          <path d="M19 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+          <path d="M5 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+          <path d="M12 22a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+          <path d="M8 10l-3 2 3 2" />
+          <path d="M16 10l3 2-3 2" />
+          <path d="M12 6v4" />
+          <path d="M12 14v4" />
+        </svg>
+        AI Copilot
+      </button>
+    </div>
+  </header>
+
+  <div class="main-layout" id="main-layout">
+    <!-- Viewers -->
+    <div class="canvases-wrapper">
+      <div id="canvas-previous" class="canvas-container hidden">
+        <div class="canvas-label">Previous Version</div>
+      </div>
+      <div id="canvas" class="canvas-container">
+        <div class="canvas-label hidden" id="current-label">Current Version</div>
+      </div>
+    </div>
+
+    <!-- Properties Side Panel -->
+    <aside id="properties-panel" class="side-panel">
+      <h2>Properties</h2>
+      <div id="properties-content">
+        <p class="placeholder-text">Select an element to view its properties.</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- AI Copilot Modal -->
+  <div id="copilot-modal" class="modal hidden">
+    <div class="modal-content copilot-theme">
+      <div class="modal-header">
+        <h3>Copilot BPMN Generator</h3>
+        <button id="close-modal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Describe the process you want to model:</p>
+        <textarea id="ai-prompt" rows="4" placeholder="e.g., A hiring process from vacancy to onboarding..."></textarea>
+
+        <div id="ai-loading" class="hidden">
+          <div class="glow-spinner"></div>
+          <p>Generating process...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="ai-generate-btn" class="primary-btn">Generate</button>
+        <div id="ai-fallback-controls" class="hidden">
+          <button id="ai-retry-btn" class="secondary-btn">Retry</button>
+          <button id="ai-modify-btn" class="secondary-btn">Modify Prompt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Element Details</h3>
+        <button id="close-detail-modal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body" id="detail-modal-body">
+        <!-- Content injected via JS -->
+      </div>
+    </div>
+  </div>
+  <script src="./diff_WebPack/dist/bpmn-js-differ.vanilla.js"></script>
+  <script src="./main.js"></script>
+</body>
+
+</html>
