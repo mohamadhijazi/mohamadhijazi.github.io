@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_IssuePO"
+                  targetNamespace="http://example.com/bpmn/issue-po">
+
+  <!-- Participants (Pools) -->
+  <bpmn:collaboration id="Collaboration_IssuePO">
+    <bpmn:participant id="Participant_Organization" name="Organization" processRef="Process_Organization" />
+    <bpmn:participant id="Participant_Supplier" name="Supplier" processRef="Process_Supplier" />
+
+    <!-- Message Flows -->
+    <bpmn:messageFlow id="MessageFlow_SendPO" name="Purchase Order" sourceRef="IntermediateThrowEvent_SendPO" targetRef="MessageCatch_PurchaseOrderReceived" />
+    <bpmn:messageFlow id="MessageFlow_SupplierResponse" name="Supplier Response" sourceRef="IntermediateThrowEvent_SupplierResponse" targetRef="IntermediateCatch_SupplierResponse" />
+  </bpmn:collaboration>
+
+  <!-- Organization Process with Lanes -->
+  <bpmn:process id="Process_Organization" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Organization">
+      <bpmn:lane id="Lane_Project" name="Project / Requesting Department"/>
+      <bpmn:lane id="Lane_Procurement" name="Procurement Department"/>
+      <bpmn:lane id="Lane_Finance" name="Finance Department"/>
+    </bpmn:laneSet>
+
+    <!-- Procurement lane sequence -->
+    <bpmn:startEvent id="Start_ApprovedRequisition" name="Approved Purchase Requisition Received" />
+    <bpmn:task id="Task_ValidatePR" name="Validate Purchase Requisition" />
+    <bpmn:exclusiveGateway id="Gateway_RequisitionComplete" name="Requisition Complete?" />
+    <bpmn:task id="Task_ReviseRequisition" name="Revise Requisition" />
+    <bpmn:task id="Task_SelectSupplier" name="Select Supplier" />
+    <bpmn:exclusiveGateway id="Gateway_SupplierPreapproved" name="Supplier Pre-Approved?" />
+    <bpmn:task id="Task_OnboardSupplier" name="Onboard / Qualify Supplier" />
+    <bpmn:task id="Task_PreparePO" name="Prepare Purchase Order" />
+
+    <!-- Finance lane sequence -->
+    <bpmn:task id="Task_ReviewBudget" name="Review Budget & Approve PO" />
+    <bpmn:exclusiveGateway id="Gateway_BudgetApproved" name="Budget Approved?" />
+    <bpmn:task id="Task_RejectPO" name="Reject PO & Notify Procurement" />
+    <bpmn:endEvent id="End_PORejected" name="Purchase Order Rejected / Cancelled" />
+
+    <!-- Back to Procurement -->
+    <bpmn:task id="Task_IssuePO" name="Issue Purchase Order" />
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_SendPO" name="Send Purchase Order">
+      <bpmn:messageEventDefinition />
+    </bpmn:intermediateThrowEvent>
+
+    <!-- Catch supplier response -->
+    <bpmn:intermediateCatchEvent id="IntermediateCatch_SupplierResponse" name="Supplier Response Received">
+      <bpmn:messageEventDefinition />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:exclusiveGateway id="Gateway_SupplierResponse" name="Supplier Response?" />
+    <bpmn:endEvent id="End_POIssuedAccepted" name="Purchase Order Issued and Accepted" />
+    <bpmn:task id="Task_RevisePO" name="Revise Purchase Order" />
+
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="flow_1" sourceRef="Start_ApprovedRequisition" targetRef="Task_ValidatePR" />
+    <bpmn:sequenceFlow id="flow_2" sourceRef="Task_ValidatePR" targetRef="Gateway_RequisitionComplete" />
+    <bpmn:sequenceFlow id="flow_3" sourceRef="Gateway_RequisitionComplete" targetRef="Task_ReviseRequisition" name="No" />
+    <bpmn:sequenceFlow id="flow_4" sourceRef="Task_ReviseRequisition" targetRef="Task_ValidatePR" />
+    <bpmn:sequenceFlow id="flow_5" sourceRef="Gateway_RequisitionComplete" targetRef="Task_SelectSupplier" name="Yes" />
+    <bpmn:sequenceFlow id="flow_6" sourceRef="Task_SelectSupplier" targetRef="Gateway_SupplierPreapproved" />
+    <bpmn:sequenceFlow id="flow_7" sourceRef="Gateway_SupplierPreapproved" targetRef="Task_OnboardSupplier" name="No" />
+    <bpmn:sequenceFlow id="flow_8" sourceRef="Task_OnboardSupplier" targetRef="Task_PreparePO" />
+    <bpmn:sequenceFlow id="flow_9" sourceRef="Gateway_SupplierPreapproved" targetRef="Task_PreparePO" name="Yes" />
+
+    <bpmn:sequenceFlow id="flow_10" sourceRef="Task_PreparePO" targetRef="Task_ReviewBudget" />
+    <bpmn:sequenceFlow id="flow_11" sourceRef="Task_ReviewBudget" targetRef="Gateway_BudgetApproved" />
+    <bpmn:sequenceFlow id="flow_12" sourceRef="Gateway_BudgetApproved" targetRef="Task_RejectPO" name="No" />
+    <bpmn:sequenceFlow id="flow_13" sourceRef="Task_RejectPO" targetRef="End_PORejected" />
+    <bpmn:sequenceFlow id="flow_14" sourceRef="Gateway_BudgetApproved" targetRef="Task_IssuePO" name="Yes" />
+    <bpmn:sequenceFlow id="flow_15" sourceRef="Task_IssuePO" targetRef="IntermediateThrowEvent_SendPO" />
+
+    <bpmn:sequenceFlow id="flow_16" sourceRef="IntermediateThrowEvent_SendPO" targetRef="IntermediateCatch_SupplierResponse" />
+    <bpmn:sequenceFlow id="flow_17" sourceRef="IntermediateCatch_SupplierResponse" targetRef="Gateway_SupplierResponse" />
+    <bpmn:sequenceFlow id="flow_18" sourceRef="Gateway_SupplierResponse" targetRef="End_POIssuedAccepted" name="Accepted" />
+    <bpmn:sequenceFlow id="flow_19" sourceRef="Gateway_SupplierResponse" targetRef="Task_RevisePO" name="Change Requested" />
+    <bpmn:sequenceFlow id="flow_20" sourceRef="Task_RevisePO" targetRef="Task_ReviewBudget" />
+  </bpmn:process>
+
+  <!-- Supplier Process -->
+  <bpmn:process id="Process_Supplier" isExecutable="false">
+    <bpmn:messageEventDefinition id="MessageDef_POReceived" />
+    <bpmn:intermediateCatchEvent id="MessageCatch_PurchaseOrderReceived" name="Purchase Order Received">
+      <bpmn:messageEventDefinition />
+    </bpmn:intermediateCatchEvent>
+
+    <bpmn:task id="Task_AcknowledgePO" name="Acknowledge Purchase Order" />
+    <bpmn:exclusiveGateway id="Gateway_POAccepted" name="PO Accepted?" />
+    <bpmn:task id="Task_ConfirmAcceptance" name="Confirm PO Acceptance" />
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_SupplierResponse" name="Send Acceptance Response">
+      <bpmn:messageEventDefinition />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:task id="Task_RequestChanges" name="Request Changes" />
+    <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_SendChangeRequest" name="Send Change Request">
+      <bpmn:messageEventDefinition />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:endEvent id="End_SupplierResponseSent" name="Supplier Response Sent" />
+
+    <!-- Supplier sequence flows -->
+    <bpmn:sequenceFlow id="sflow_1" sourceRef="MessageCatch_PurchaseOrderReceived" targetRef="Task_AcknowledgePO" />
+    <bpmn:sequenceFlow id="sflow_2" sourceRef="Task_AcknowledgePO" targetRef="Gateway_POAccepted" />
+    <bpmn:sequenceFlow id="sflow_3" sourceRef="Gateway_POAccepted" targetRef="Task_ConfirmAcceptance" name="Yes" />
+    <bpmn:sequenceFlow id="sflow_4" sourceRef="Task_ConfirmAcceptance" targetRef="IntermediateThrowEvent_SupplierResponse" />
+    <bpmn:sequenceFlow id="sflow_5" sourceRef="Gateway_POAccepted" targetRef="Task_RequestChanges" name="No" />
+    <bpmn:sequenceFlow id="sflow_6" sourceRef="Task_RequestChanges" targetRef="IntermediateThrowEvent_SendChangeRequest" />
+    <bpmn:sequenceFlow id="sflow_7" sourceRef="IntermediateThrowEvent_SendChangeRequest" targetRef="End_SupplierResponseSent" />
+    <bpmn:sequenceFlow id="sflow_8" sourceRef="IntermediateThrowEvent_SupplierResponse" targetRef="End_SupplierResponseSent" />
+  </bpmn:process>
+
+  <!-- Minimal diagram information (visual editors will arrange) -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_IssuePO">
+    <bpmndi:BPMNPlane id="BPMNPlane_IssuePO" bpmnElement="Collaboration_IssuePO" />
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

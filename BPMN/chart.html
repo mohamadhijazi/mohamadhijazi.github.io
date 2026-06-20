@@ -348,21 +348,21 @@
       credits: { enabled: false }
     };
     
-    // --- CHART 1: Activity Duration vs SLA Target (Current Level Log) ---
+    // --- CHART 1: Activity Duration vs SLA Target (Issue Purchase Order) ---
     Highcharts.chart('duration-sla-chart', {
       chart: { type: 'column' },
-      title: { text: 'Current Level Activities: Performance vs SLA Target' },
-      subtitle: { text: 'Identifies active execution cycles exceeding organizational parameters' },
-      xAxis: { categories: ['Receive Invoice', 'Verify Details', 'Approve Payment', 'Archival Logging'] },
+      title: { text: 'Issue Purchase Order: Step Durations' },
+      subtitle: { text: 'Average task durations (hours) across the PO issuance flow' },
+      xAxis: { categories: ['Validate Purchase Requisition', 'Select Supplier', 'Prepare Purchase Order', 'Review Budget & Approve PO', 'Issue Purchase Order'] },
       yAxis: { title: { text: 'Duration Time (Hours)' }, min: 0 },
       tooltip: { shared: true, valueSuffix: ' hrs' },
       series: [{
         name: 'Actual Average Duration',
-        data: [0.2, 4.8, 74.4, 28.8], // 3.1 days = 74.4 hours (SLA Breached)
-        color: '#ef4444'
+        data: [4, 8, 6, 12, 1],
+        color: 'lightblue'
       }, {
         name: 'SLA Target Threshold',
-        data: [1.0, 6.0, 48.0, 24.0],
+        data: [2, 6, 4, 8, 1],
         color: '#10b981',
         type: 'line',
         dashStyle: 'Dash'
@@ -373,12 +373,12 @@
     Highcharts.chart('bottleneck-heatmap', {
       chart: { type: 'heatmap' },
       title: { text: 'Transition Latency Map (Process Handoff Delay)' },
-      subtitle: { text: 'Monitors friction points and queue times between consecutive activities' },
-      xAxis: { categories: ['Start', 'Receive Invoice', 'Verify Details', 'Approve Payment'] },
-      yAxis: { categories: ['Receive Invoice', 'Verify Details', 'Approve Payment', 'End Event'] },
+      subtitle: { text: 'Monitors friction points and queue times between activities' },
+      xAxis: { categories: ['Validate PR', 'Select Supplier', 'Prepare PO', 'Issue PO'] },
+      yAxis: { categories: ['Validate PR', 'Select Supplier', 'Prepare PO', 'Review Budget'] },
       colorAxis: {
         min: 0,
-        minColor: '#1e293b',
+        minColor: '#ffffff',
         maxColor: '#7f1d1d',
         labels: { format: '{value}h' }
       },
@@ -394,20 +394,21 @@
         borderWidth: 1,
         borderColor: '#334155',
         data: [
-          [0, 0, 0.1], // Start -> Receive Invoice
-          [1, 1, 0.5], // Receive Invoice -> Verify Details
-          [2, 2, 18.4], // Verify Details -> Approve Payment (CRITICAL BOTTLENECK)
-          [3, 3, 1.2]  // Approve Payment -> End Event
+          [0, 0, 0.5],
+          [0, 1, 1.2],
+          [1, 2, 4.5],
+          [2, 3, 18.4], // Prepare PO -> Review Budget (bottleneck)
+          [3, 3, 2.0]
         ],
-        dataLabels: { enabled: true, color: '#f8fafc', style: { textOutline: 'none' }, format: '{point.value}h' }
+        dataLabels: { enabled: true, color: '#0f172a', style: { textOutline: 'none' }, format: '{point.value}h' }
       }]
     });
 
     // --- CHART 3: Aggregated Insights from Children (Drilldown Chart) ---
     Highcharts.chart('child-aggregation-chart', {
       chart: { type: 'bar' },
-      title: { text: 'Aggregated Subprocess Rollups & Child Variations' },
-      subtitle: { text: 'Click on parent blocks to drill down into localized performance layers' },
+      title: { text: 'Aggregated Process Rollups & Subprocess Durations' },
+      subtitle: { text: 'Drill into Procurement and Finance subprocesses' },
       xAxis: { type: 'category' },
       yAxis: { title: { text: 'Total Consolidated Cycle Time (Days)' } },
       legend: { enabled: false },
@@ -417,27 +418,27 @@
         colorByPoint: true,
         colors: ['#3b82f6', '#8b5cf6'],
         data: [{
-          name: 'Core Invoicing Stream',
-          y: 3.3,
-          drilldown: null
+          name: 'Procurement Stream',
+          y: 1.8,
+          drilldown: 'procurement-children'
         }, {
-          name: 'Archival Logging Loop',
-          y: 1.2,
-          drilldown: 'archival-child-rollup'
+          name: 'Finance Review',
+          y: 0.5,
+          drilldown: null
         }]
       }],
       drilldown: {
         breadcrumbs: { buttonTheme: { fill: '#334155', style: { color: '#f8fafc' } } },
         series: [{
-          id: 'archival-child-rollup',
-          name: 'Child Nodes Performance Aggregation',
-          colors: ['#a78bfa', '#c084fc', '#d8b4fe', '#e9d5ff'],
+          id: 'procurement-children',
+          name: 'Procurement Subprocesses',
+          colors: ['#a78bfa', '#60a5fa', '#f472b6', 'lightgreen'],
           colorByPoint: true,
           data: [
-            ['Metadata Parsing', 0.2],
-            ['Database Commit', 0.1],
-            ['Variant Compliance Check', 0.7], // Leading failure point
-            ['Cloud Sync Confirm', 0.2]
+            ['Validate Purchase Requisition', 0.2],
+            ['Select Supplier', 0.3],
+            ['Prepare Purchase Order', 0.4],
+            ['Issue Purchase Order', 0.9]
           ]
         }]
       }
@@ -447,9 +448,9 @@
     Highcharts.chart('enhancement-matrix', {
       chart: { type: 'bubble', plotBorderWidth: 1, plotBorderColor: '#334155' },
       title: { text: 'Enhancement Feasibility vs Performance Impact Matrix' },
-      subtitle: { text: 'Bubble Size indicates projected cost reductions ($)' },
+      subtitle: { text: 'Bubble Size indicates projected savings or impact' },
       xAxis: { title: { text: 'Implementation Complexity / Effort Rating' }, min: 0, max: 10 },
-      yAxis: { title: { text: 'Frequency / Multi-occurrence Log Count' }, min: 0, max: 1000 },
+      yAxis: { title: { text: 'Frequency / Monthly Volume' }, min: 0, max: 1000 },
       tooltip: {
         useHTML: true,
         headerFormat: '<table>',
@@ -465,18 +466,18 @@
           dataLabels: {
             enabled: true,
             format: '{point.name}',
-            style: { color: '#black', textOutline: 'none', fontSize: '10px' }
+            style: { color: '#0f172a', textOutline: 'none', fontSize: '10px' }
           }
         }
       },
       series: [{
         name: 'Automation Targets',
-        color: '#f59e0b',
+        color: 'lightgreen',
         data: [
-          { x: 2, y: 850, z: 12000, name: '💡 Auto-Approve Under $500' }, // High Volume, Low Complexity, Good Savings = Quick Win
-          { x: 5, y: 400, z: 4500, name: 'OCR Ingestion Script' },
-          { x: 8, y: 950, z: 25000, name: 'ERP Native API Redesign' },
-          { x: 4, y: 150, z: 1500, name: 'Stale Queue Auto-Escalation' }
+          { x: 2, y: 850, z: 12000, name: 'Auto-Approve Low-Value POs' },
+          { x: 4, y: 400, z: 4500, name: 'Supplier Self-Service Portal' },
+          { x: 6, y: 250, z: 15000, name: 'Budget Approval Workflow Automation' },
+          { x: 3, y: 150, z: 3000, name: 'Automated PO Notifications' }
         ]
       }]
     });
