@@ -13,11 +13,25 @@
 
   <style>
     :root {
+      --bg-dark: #f8f9fa;
+      --bg-card: #ffffff;
+      --border-color: #e0e7ff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --chart-bg: #ffffff;
+      --chart-grid: #e2e8f0;
+      --chart-label: #64748b;
+    }
+
+    :root[data-theme="dark"] {
       --bg-dark: #0f172a;
       --bg-card: #1e293b;
       --border-color: #334155;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      --chart-bg: #1e293b;
+      --chart-grid: #334155;
+      --chart-label: #94a3b8;
     }
 
     body {
@@ -26,6 +40,7 @@
       padding: 20px;
       background-color: var(--bg-dark);
       color: var(--text-main);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     header {
@@ -119,6 +134,34 @@
       width: 100%;
       height: 380px;
     }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-main);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--border-color);
+      transform: scale(1.05);
+    }
+
+    header {
+      position: relative;
+    }
   </style>
 </head>
 <body>
@@ -126,15 +169,19 @@
   <header>
     <h1>📊 Process Mining Operations Control</h1>
     <p>Operational execution insights, active pipeline latency analytics, and automated optimization matrices.</p>
+    <button type="button" class="theme-toggle" id="themeToggle" onclick="toggleTheme(event)">
+      <span id="themeIcon">🌙</span>
+      <span id="themeLabel">Dark</span>
+    </button>
   </header>
 
   <div class="kpi-row">
     <div class="kpi-card">
-      <div class="kpi-title">Global Cycle Time</div>
+      <div class="kpi-title">Average Cycle Time</div>
       <div class="kpi-value text-warning">4.2 Days</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-title">Log Conformance Rate</div>
+      <div class="kpi-title">SLA Conformance Rate</div>
       <div class="kpi-value text-success">91.4%</div>
     </div>
     <div class="kpi-card pulse-alert">
@@ -168,6 +215,98 @@
   </div>
 
   <script>
+    // Theme Management
+    function initializeTheme() {
+      const savedTheme = localStorage.getItem('chartTheme') || 'light';
+      applyTheme(savedTheme);
+    }
+
+    function toggleTheme(e)
+     {
+      e.preventDefault();
+      const htmlElement = document.documentElement;
+      const currentTheme = htmlElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      applyTheme(newTheme);
+    }
+
+    function applyTheme(theme) {
+      const htmlElement = document.documentElement;
+      const themeLabel = document.getElementById('themeLabel');
+      const themeIcon = document.getElementById('themeIcon');
+      
+      if (theme === 'dark') {
+        htmlElement.setAttribute('data-theme', 'dark');
+        themeLabel.textContent = 'Light';
+        themeIcon.textContent = '☀️';
+      } else {
+        htmlElement.removeAttribute('data-theme');
+        themeLabel.textContent = 'Dark';
+        themeIcon.textContent = '🌙';
+      }
+      
+      localStorage.setItem('chartTheme', theme);
+      updateChartsTheme(theme);
+    }
+
+    function updateChartsTheme(theme) {
+      const themeOptions = theme === 'dark' ? darkThemeOptions : lightThemeOptions;
+      Highcharts.setOptions(themeOptions);
+      
+      // Update existing charts without full page reload
+      Highcharts.charts.forEach(chart => {
+        if (chart) {
+          chart.update({
+            chart: themeOptions.chart,
+            title: themeOptions.title,
+            subtitle: themeOptions.subtitle,
+            xAxis: themeOptions.xAxis,
+            yAxis: themeOptions.yAxis,
+            tooltip: themeOptions.tooltip,
+            legend: themeOptions.legend
+          });
+        }
+      });
+    }
+
+    // Apply Global Light Theme Options to Highcharts Configuration
+    const lightThemeOptions = {
+      chart: {
+        backgroundColor: '#ffffff',
+        style: { fontFamily: '-apple-system, sans-serif' }
+      },
+      title: { style: { color: '#1e293b', fontSize: '15px', fontWeight: 'bold' }, align: 'left' },
+      subtitle: { style: { color: '#64748b', fontSize: '12px' }, align: 'left' },
+      xAxis: {
+        gridLineColor: '#e0e7ff',
+        labels: { style: { color: '#64748b' } },
+        lineColor: '#cbd5e1',
+        minorGridLineColor: '#e0e7ff',
+        tickColor: '#cbd5e1',
+        title: { style: { color: '#64748b' } }
+      },
+      yAxis: {
+        gridLineColor: '#e0e7ff',
+        labels: { style: { color: '#64748b' } },
+        lineColor: '#cbd5e1',
+        minorGridLineColor: '#e0e7ff',
+        tickColor: '#cbd5e1',
+        title: { style: { color: '#64748b' } }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        borderWidth: 1,
+        borderColor: '#e0e7ff',
+        style: { color: '#1e293b', fontFamily: 'monospace' }
+      },
+      legend: {
+        itemStyle: { color: '#1e293b' },
+        itemHoverStyle: { color: '#0f172a' },
+        itemHiddenStyle: { color: '#cbd5e1' }
+      },
+      credits: { enabled: false }
+    };
+
     // Apply Global Dark Theme Options to Highcharts Configuration
     const darkThemeOptions = {
       chart: {
@@ -205,8 +344,7 @@
       },
       credits: { enabled: false }
     };
-    Highcharts.setOptions(darkThemeOptions);
-
+    
     // --- CHART 1: Activity Duration vs SLA Target (Current Level Log) ---
     Highcharts.chart('duration-sla-chart', {
       chart: { type: 'column' },
@@ -324,7 +462,7 @@
           dataLabels: {
             enabled: true,
             format: '{point.name}',
-            style: { color: '#f8fafc', textOutline: 'none', fontSize: '10px' }
+            style: { color: '#black', textOutline: 'none', fontSize: '10px' }
           }
         }
       },
@@ -339,6 +477,10 @@
         ]
       }]
     });
+    
+    // Set the initial theme on page load
+    const initialTheme = localStorage.getItem('chartTheme') || 'light';
+    Highcharts.setOptions(initialTheme === 'dark' ? darkThemeOptions : lightThemeOptions);
   </script>
 </body>
 </html>

@@ -39,3 +39,34 @@ The dashboard is structured into three distinct structural layers, each targetin
 - Built as a standalone, single-file HTML/JS/CSS deployment.
 - Employs **Highcharts.js** (Core, More, Heatmap, and Drilldown modules) via `unpkg` CDNs.
 - Adopts a modern enterprise dark aesthetic using pure CSS (no external styling frameworks required).
+
+
+Conformance rate is a metric that measures the extent to which an individual or organization adheres to established standards or expectations, often expressed as a percentage.
+Definition of Conformance Rate
+Conformance rate is commonly used in various fields, including contact centers and manufacturing, to assess performance against predefined criteria. It reflects how well an agent or process meets the expected standards during a specific period.
+
+Calculation of Conformance Rate
+In the context of contact centers, the conformance rate can be calculated using the following formula:
+
+Conformance Rate
+=
+(
+Time Worked by the Advisor
+Time the Advisor Was Paid to Work
+)
+×
+100
+For example, if an advisor works for 390 minutes during a 420-minute paid shift, the conformance rate would be calculated as follows:
+
+Conformance Rate
+=
+(
+390
+420
+)
+×
+100
+=
+92.86
+%
+This means the advisor was conforming to their expected work time 92.86% of the time
