@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCOR Multi-Level Drill-Through Viewer</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@12.0.0/dist/assets/diagram-js.css" />
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@12.0.0/dist/assets/bpmn-font/css/bpmn.css" />
+
+  <style>
+    html, body, #canvas {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #fafafa;
+    }
+    #navigation-info {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border-left: 5px solid #007acc;
+      z-index: 1000;
+      pointer-events: none;
+    }
+    h2 { margin: 0 0 5px 0; font-size: 16px; color: #333; }
+    p { margin: 0; font-size: 13px; color: #666; }
+    /* Breadcrumb Component Styling */
+    #breadcrumb-container {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+      border-left: 4px solid #007acc;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+    .breadcrumb-link {
+      color: #007acc;
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .breadcrumb-link:hover {
+      text-decoration: underline;
+    }
+    .breadcrumb-separator {
+      color: #999;
+      user-select: none;
+    }
+    .breadcrumb-current {
+      color: #333;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="breadcrumb-container"></div>
+
+  <div id="canvas"></div>
+
+  <script src="https://unpkg.com/bpmn-js@12.0.0/dist/bpmn-viewer.development.js"></script>
+
+  <script>
+    // 1. Embedded Multi-Plane BPMN 2.0 XML File (Event-Driven Architecture)
+    const scorXml = `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+                  id="Definitions_Hierarchical_SCOR" 
+                  targetNamespace="http://bpmn.io/schema/bpmn" 
+                  exporter="BPMN-JS Certified Architect" 
+                  exporterVersion="12.0.0">
+
+  <bpmn:process id="Process_L1" name="Level 1 Enterprise Process" isExecutable="false">
+    <bpmn:startEvent id="L1_Start" name="Pipeline Init">
+      <bpmn:outgoing>Flow_L1_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    
+    <bpmn:callActivity id="L1_Node_L2" name="Execute L2:&#10;Program Sourcing" calledElement="Process_L2">
+      <bpmn:incoming>Flow_L1_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_L1_2</bpmn:outgoing>
+    </bpmn:callActivity>
+    
+    <bpmn:callActivity id="L1_Node_L3" name="Execute L3:&#10;Project Logistics" calledElement="Process_L3">
+      <bpmn:incoming>Flow_L1_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_L1_3</bpmn:outgoing>
+    </bpmn:callActivity>
+    
+    <bpmn:callActivity id="L1_Node_L4" name="Execute L4:&#10;Field Control" calledElement="Process_L4">
+      <bpmn:incoming>Flow_L1_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_L1_4</bpmn:outgoing>
+    </bpmn:callActivity>
+    
+    <bpmn:endEvent id="L1_End" name="E2E Delivery Complete">
+      <bpmn:incoming>Flow_L1_4</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_L1_1" sourceRef="L1_Start" targetRef="L1_Node_L2" />
+    <bpmn:sequenceFlow id="Flow_L1_2" sourceRef="L1_Node_L2" targetRef="L1_Node_L3" />
+    <bpmn:sequenceFlow id="Flow_L1_3" sourceRef="L1_Node_L3" targetRef="L1_Node_L4" />
+    <bpmn:sequenceFlow id="Flow_L1_4" sourceRef="L1_Node_L4" targetRef="L1_End" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_L2" name="Level 2 Subprocess" isExecutable="false">
+    <bpmn:startEvent id="L2_Start" name="L2 Activated">
+      <bpmn:outgoing>Flow_L2_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_2A" name="2.A: Capability Mapping">
+      <bpmn:incoming>Flow_L2_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_L2_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_2B" name="2.B: Master Agreement Negotiation">
+      <bpmn:incoming>Flow_L2_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_L2_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_2C" name="2.C: Contract Signoff">
+      <bpmn:incoming>Flow_L2_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_L2_4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="L2_End" name="L2 Terminated">
+      <bpmn:incoming>Flow_L2_4</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_L2_1" sourceRef="L2_Start" targetRef="Task_2A" />
+    <bpmn:sequenceFlow id="Flow_L2_2" sourceRef="Task_2A" targetRef="Task_2B" />
+    <bpmn:sequenceFlow id="Flow_L2_3" sourceRef="Task_2B" targetRef="Task_2C" />
+    <bpmn:sequenceFlow id="Flow_L2_4" sourceRef="Task_2C" targetRef="L2_End" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_L3" name="Level 3 Subprocess" isExecutable="false">
+    <bpmn:startEvent id="L3_Start" name="L3 Activated">
+      <bpmn:outgoing>Flow_L3_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_3A" name="3.A: Material Allocation">
+      <bpmn:incoming>Flow_L3_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_L3_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:callActivity id="L3_Node_3B" name="Execute 3.B:&#10;Transit Optimization" calledElement="Process_3B_Sub">
+      <bpmn:incoming>Flow_L3_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_L3_3</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:task id="Task_3C" name="3.C: Receiving Gate Compliance">
+      <bpmn:incoming>Flow_L3_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_L3_4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="L3_End" name="L3 Terminated">
+      <bpmn:incoming>Flow_L3_4</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_L3_1" sourceRef="L3_Start" targetRef="Task_3A" />
+    <bpmn:sequenceFlow id="Flow_L3_2" sourceRef="Task_3A" targetRef="L3_Node_3B" />
+    <bpmn:sequenceFlow id="Flow_L3_3" sourceRef="L3_Node_3B" targetRef="Task_3C" />
+    <bpmn:sequenceFlow id="Flow_L3_4" sourceRef="Task_3C" targetRef="L3_End" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_3B_Sub" name="Level 3B Deep Subprocess" isExecutable="false">
+    <bpmn:startEvent id="Sub_3B_Start" name="3.B Activated">
+      <bpmn:outgoing>Flow_3B_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_3B1" name="3.B.1: Manifest Declaration">
+      <bpmn:incoming>Flow_3B_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_3B_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_3B2" name="3.B.2: Multimodal In-Transit Tracking">
+      <bpmn:incoming>Flow_3B_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3B_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_3B3" name="3.B.3: Port Facility Consolidation">
+      <bpmn:incoming>Flow_3B_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_3B_4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="Sub_3B_End" name="3.B Completed">
+      <bpmn:incoming>Flow_3B_4</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_3B_1" sourceRef="Sub_3B_Start" targetRef="Task_3B1" />
+    <bpmn:sequenceFlow id="Flow_3B_2" sourceRef="Task_3B1" targetRef="Task_3B2" />
+    <bpmn:sequenceFlow id="Flow_3B_3" sourceRef="Task_3B2" targetRef="Task_3B3" />
+    <bpmn:sequenceFlow id="Flow_3B_4" sourceRef="Task_3B3" targetRef="Sub_3B_End" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_L4" name="Level 4 Subprocess" isExecutable="false">
+    <bpmn:startEvent id="L4_Start" name="L4 Activated">
+      <bpmn:outgoing>Flow_L4_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_4A" name="4.A: Work-Face Kitting">
+      <bpmn:incoming>Flow_L4_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_L4_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_4B" name="4.B: Quality Gate Verification">
+      <bpmn:incoming>Flow_L4_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_L4_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_4C" name="4.C: Mechanical Completion">
+      <bpmn:incoming>Flow_L4_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_L4_4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="L4_End" name="E2E Assets Handed Over">
+      <bpmn:incoming>Flow_L4_4</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_L4_1" sourceRef="L4_Start" targetRef="Task_4A" />
+    <bpmn:sequenceFlow id="Flow_L4_2" sourceRef="Task_4A" targetRef="Task_4B" />
+    <bpmn:sequenceFlow id="Flow_L4_3" sourceRef="Task_4B" targetRef="Task_4C" />
+    <bpmn:sequenceFlow id="Flow_L4_4" sourceRef="Task_4C" targetRef="L4_End" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="Diagram_L1" name="Level 1 Core Architecture">
+    <bpmndi:BPMNPlane id="Plane_L1" bpmnElement="Process_L1">
+      <bpmndi:BPMNShape id="S_L1_Start" bpmnElement="L1_Start"><dc:Bounds x="150" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_L1_Node_L2" bpmnElement="L1_Node_L2"><dc:Bounds x="240" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_L1_Node_L3" bpmnElement="L1_Node_L3"><dc:Bounds x="420" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_L1_Node_L4" bpmnElement="L1_Node_L4"><dc:Bounds x="600" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_L1_End" bpmnElement="L1_End"><dc:Bounds x="780" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="E_L1_1" bpmnElement="Flow_L1_1"><di:waypoint x="186" y="118" /><di:waypoint x="240" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L1_2" bpmnElement="Flow_L1_2"><di:waypoint x="370" y="118" /><di:waypoint x="420" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L1_3" bpmnElement="Flow_L1_3"><di:waypoint x="550" y="118" /><di:waypoint x="600" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L1_4" bpmnElement="Flow_L1_4"><di:waypoint x="730" y="118" /><di:waypoint x="780" y="118" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+  <bpmndi:BPMNDiagram id="Diagram_L2" name="Level 2 Sourcing Profile">
+    <bpmndi:BPMNPlane id="Plane_L2" bpmnElement="Process_L2">
+      <bpmndi:BPMNShape id="S_L2_Start" bpmnElement="L2_Start"><dc:Bounds x="150" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_2A" bpmnElement="Task_2A"><dc:Bounds x="240" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_2B" bpmnElement="Task_2B"><dc:Bounds x="410" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_2C" bpmnElement="Task_2C"><dc:Bounds x="580" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_L2_End" bpmnElement="L2_End"><dc:Bounds x="760" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="E_L2_1" bpmnElement="Flow_L2_1"><di:waypoint x="186" y="118" /><di:waypoint x="240" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L2_2" bpmnElement="Flow_L2_2"><di:waypoint x="370" y="118" /><di:waypoint x="410" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L2_3" bpmnElement="Flow_L2_3"><di:waypoint x="540" y="118" /><di:waypoint x="580" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L2_4" bpmnElement="Flow_L2_4"><di:waypoint x="710" y="118" /><di:waypoint x="760" y="118" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+  <bpmndi:BPMNDiagram id="Diagram_L3" name="Level 3 Operational Logistics">
+    <bpmndi:BPMNPlane id="Plane_L3" bpmnElement="Process_L3">
+      <bpmndi:BPMNShape id="S_L3_Start" bpmnElement="L3_Start"><dc:Bounds x="150" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_3A" bpmnElement="Task_3A"><dc:Bounds x="240" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_L3_Node_3B" bpmnElement="L3_Node_3B"><dc:Bounds x="410" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_3C" bpmnElement="Task_3C"><dc:Bounds x="580" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_L3_End" bpmnElement="L3_End"><dc:Bounds x="760" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="E_L3_1" bpmnElement="Flow_L3_1"><di:waypoint x="186" y="118" /><di:waypoint x="240" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L3_2" bpmnElement="Flow_L3_2"><di:waypoint x="370" y="118" /><di:waypoint x="410" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L3_3" bpmnElement="Flow_L3_3"><di:waypoint x="540" y="118" /><di:waypoint x="580" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L3_4" bpmnElement="Flow_L3_4"><di:waypoint x="710" y="118" /><di:waypoint x="760" y="118" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+  <bpmndi:BPMNDiagram id="Diagram_3B_Sub" name="Level 3B Shipping Precision Track">
+    <bpmndi:BPMNPlane id="Plane_3B_Sub" bpmnElement="Process_3B_Sub">
+      <bpmndi:BPMNShape id="S_Sub3B_Start" bpmnElement="Sub_3B_Start"><dc:Bounds x="150" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_3B1" bpmnElement="Task_3B1"><dc:Bounds x="240" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_3B2" bpmnElement="Task_3B2"><dc:Bounds x="410" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_3B3" bpmnElement="Task_3B3"><dc:Bounds x="580" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_Sub3B_End" bpmnElement="Sub_3B_End"><dc:Bounds x="760" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="E_3B_1" bpmnElement="Flow_3B_1"><di:waypoint x="186" y="118" /><di:waypoint x="240" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_3B_2" bpmnElement="Flow_3B_2"><di:waypoint x="370" y="118" /><di:waypoint x="410" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_3B_3" bpmnElement="Flow_3B_3"><di:waypoint x="540" y="118" /><di:waypoint x="580" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_3B_4" bpmnElement="Flow_3B_4"><di:waypoint x="710" y="118" /><di:waypoint x="760" y="118" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+  <bpmndi:BPMNDiagram id="Diagram_L4" name="Level 4 Site Integration Profile">
+    <bpmndi:BPMNPlane id="Plane_L4" bpmnElement="Process_L4">
+      <bpmndi:BPMNShape id="S_L4_Start" bpmnElement="L4_Start"><dc:Bounds x="150" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_4A" bpmnElement="Task_4A"><dc:Bounds x="240" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_4B" bpmnElement="Task_4B"><dc:Bounds x="410" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_T_4C" bpmnElement="Task_4C"><dc:Bounds x="580" y="78" width="130" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_L4_End" bpmnElement="L4_End"><dc:Bounds x="760" y="100" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="E_L4_1" bpmnElement="Flow_L4_1"><di:waypoint x="186" y="118" /><di:waypoint x="240" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L4_2" bpmnElement="Flow_L4_2"><di:waypoint x="370" y="118" /><di:waypoint x="410" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L4_3" bpmnElement="Flow_L4_3"><di:waypoint x="540" y="118" /><di:waypoint x="580" y="118" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="E_L4_4" bpmnElement="Flow_L4_4"><di:waypoint x="710" y="118" /><di:waypoint x="760" y="118" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>`;
+
+    // 2. Initialize the bpmn-js Navigated Viewer Instance
+    const viewer = new BpmnJS({ container: '#canvas' });
+// 3. Navigation Stack tracking array
+    let navigationStack = [];
+    // 3. Import XML and configure interaction events
+    viewer.importXML(scorXml).then(() => {
+      const eventBus = viewer.get('eventBus');
+      const canvas = viewer.get('canvas');
+      const definitions = viewer.getDefinitions();
+
+      // Set zoom to automatically fit the viewport nicely
+      canvas.zoom('fit-viewport');
+
+      // Initialize breadcrumb at top root level (Diagram_L1)
+      const rootDiagram = definitions.diagrams[0];
+      initBreadcrumbs(rootDiagram);
+
+      // 4. Clean Functional Event Listener (Mirrors your precise execution preference)
+      eventBus.on('element.click', function (event) {
+        const element = event.element;
+
+        // Ensure we are clicking a task block that can act as a trigger source
+        if (element.type === 'bpmn:CallActivity') {
+          //todo redirect to page filtered by ID of the clicked element
+          const targetDiagram = findDiagramForProcess(element.id);
+if (targetDiagram) {
+  // Push to historical navigation tree stack
+            navigationStack.push(targetDiagram);
+      viewer.open(targetDiagram);
+      renderBreadcrumbs();
+    }
+          /*if (targetDiagram) {
+            // Switches the UI rendering engine cleanly to the targeted process canvas plane
+            canvas.selectPrimaryPlane(targetDiagram);
+            canvas.zoom('fit-viewport');
+          }*/
+        }
+      });
+// function findDiagramForProcess(processId) {
+//   const definitions = viewer.getDefinitions();
+//   return definitions.diagrams.find(diagram =>
+//     diagram.plane.bpmnElement.id === processId
+//   );
+// }
+      // 5. Functional Helper: Resolves target diagram matching the decoupled architecture
+      // function findDiagramForProcess(sourceElementId) {
+      //   const definitions = viewer.getDefinitions();
+        
+      //   // Locate global collaboration where cross-level message flows reside
+      //   const collaboration = definitions.rootElements.find(el => el.$type === 'bpmn:Process');
+      //   if (!collaboration) return null;
+
+      //   // Find the specific flow where the clicked task is the explicit trigger source
+      //   const matchingFlow = (collaboration.flowElements || []).find(flow => 
+      //     flow.id === sourceElementId
+      //   );
+
+      //   if (matchingFlow && matchingFlow.targetRef) {
+      //     const targetStartEvent = matchingFlow.targetRef;
+      //     const targetProcessId = targetStartEvent.$parent.id; // Pull target process context
+
+      //     // Find the drawing plane matched directly to that process container ID
+      //     return definitions.diagrams.find(diagram => 
+      //       diagram.plane.bpmnElement.id === targetProcessId
+      //     );
+      //   }
+      //   return null;
+      // }
+      
+      function findDiagramForProcess(sourceElementId) {
+  const definitions = viewer.getDefinitions();
+  
+  // 1. Scan all root elements to locate the process containing our clicked node
+  for (const rootElement of definitions.rootElements) {
+    if (rootElement.$type === 'bpmn:Process' && rootElement.flowElements) {
+      
+      // Look for the specific clicked element ID inside this process scope
+      const element = rootElement.flowElements.find(el => el.id === sourceElementId);
+      
+      // 2. If found and it is a Call Activity, extract its target process ID
+      if (element && element.$type === 'bpmn:CallActivity') {
+        const targetProcessId = element.calledElement;
+        
+        // 3. Find and return the diagram plane matched directly to that process container ID
+        return definitions.diagrams.find(diagram => 
+          diagram.plane.bpmnElement.id === targetProcessId
+        );
+      }
+    }
+  }
+  return null;
+}
+// 7. Breadcrumb UI Component Orchestration Logic
+      function initBreadcrumbs(initialDiagram) {
+        navigationStack = [ initialDiagram ];
+        renderBreadcrumbs();
+        canvas.zoom('fit-viewport');
+      }
+
+      function renderBreadcrumbs() {
+        const container = document.getElementById('breadcrumb-container');
+        container.innerHTML = ''; // Clear previous tree nodes
+
+        navigationStack.forEach((diagram, index) => {
+          // Append arrow separator token if not the root layout node
+          if (index > 0) {
+            const separator = document.createElement('span');
+            separator.className = 'breadcrumb-separator';
+            separator.innerText = '➔';
+            container.appendChild(separator);
+          }
+
+          const isCurrentPlane = (index === navigationStack.length - 1);
+          const breadcrumbNode = document.createElement('span');
+          
+          // Use diagram metadata name if declared, fallback to diagram ID anchor
+          breadcrumbNode.innerText = diagram.name || diagram.id;
+
+          if (isCurrentPlane) {
+            breadcrumbNode.className = 'breadcrumb-current';
+          } else {
+            breadcrumbNode.className = 'breadcrumb-link';
+            
+            // Wire interaction hook to shift focus back up the architecture tree
+            breadcrumbNode.addEventListener('click', () => {
+              // Slice array elements forward to clean history path accurately
+              navigationStack = navigationStack.slice(0, index + 1);
+              
+              viewer.open(diagram);
+              renderBreadcrumbs();
+              
+              setTimeout(() => viewer.get('canvas').zoom('fit-viewport'), 10);
+            });
+          }
+          container.appendChild(breadcrumbNode);
+        });
+      }
+
+    }).catch(err => console.error('BPMN 2.0 XML Engine Parsing Error:', err));
+  </script>
+</body>
+</html>
