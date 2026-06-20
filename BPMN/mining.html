@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process Mining Enrichment for bpmn-js</title>
+  
+  <!-- bpmn-js styling and libraries -->
+  <link rel="stylesheet" href="https://unpkg.com" />
+  <link rel="stylesheet" href="https://unpkg.com" />
+  <script src="https://unpkg.com"></script>
+
+  <style>
+    :root {
+      --bg-dark: #121214;
+      --bg-panel: #1e1e24;
+      --border-color: #2e2e38;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent-danger: #ef4444;
+      --accent-warning: #f59e0b;
+      --accent-success: #10b981;
+      --accent-info: #3b82f6;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Top Control Bar */
+    header {
+      background-color: var(--bg-panel);
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+
+    .badge-legend {
+      display: flex;
+      gap: 15px;
+      font-size: 0.85rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 100px;
+      height: 10px;
+      display: inline-block;
+      border-radius: 4px;
+    }
+
+    /* Layout grid */
+    .dashboard-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #canvas {
+      flex: 1;
+      height: 100%;
+      background-color: #17171c;
+    }
+
+    /* Custom overlay badges styling injected onto bpmn-js elements */
+    .pm-overlay-badge {
+      font-family: monospace;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #ffffff;
+      white-space: nowrap;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5), 0 2px 4px -1px rgba(0,0,0,0.3);
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .pm-overlay-badge:hover {
+      transform: scale(1.1);
+      z-index: 999;
+    }
+
+    /* SLA Status Styles */
+    .sla-met { background-color: var(--accent-success); }
+    .sla-warn { background-color: var(--accent-warning); color: #000; }
+    .sla-breached { background-color: var(--accent-danger); animation: pulse 2s infinite; }
+
+    /* Bottleneck indicator styles for sequence flows or tasks */
+    .bottleneck-indicator {
+      background: linear-gradient(135deg, #7f1d1d 0%, #ef4444 100%);
+      border: 1px solid #fee2e2;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Enhancement / Idea Insight badge */
+    .enhancement-badge {
+      background-color: #8b5cf6;
+      border: 1px solid #c084fc;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 10px;
+    }
+
+    /* Aggregated insights panel for parent containers */
+    .aggregated-insight-container {
+      background-color: rgba(30, 30, 36, 0.95);
+      border-left: 3px solid var(--accent-info);
+      border-radius: 4px;
+      padding: 6px 10px;
+      color: var(--text-main);
+      font-size: 10px;
+      min-width: 140px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.4);
+    }
+    
+    .aggregated-title {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #60a5fa;
+      margin-bottom: 2px;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    /* Sidebar info panel for displaying interactive insights */
+    .inspector-panel {
+      width: 320px;
+      background-color: var(--bg-panel);
+      border-left: 1px solid var(--border-color);
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel-section h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .metric-card {
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+    }
+
+    .metric-val {
+      font-size: 1.5rem;
+      font-weight: bold;
+      font-family: monospace;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Process Mining Real-Time Canvas Overlay</h1>
+    <div class="badge-legend">
+      <div class="legend-item"><span class="dot sla-met"></span> SLA Healthy</div>
+      <div class="legend-item"><span class="dot sla-warn"></span> Near Breach</div>
+      <div class="legend-item"><span class="dot sla-breached"></span> SLA Breached</div>
+      <div class="legend-item"><span class="dot" style="background:#8b5cf6"></span> Automation Suggestion</div>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <!-- This container will host the bpmn-js SVG viewport -->
+    <div id="canvas"></div>
+
+    <!-- Inspector panel for context metrics -->
+    <aside class="inspector-panel">
+      <div class="panel-section">
+        <h3>Selected Element Metrics</h3>
+        <div id="selected-info" class="metric-card" style="color: var(--text-muted); font-size: 0.9rem;">
+          Click an overlay element or task block inside the canvas to inspect mining details.
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <h3>Process Log Health</h3>
+        <div class="metric-card">
+          <div>Global Avg. Cycle Time</div>
+          <div class="metric-val" style="color: var(--accent-warning);">4.2 Days</div>
+        </div>
+        <br>
+        <div class="metric-card">
+          <div>Log Conformance Rate</div>
+          <div class="metric-val" style="color: var(--accent-success);">91.4%</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Sample high-performance mining intelligence datasets to attach to BPMN element IDs
+    const processMiningData = {
+      'Activity_ReceiveInvoice': {
+        name: 'Receive Invoice',
+        avgDuration: '12m',
+        slaStatus: 'sla-met',
+        insights: '98% of arrivals parsed natively via OCR tool chains.'
+      },
+      'Activity_VerifyDetails': {
+        name: 'Verify Match Details',
+        avgDuration: '4.8h',
+        slaStatus: 'sla-warn',
+        insights: 'Manual handling wait times grew by 14% over this financial quarter.'
+      },
+      'Flow_Sequence_Stall': {
+        isBottleneck: true,
+        delayTime: '+18.4h Idle Delay',
+        insights: 'Queue lag detected. Items wait for manager authorization slot allocations.'
+      },
+      'Activity_ApprovePayment': {
+        name: 'Approve Payment Match',
+        avgDuration: '3.1d',
+        slaStatus: 'sla-breached',
+        insights: 'SLA threshold limit configuration is set to 2.0 days max.',
+        enhancement: '💡 Auto-approve if matching variance evaluation falls below $500.'
+      },
+      'SubProcess_Aggregated_Child': {
+        name: 'Child Reconciliation Subprocess',
+        isParent: true,
+        childAggregations: {
+          totalTasks: 4,
+          rollingDuration: '1.2d avg',
+          failingSlaCount: 2,
+          reworkLoopRate: '18% Variant Deviations'
+        }
+      }
+    };
+
+    // Standard BPMN 2.0 XML Diagram structure representing a baseline matching sequence
+    const bpmnXML = `<?xml version="1.0" encoding="UTF-8"?>
+    <bpmn:definitions xmlns:bpmn="http://omg.org" xmlns:bpmndi="http://omg.org" xmlns:dc="http://omg.org" xmlns:di="http://omg.org" id="Definitions_1" targetNamespace="http://bpmn.io">
+      <bpmn:process id="Process_1" isExecutable="false">
+        <bpmn:startEvent id="StartEvent_1" name="Invoice Filed">
+          <bpmn:outgoing>Flow_1</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:task id="Activity_ReceiveInvoice" name="Receive Invoice">
+          <bpmn:incoming>Flow_1</bpmn:incoming>
+          <bpmn:outgoing>Flow_2</bpmn:outgoing>
+        </bpmn:task>
+        <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_ReceiveInvoice" />
+        <bpmn:task id="Activity_VerifyDetails" name="Verify Match Details">
+          <bpmn:incoming>Flow_2</bpmn:incoming>
+          <bpmn:outgoing>Flow_Sequence_Stall</bpmn:outgoing>
+        </bpmn:task>
+        <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_ReceiveInvoice" targetRef="Activity_VerifyDetails" />
+        <bpmn:task id="Activity_ApprovePayment" name="Approve Payment Match">
+          <bpmn:incoming>Flow_Sequence_Stall</bpmn:incoming>
+          <bpmn:outgoing>Flow_4</bpmn:outgoing>
+        </bpmn:task>
+        <bpmn:sequenceFlow id="Flow_Sequence_Stall" name="" sourceRef="Activity_VerifyDetails" targetRef="Activity_ApprovePayment" />
+        <bpmn:subProcess id="SubProcess_Aggregated_Child" name="Child Archival Logging Loop">
+          <bpmn:incoming>Flow_4</bpmn:incoming>
+          <bpmn:outgoing>Flow_5</bpmn:outgoing>
+        </bpmn:subProcess>
+        <bpmn:sequenceFlow id="Flow_4" sourceRef="Activity_ApprovePayment" targetRef="SubProcess_Aggregated_Child" />
+        <bpmn:endEvent id="EndEvent_1" name="Archived">
+          <bpmn:incoming>Flow_5</bpmn:incoming>
+        </bpmn:endEvent>
