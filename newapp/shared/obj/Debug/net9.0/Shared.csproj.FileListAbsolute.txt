@@ -1,0 +1,11 @@
+C:\ws\newapp\shared\bin\Debug\net9.0\Shared.deps.json
+C:\ws\newapp\shared\bin\Debug\net9.0\Shared.dll
+C:\ws\newapp\shared\bin\Debug\net9.0\Shared.pdb
+C:\ws\newapp\shared\obj\Debug\net9.0\Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\ws\newapp\shared\obj\Debug\net9.0\Shared.AssemblyInfoInputs.cache
+C:\ws\newapp\shared\obj\Debug\net9.0\Shared.AssemblyInfo.cs
+C:\ws\newapp\shared\obj\Debug\net9.0\Shared.csproj.CoreCompileInputs.cache
+C:\ws\newapp\shared\obj\Debug\net9.0\Shared.dll
+C:\ws\newapp\shared\obj\Debug\net9.0\refint\Shared.dll
+C:\ws\newapp\shared\obj\Debug\net9.0\Shared.pdb
+C:\ws\newapp\shared\obj\Debug\net9.0\ref\Shared.dll

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Intelligence OS</title>
+    <meta name="description" content="A unified personal operating system that helps users plan, simulate, adapt, and act across the most important dimensions of life.">
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            color: white;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .hero .btn {
+            font-size: 1.1rem;
+            padding: 12px 24px;
+            background-color: white;
+            color: var(--color-primary);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .hero .btn:hover {
+            background-color: #f1f5f9;
+        }
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 60px 20px;
+            background-color: var(--color-bg);
+            flex-wrap: wrap;
+        }
+        .feature-card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: 30px;
+            border-radius: 12px;
+            width: 300px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            color: var(--color-text-muted);
+        }
+        a.btn { text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="text-lg" style="font-weight:700; color:var(--color-primary)">Intelligence OS</div>
+        <div>
+            <a href="index.html?token=demo" class="btn btn-primary">Sign In to Dashboard</a>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Clarity, Foresight, and Control</h1>
+        <p>Your personal operating system to connect the dots between life events, financial commitments, goals, and long-term decisions.</p>
+        <a href="index.html?token=demo" class="btn">Get Started</a>
+    </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <h3 class="text-lg mb-4" style="color:var(--color-accent)">Strategic Planning</h3>
+            <p class="text-muted" style="color:var(--color-text-muted)">Move from reactive management to proactive decision-making.</p>
+        </div>
+        <div class="feature-card">
+            <h3 class="text-lg mb-4" style="color:var(--color-accent)">Financial Clarity</h3>
+            <p class="text-muted" style="color:var(--color-text-muted)">Model your expense and long-term financial planning effectively.</p>
+        </div>
+        <div class="feature-card">
+            <h3 class="text-lg mb-4" style="color:var(--color-accent)">Private & Secure</h3>
+            <p class="text-muted" style="color:var(--color-text-muted)">Your data remains yours. Privacy is built-in by design.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Built with focus and trust. &copy; 2026 Personal Intelligence OS.</p>
+        <p class="mt-4">
+            <a href="https://github.com/example" style="color:var(--color-primary-light);">GitHub</a> |
+            <a href="https://linkedin.com/in/example" style="color:var(--color-primary-light);">LinkedIn</a>
+        </p>
+    </footer>
+</body>
+</html>
