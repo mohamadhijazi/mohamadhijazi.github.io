@@ -1,17 +1,17 @@
 import { pluginRegistry } from './shared/pluginRegistry.js';
 import { eventBus } from './shared/eventBus.js';
 import { apiClient } from './shared/apiClient.js';
-import { CalendarModule } from '../modules/calendar/calendar.js';
-import { PlanningModule } from '../modules/planning/planning.js';
-import { FinanceModule } from '../modules/finance/finance.js';
-import { RiskModule } from '../modules/risk/risk.js';
-import { KnowledgeModule } from '../modules/knowledge/knowledge.js';
-import { CollaborationModule } from '../modules/collaboration/collaboration.js';
-import { AIPlaygroundModule } from '../modules/ai-playground/ai-playground.js';
-import { DataETLModule } from '../modules/data-etl/data-etl.js';
-import { NotificationsModule } from '../modules/notifications/notifications.js';
-import { MapsModule } from '../modules/maps/maps.js';
-import { SettingsModule } from '../modules/settings/settings.js';
+import { CalendarModule } from './modules/calendar/calendar.js';
+import { PlanningModule } from './modules/planning/planning.js';
+import { FinanceModule } from './modules/finance/finance.js';
+import { RiskModule } from './modules/risk/risk.js';
+import { KnowledgeModule } from './modules/knowledge/knowledge.js';
+import { CollaborationModule } from './modules/collaboration/collaboration.js';
+import { AIPlaygroundModule } from './modules/ai-playground/ai-playground.js';
+import { DataETLModule } from './modules/data-etl/data-etl.js';
+import { NotificationsModule } from './modules/notifications/notifications.js';
+import { MapsModule } from './modules/maps/maps.js';
+import { SettingsModule } from './modules/settings/settings.js';
 
 const { createApp, ref, onMounted } = Vue;
 
@@ -29,7 +29,7 @@ const App = {
     ]);
     const activeWorkspace = ref('w1');
     
-    const user = ref(null);
+    const user = ref({ id: 'u1', name: 'Guest User', email: 'guest@example.com' });
     
     onMounted(() => {
       console.log('App initialized.');
@@ -57,14 +57,19 @@ const App = {
         loadShellData();
         eventBus.publish('UserLoggedIn', user.value);
       } else {
-        loadShellData();
+        // Redirect to landing page if not authenticated
+        window.location.href = '/landing.html';
       }
     });
 
     const setModule = (moduleId) => { activeModule.value = moduleId; };
     const toggleTheme = () => { isDarkMode.value = !isDarkMode.value; };
     const mockLogin = () => { window.location.href = '?token=mock_google_token'; };
-    const mockLogout = () => { isAuthenticated.value = false; user.value = null; };
+    const mockLogout = () => { 
+      isAuthenticated.value = false; 
+      user.value = { id: 'u1', name: 'Guest User', email: 'guest@example.com' };
+      window.location.href = '/landing.html';
+    };
 
     const loadShellData = async () => {
       try {
@@ -122,7 +127,7 @@ const App = {
           <div style="display: flex; gap: 10px; align-items: center;">
             <button @click="toggleTheme" class="btn">Toggle Theme</button>
             <template v-if="isAuthenticated">
-              <span>{{ user.name }}</span>
+              <span>{{ user?.name }}</span>
               <button @click="mockLogout" class="btn btn-primary">Sign Out</button>
             </template>
             <template v-else>

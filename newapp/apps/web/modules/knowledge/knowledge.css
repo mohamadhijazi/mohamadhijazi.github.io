@@ -1,0 +1,35 @@
+.knowledge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.knowledge-card {
+  display: flex;
+  flex-direction: column;
+}
+.knowledge-content {
+  flex-grow: 1;
+  white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.badge-category {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+.tag-pill {
+  background: var(--color-surface-hover);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.border-dashed {
+  border-style: dashed;
+  border-color: var(--color-border);
+}

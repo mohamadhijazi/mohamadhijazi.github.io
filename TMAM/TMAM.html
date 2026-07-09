@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The TMAM Effect - Smart AI Micro-Savings Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-dark: #0A2540;
+            --tech-teal: #00D4B2;
+            --accent-gold: #FFC043;
+            --bg-light: #F8F9FA;
+            --text-dark: #1C2A38;
+            --text-muted: #62778C;
+            --white: #FFFFFF;
+            --card-shadow: 0 10px 30px rgba(10, 37, 64, 0.05);
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F0F2F5;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- GLOBAL NAVIGATION & PERSONA SWITCHER --- */
+        .global-nav {
+            background-color: var(--primary-dark);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-logo span {
+            color: var(--tech-teal);
+        }
+
+        .persona-container {
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .persona-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .persona-btn.active {
+            background-color: var(--tech-teal);
+            color: var(--primary-dark);
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 212, 178, 0.3);
+        }
+
+        /* --- SIMULATION UTILITY CONTROLS --- */
+        .simulation-bar {
+            background-color: #E2E8F0;
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #CBD5E1;
+        }
+
+        .sim-btn {
+            background-color: var(--white);
+            border: 1px solid #CBD5E1;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .sim-btn:hover {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            border-color: var(--primary-dark);
+        }
+
+        .sim-btn.primary-action {
+            background-color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--primary-dark);
+        }
+
+        .sim-btn.primary-action:hover {
+            opacity: 0.9;
+            color: var(--primary-dark);
+        }
+
+        /* --- MAIN AREA WORKSPACE --- */
+        .workspace {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .view-panel {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        /* --- VIEW 1: CONSUMER APP EXPERIENCE (MOBILE DEVICE) --- */
+        .mobile-shell-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 1rem 0;
+        }
+
+        .smartphone-mockup {
+            width: 375px;
+            height: 720px;
+            background-color: var(--primary-dark);
+            border: 12px solid #1E293B;
+            border-radius: 40px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .smartphone-screen {
+            background-color: var(--bg-light);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-header {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 1.25rem 1rem 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .phone-bank-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: -0.3px;
+        }
+
+        .phone-bank-name span {
+            color: var(--tech-teal);
+        }
+
+        /* Conversational Interface Setup */
+        .chat-stream {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 0.85rem 1rem;
+            border-radius: 18px;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            animation: bubblePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+        }
+
+        .bubble-ai {
+            background-color: var(--white);
+            color: var(--text-dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid #E2E8F0;
+        }
+
+        .bubble-user {
+            background-color: var(--tech-teal);
+            color: var(--primary-dark);
+            font-weight: 500;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-agent-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--tech-teal);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .chat-actions {
+            padding: 1rem;
+            background: var(--white);
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .chat-btn {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .chat-btn:hover {
+            background-color: #143759;
+        }
+
+        /* Active Vault Screen */
+        .vault-dashboard {
+            display: none;
+            flex: 1;
+            padding: 1.25rem;
+            overflow-y: auto;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .vault-card {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #11385C 100%);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(10,37,64,0.15);
+        }
+
+        .vault-card::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 212, 178, 0.05);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+        }
+
+        .vault-meta {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .vault-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .progress-container {
+            margin: 1rem 0;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--tech-teal), #00F0C2);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-metrics {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .metric-current {
+            color: var(--tech-teal);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .adaptive-status {
+            background-color: var(--white);
+            border-radius: 14px;
+            padding: 1rem;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .adaptive-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--tech-teal);
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .indicator-dot.pulse {
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        .adaptive-text {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Ecosystem Campaign Banner overlay styles */
+        .reward-banner {
+            display: none;
+            background: linear-gradient(135deg, #FFFDF0 0%, #FFF9D2 100%);
+            border: 2px dashed var(--accent-gold);
+            border-radius: 14px;
+            padding: 1rem;
+            margin-top: auto;
+            animation: fadeInUp 0.4s ease forwards;
+        }
+
+        .reward-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #A06D00;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .reward-body {
+            font-size: 0.82rem;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        /* --- VIEW 2: B2B INSTITUTIONAL DASHBOARD --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            width: 100%;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dash-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: 1px solid #E2E8F0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .dash-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dash-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .badge-bank { background-color: #EBF5FF; color: #0066CC; }
+        .badge-merchant { background-color: #FEF3C7; color: #D97706; }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .b2b-metric-box {
+            background-color: var(--bg-light);
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid #EDF2F7;
+        }
+
+        .b2b-metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .b2b-metric-val {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .b2b-metric-val span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Treasury Allocation Stream Console */
+        .console-log {
+            background-color: #0F172A;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #38BDF8;
+            height: 180px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .log-entry {
+            line-height: 1.4;
+        }
+
+        .log-entry.success { color: var(--tech-teal); }
+        .log-entry.warn { color: var(--accent-gold); }
+
+        /* General Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bubblePop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(0, 212, 178, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(0, 212, 178, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 212, 178, 0); }
+        }
+
+        /* Confetti Effect Overlays */
+        .confetti-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="global-nav">
+        <div class="brand-logo">
+            ⚡ THE TMAM EFFECT <span>// Smart Fin</span>
+        </div>
+        
+        <div class="persona-container">
+            <button class="persona-btn active" id="btn-consumer" onclick="switchView('consumer')">
+                📱 Consumer UX (Fahad)
+            </button>
+            <button class="persona-btn" id="btn-b2b" onclick="switchView('b2b')">
+                🏢 B2B Core Portal (Sarah & Youssef)
+            </button>
+        </div>
+    </nav>
+
+    <div class="simulation-bar">
+        <span style="display:flex; align-items:center; font-size:0.85rem; font-weight:700; color:var(--text-dark);">
+            ⚙️ HACKATHON SIMULATOR ACTIONS:
+        </span>
+        <button class="sim-btn" onclick="triggerMatchVictory()">
+            ⚽ Match Day Victory (+10 SAR)
+        </button>
+        <button class="sim-btn" onclick="triggerUtilitySpike()">
+            🔥 Mid-Month Utility Spike (Scale Down Floor)
+        </button>
+        <button class="sim-btn primary-action" onclick="fastForwardGoal()">
+            🚀 Fast-Forward to Month 12 (Goal Met!)
+        </button>
+    </div>
+
+    <div class="workspace">
+        
+        <div id="panel-consumer" class="view-panel active">
+            <div class="mobile-shell-wrapper">
+                <div class="smartphone-mockup">
+                    <canvas id="confetti" class="confetti-canvas"></canvas>
+                    
+                    <div class="smartphone-screen">
+                        <div class="phone-header">
+                            <div class="phone-bank-name">alinma <span>bank</span></div>
+                            <div style="font-size: 0.8rem; font-weight: 500; color: var(--tech-teal);">● Online</div>
+                        </div>
+
+                        <div class="chat-stream" id="chat-box">
+                            </div>
+
+                        <div class="chat-actions" id="chat-input-area">
+                            </div>
+
+                        <div class="vault-dashboard" id="vault-screen">
+                            <div class="vault-card">
+                                <div class="vault-meta">Target Savings Account</div>
+                                <div class="vault-title">🏆 World Cup 2026 Experience</div>
+                                
+                                <div class="progress-container">
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill" id="vault-bar"></div>
+                                    </div>
+                                    <div class="progress-metrics">
+                                        <div><span class="metric-current" id="vault-current">0</span> <span style="font-size:0.75rem;">SAR</span></div>
+                                        <div style="color: rgba(255,255,255,0.7)">3,000 SAR</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="adaptive-status" id="status-card">
+                                <div class="adaptive-indicator">
+                                    <span class="indicator-dot pulse" id="status-dot"></span>
+                                    <span id="status-label">Amad Coach: Pacing Optimally</span>
+                                </div>
+                                <div class="adaptive-text" id="status-desc">
+                                    Analyzing micro-liquidity daily. Your baseline account floor is actively balancing your upcoming bill periods safely.
+                                </div>
+                            </div>
+
+                            <div class="reward-banner" id="merchant-banner">
+                                <div class="reward-header">
+                                    <span>🎁 Exclusive Ecosystem Reward</span>
+                                    <span style="background:var(--accent-gold); color:var(--primary-dark); padding:2px 6px; border-radius:4px;">Almatar x Saudia</span>
+                                </div>
+                                <div class="reward-body" id="merchant-text">
+                                    Keep saving! Reach your milestone target window to unlock automated partner flight and hotel match-day incentives.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-b2b" class="view-panel">
+            <div class="dashboard-grid">
+                
+                <div class="dash-card">
+                    <div class="dash-card-title">
+                        Treasury Management Suite (Sarah)
+                        <span class="dash-badge badge-bank">Institutional CASA Analytics</span>
+                    </div>
+                    
+                    <div class="metric-row">
+                        <div class="b2b-metric-box">
+                            <div class="b2b-metric-label">Aggregated Liquidity Pool</div>
+                            <div class="b2b-metric-val" id="b2b-pool">50,000,000 <span>SAR</span></div>
+                        </div>
+                        <div class="b2b-metric-box">
+                            <div class="b2b-metric-label">Active Goal-Savers Pool</div>
+                            <div class="b2b-metric-val">120,000 <span>Users</span></div>
+                        </div>
+                    </div>
+
+                    <div style="background-color: var(--bg-light); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">
+                        <strong>Value Proposition Proposition Matrix:</strong> Alinma captures hyper-stable, predictable capital. Because AI monitors destination completion calendars, liquidity is safely locked for algorithmic yield allocation.
+                    </div>
+
+                    <div>
+                        <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; color: var(--text-muted)">
+                            🤖 Agentic Yield Automation Logging Engine
+                        </div>
+                        <div class="console-log" id="treasury-console">
+                            <div class="log-entry">[System Init] AI Target Event Mapping Online...</div>
+                            <div class="log-entry">[Data Sync] 120,000 customer goals matched into withdrawal windows...</div>
+                            <div class="log-entry success">[Allocation] Confidently deployed 12.5M SAR into short-term corporate paper.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-card">
+                    <div class="dash-card-title">
+                        Ecosystem Partner Suite (Youssef)
+                        <span class="dash-badge badge-merchant">Merchant Merchant Portal</span>
+                    </div>
+
+                    <div class="metric-row">
+                        <div class="b2b-metric-box">
+                            <div class="b2b-metric-label">Pre-Qualified Intent Pipeline</div>
+                            <div class="b2b-metric-val">38,400 <span>Users</span></div>
+                        </div>
+                        <div class="b2b-metric-box">
+                            <div class="b2b-metric-label">Target Conversion Certainty</div>
+                            <div class="b2b-metric-val" id="b2b-conversion">94.2%</div>
+                        </div>
+                    </div>
+
+                    <div style="background-color: var(--bg-light); padding: 1rem; border-radius: 8px; font-size: 0.85rem;">
+                        <strong>Ecosystem Core Value Value Proposition:</strong> Brand ecosystem partners capture verified, fully-funded high-intent consumers without executing expensive front-end customer acquisition campaigns (Zero CAC Loop)[cite: 140].
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                        <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted)">
+                            🎯 Automated Campaign Distribution Controls
+                        </div>
+                        <div style="border:1px solid #E2E8F0; padding:1rem; border-radius:8px; display:flex; flex-direction:column; gap:0.5rem; font-size:0.85rem;">
+                            <div><strong>Active Trigger:</strong> Milestone Target Attainment = 100%</div>
+                            <div><strong>Reward Asset Incentive:</strong> 15% Discount Voucher on World Cup Shuttles & Match Ground Transfers[cite: 139].</div>
+                            <div style="color: green; font-weight:600; display:flex; align-items:center; gap:0.25rem;">
+                                <span style="width:6px; height:6px; background:green; border-radius:50%;"></span> Active In-App Distribution Pipeline
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Global Application Architecture State [cite: 148]
+        const state = {
+            currentPerspective: 'consumer',
+            userGoalMet: false,
+            currentBalance: 0,
+            targetGoal: 3000,
+            casaPoolBase: 50000000,
+            onboardingStep: 0
+        };
+
+        // Chat Scripting Pipeline Timeline Matrix 
+        const scriptData = [
+            {
+                speaker: 'ai',
+                text: "I see you looking at sports travel content, Fahad! Want to make the World Cup a reality without breaking your monthly budget? Let's build a game plan.",
+                options: [{ text: "⚽ Show me how", action: "next" }]
+            },
+            {
+                speaker: 'ai',
+                text: "I’ve analyzed your last six months of historical transactions. Your utility bills spike in summer, and your salary drops on the 25th. If we automate micro-savings ranging from just 3 SAR to 15 SAR—only on your high-liquidity days—you’ll hit your 3,000 SAR target right on time. Ready to kick off?",
+                options: [{ text: "🟢 Let's do it!", action: "launchVault" }]
+            }
+        ];
+
+        window.onload = function() {
+            initChatSequence();
+        };
+
+        function switchView(perspective) {
+            state.currentPerspective = perspective;
+            document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.persona-btn').forEach(el => el.classList.remove('active'));
+            
+            if(perspective === 'consumer') {
+                document.getElementById('panel-consumer').classList.add('active');
+                document.getElementById('btn-consumer').classList.add('active');
+            } else {
+                document.getElementById('panel-b2b').classList.add('active');
+                document.getElementById('btn-b2b').classList.add('active');
+            }
+        }
+
+        // Conversational Engine Controller Framework
+        function initChatSequence() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = '';
+            state.onboardingStep = 0;
+            renderNextStep();
+        }
+
+        function renderNextStep() {
+            const step = scriptData[state.onboardingStep];
+            if (!step) return;
+
+            addChatBubble(step.text, 'ai');
+            renderInputActions(step.options);
+        }
+
+        function addChatBubble(text, sender) {
+            const chatBox = document.getElementById('chat-box');
+            const bubble = document.createElement('div');
+            bubble.className = `chat-bubble bubble-${sender}`;
+            
+            if(sender === 'ai') {
+                bubble.innerHTML = `<div class="chat-agent-title">🤖 Amad Coach</div>${text}`;
+            } else {
+                bubble.innerHTML = text;
+            }
+            
+            chatBox.appendChild(bubble);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function renderInputActions(options) {
+            const container = document.getElementById('chat-input-area');
+            container.innerHTML = '';
+            
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'chat-btn';
+                btn.innerText = opt.text;
+                btn.onclick = () => {
+                    addChatBubble(opt.text, 'user');
+                    container.innerHTML = ''; // Lock choice input controls immediately
+                    
+                    setTimeout(() => {
+                        if(opt.action === "next") {
+                            state.onboardingStep++;
+                            renderNextStep();
+                        } else if(opt.action === "launchVault") {
+                            transitionToActiveVault();
+                        }
+                    }, 800);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function transitionToActiveVault() {
+            document.getElementById('chat-box').style.display = 'none';
+            document.getElementById('chat-input-area').style.display = 'none';
+            
+            const vaultScreen = document.getElementById('vault-screen');
+            vaultScreen.style.display = 'flex';
+            updateUIVariables();
+            
+            logTreasury("[Automation Engine] Fahad's portfolio activated. Added into Month-12 structural liquidity asset cohort.", "success");
+        }
+
+        // Interface Variable Synchronization Patterns
+        function updateUIVariables() {
+            // Synchronize consumer wallet frame elements
+            document.getElementById('vault-current').innerText = Math.floor(state.currentBalance).toLocaleString();
+            const fillPct = (state.currentBalance / state.targetGoal) * 100;
+            document.getElementById('vault-bar').style.width = `${Math.min(fillPct, 100)}%`;
+
+            // Synchronize operational enterprise business indicators
+            const poolUpdate = state.casaPoolBase + state.currentBalance;
+            document.getElementById('b2b-pool').innerHTML = `${poolUpdate.toLocaleString()} <span>SAR</span>`;
+        }
+
+        // Demonstration Trigger Methods
+        function triggerMatchVictory() {
+            if(document.getElementById('vault-screen').style.display !== 'flex') {
+                transitionToActiveVault();
+            }
+            switchView('consumer');
+            
+            state.currentBalance += 10;
+            updateUIVariables();
+
+            // Set visual contextual banner alerts
+            document.getElementById('status-card').style.borderColor = 'var(--tech-teal)';
+            document.getElementById('status-label').innerText = "Amad Coach: Victory Event Match Triggered!";
+            document.getElementById('status-desc').innerText = "Green Falcons just won their qualifier match! Celebrating with a 10 SAR 'Victory Round-up' directly into your World Cup Vault! [cite: 163]";
+            document.getElementById('status-dot').className = "indicator-dot pulse";
+            
+            logTreasury("[Context Event Engine] Match Day Victory Recorded (+10 SAR Micro-deposit mapped into aggregate architecture).", "success");
+        }
+
+        function triggerUtilitySpike() {
+            if(document.getElementById('vault-screen').style.display !== 'flex') {
+                transitionToActiveVault();
+            }
+            switchView('consumer');
+
+            // Apply a slight counter-balancing effect to simulate behavioral floor protection
+            document.getElementById('status-card').style.borderColor = 'var(--accent-gold)';
+            document.getElementById('status-label').innerText = "Amad Coach: Adaptive Cash-flow Recalibration";
+            document.getElementById('status-desc').innerText = "Fahad, I noticed your electricity bill was 100 SAR higher this month. I'm automatically reducing your daily savings floor for the next week to keep your wallet safe[cite: 164].";
+            document.getElementById('status-dot').className = "indicator-dot";
+            
+            logTreasury("[Behavioral Audit Node] Consumer transactional variance observed. Automatically downscaling micro-deposit allocation thresholds.", "warn");
+        }
+
+        function fastForwardGoal() {
+            if(document.getElementById('vault-screen').style.display !== 'flex') {
+                transitionToActiveVault();
+            }
+            switchView('consumer');
+            
+            state.currentBalance = 3000;
+            state.userGoalMet = true;
+            updateUIVariables();
+
+            // Fire UI complete elements
+            document.getElementById('status-label').innerText = "Amad Coach: Target Complete!";
+            document.getElementById('status-desc').innerText = "Goal Achieved! 3,000 SAR secured. Ready to book your dream? [cite: 169]";
+            
+            // Expose Merchant Conversion Value Campaign Assets
+            document.getElementById('merchant-banner').style.display = 'block';
+            document.getElementById('merchant-text').innerText = "Welcome, Fahad! Because you hit your goal with Alinma, unlock an exclusive 15% discount on World Cup shuttle flights and stadium transfers right here[cite: 170].";
+
+            document.getElementById('b2b-conversion').innerText = "100% Converted";
+            
+            runConfettiAnimation();
+            logTreasury("[System Goal Event] Micro-Saver target fully attained. Liquid cash reserves unlocked for direct ecosystem clearing injection.", "success");
+        }
+
+        function logTreasury(text, type="") {
+            const consoleObj = document.getElementById('treasury-console');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.innerText = `[${new Date().toLocaleTimeString()}] ${text}`;
+            consoleObj.appendChild(entry);
+            consoleObj.scrollTop = consoleObj.scrollHeight;
+        }
+
+        // Pure Client-side High-Fidelity Confetti Script Generation Engine
+        function runConfettiAnimation() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.style.display = 'block';
+            
+            let width = canvas.width = canvas.offsetWidth;
+            let height = canvas.height = canvas.offsetHeight;
+            
+            const particles = [];
+            for (let i = 0; i < 75; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height - height,
+                    r: Math.random() * 4 + 2,
+                    d: Math.random() * height,
+                    color: ["#00D4B2", "#FFC043", "#00F0C2", "#1C2A38"][Math.floor(Math.random() * 4)]
+                });
+            }
+
+            let animationFrameId;
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    
+                    p.y += Math.cos(p.d) + 1 + p.r / 2;
+                    p.x += Math.sin(0.01) * 2;
+                    
+                    if (p.y > height) {
+                        p.y = -20;
+                        p.x = Math.random() * width;
+                    }
+                });
+                animationFrameId = requestAnimationFrame(draw);
+            }
+            draw();
+            
+            // Auto stop animation loops after 5 seconds to conserve baseline overhead
+            setTimeout(() => {
+                cancelAnimationFrame(animationFrameId);
+                canvas.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+.summary-card {
+  padding: 20px;
+}
+.text-green { color: #16a34a; }
+.text-red { color: #dc2626; }
+.border-l-red { border-left: 4px solid #ef4444; }
+.border-l-blue { border-left: 4px solid #3b82f6; }
+.border-l-green { border-left: 4px solid #22c55e; }
+.uppercase { text-transform: uppercase; letter-spacing: 0.05em; }
+.finance-table {
+  border-collapse: collapse;
+  text-align: left;
+}
+.finance-table th {
+  background-color: var(--color-bg);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+.finance-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+.finance-table tr:last-child td {
+  border-bottom: none;
+}
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.p-0 { padding: 0 !important; }
+.overflow-hidden { overflow: hidden; }
+.badge-red { background: #fee2e2; color: #b91c1c; }

@@ -1752,11 +1752,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\ws\\newapp\\apps\\api.Tests\\api.Tests.csproj",
+      "projectUniqueName": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api.Tests\\api.Tests.csproj",
       "projectName": "api.Tests",
-      "projectPath": "C:\\ws\\newapp\\apps\\api.Tests\\api.Tests.csproj",
+      "projectPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api.Tests\\api.Tests.csproj",
       "packagesPath": "C:\\Users\\Mohammad\\.nuget\\packages\\",
-      "outputPath": "C:\\ws\\newapp\\apps\\api.Tests\\obj\\",
+      "outputPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -1771,8 +1771,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\ws\\newapp\\apps\\api\\api.csproj": {
-              "projectPath": "C:\\ws\\newapp\\apps\\api\\api.csproj"
+            "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api\\api.csproj": {
+              "projectPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api\\api.csproj"
             }
           }
         }

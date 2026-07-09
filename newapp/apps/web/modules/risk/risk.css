@@ -1,0 +1,23 @@
+.text-yellow { color: #d97706; }
+.border-l-yellow { border-left: 4px solid #f59e0b; }
+.badge-yellow { background: #fef3c7; color: #b45309; }
+.badge-green { background: #dcfce3; color: #15803d; }
+
+.risk-table {
+  border-collapse: collapse;
+  text-align: left;
+}
+.risk-table th {
+  background-color: var(--color-bg);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+.risk-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+.risk-table tr:last-child td {
+  border-bottom: none;
+}

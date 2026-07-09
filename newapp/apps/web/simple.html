@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+  <p>Testing module import...</p>
+  <script type="module">
+    console.log('In simple.html');
+    import { apiClient } from '/shared/apiClient.js';
+    console.log('Successfully imported apiClient:', apiClient);
+    import { CalendarModule } from '/modules/calendar/calendar.js';
+    console.log('Successfully imported CalendarModule:', CalendarModule);
+  </script>
+</body>
+</html>

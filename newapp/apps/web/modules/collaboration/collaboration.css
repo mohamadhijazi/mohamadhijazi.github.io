@@ -1,0 +1,41 @@
+.collab-table {
+  border-collapse: collapse;
+  text-align: left;
+}
+.collab-table th {
+  background-color: var(--color-bg);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+.collab-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+.collab-table tr:last-child td {
+  border-bottom: none;
+}
+.avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.badge-owner { background: #f3e8ff; color: #7e22ce; }
+.badge-editor { background: #dbeafe; color: #1d4ed8; }
+.badge-viewer { background: #f1f5f9; color: #64748b; }
+.input-small {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+.items-center { align-items: center; }
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }

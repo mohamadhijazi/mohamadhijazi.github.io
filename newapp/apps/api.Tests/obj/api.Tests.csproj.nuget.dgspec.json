@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ws\\newapp\\apps\\api.Tests\\api.Tests.csproj": {}
+    "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api.Tests\\api.Tests.csproj": {}
   },
   "projects": {
-    "C:\\ws\\newapp\\apps\\api.Tests\\api.Tests.csproj": {
+    "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api.Tests\\api.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ws\\newapp\\apps\\api.Tests\\api.Tests.csproj",
+        "projectUniqueName": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api.Tests\\api.Tests.csproj",
         "projectName": "api.Tests",
-        "projectPath": "C:\\ws\\newapp\\apps\\api.Tests\\api.Tests.csproj",
+        "projectPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api.Tests\\api.Tests.csproj",
         "packagesPath": "C:\\Users\\Mohammad\\.nuget\\packages\\",
-        "outputPath": "C:\\ws\\newapp\\apps\\api.Tests\\obj\\",
+        "outputPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -26,8 +26,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\ws\\newapp\\apps\\api\\api.csproj": {
-                "projectPath": "C:\\ws\\newapp\\apps\\api\\api.csproj"
+              "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api\\api.csproj": {
+                "projectPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api\\api.csproj"
               }
             }
           }
@@ -89,14 +89,14 @@
         }
       }
     },
-    "C:\\ws\\newapp\\apps\\api\\api.csproj": {
+    "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ws\\newapp\\apps\\api\\api.csproj",
+        "projectUniqueName": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\ws\\newapp\\apps\\api\\api.csproj",
+        "projectPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api\\api.csproj",
         "packagesPath": "C:\\Users\\Mohammad\\.nuget\\packages\\",
-        "outputPath": "C:\\ws\\newapp\\apps\\api\\obj\\",
+        "outputPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\apps\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -111,8 +111,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\ws\\newapp\\shared\\Shared.csproj": {
-                "projectPath": "C:\\ws\\newapp\\shared\\Shared.csproj"
+              "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\shared\\Shared.csproj": {
+                "projectPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\shared\\Shared.csproj"
               }
             }
           }
@@ -169,14 +169,14 @@
         }
       }
     },
-    "C:\\ws\\newapp\\shared\\Shared.csproj": {
+    "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\shared\\Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ws\\newapp\\shared\\Shared.csproj",
+        "projectUniqueName": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\shared\\Shared.csproj",
         "projectName": "Shared",
-        "projectPath": "C:\\ws\\newapp\\shared\\Shared.csproj",
+        "projectPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\shared\\Shared.csproj",
         "packagesPath": "C:\\Users\\Mohammad\\.nuget\\packages\\",
-        "outputPath": "C:\\ws\\newapp\\shared\\obj\\",
+        "outputPath": "C:\\ws\\github\\mohammadhijazi\\mohamadhijazi.github.io\\newapp\\shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config"
