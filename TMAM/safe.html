@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SAFe for Architects – Agile Architecture Cheat Sheet</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-alt: #020617;
+      --card: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.15);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #f97373;
+      --success: #4ade80;
+      --warning: #facc15;
+      --code-bg: #020617;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top left, #1e293b 0, #020617 40%, #000 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .title-block {
+      max-width: 720px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2.2rem;
+      letter-spacing: 0.03em;
+      color: #f9fafb;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.8);
+      color: var(--muted);
+    }
+
+    .badge.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .badge.danger {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .badge.success {
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 18px 18px 20px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(15,23,42,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(56,189,248,0.12), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #f9fafb;
+    }
+
+    .card-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    h2.section-title {
+      margin: 28px 0 12px;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #f9fafb;
+    }
+
+    h3 {
+      margin: 18px 0 6px;
+      font-size: 1.05rem;
+      color: #e5e7eb;
+    }
+
+    p {
+      margin: 4px 0 8px;
+      font-size: 0.95rem;
+    }
+
+    ul {
+      margin: 4px 0 10px 0;
+      padding-left: 18px;
+      font-size: 0.92rem;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      font-size: 0.8rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.9);
+      color: var(--muted);
+    }
+
+    .pill.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .pill.warning {
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .pill.success {
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .pill.danger {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .principle-row {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .principle-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .principle-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .principle-impact {
+      font-size: 0.9rem;
+    }
+
+    .code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: var(--code-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      overflow-x: auto;
+    }
+
+    .cheat-sheet {
+      margin-top: 32px;
+    }
+
+    .cheat-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr) minmax(0, 1.2fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 1080px) {
+      .cheat-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .cheat-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .cheat-section-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .divider {
+      margin: 24px 0 18px;
+      border-top: 1px dashed rgba(148,163,184,0.4);
+    }
+
+    .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="title-block">
+        <h1>SAFe for Architects – Agile Architecture Deep Dive</h1>
+        <p class="subtitle">
+          Based on SAFe for Architects Workbook (6.0) – focusing on Agile Architecture, SAFe architect roles,
+          principle impact, and a full implementation cheat sheet.
+        </p>
+        <div class="badge-row">
+          <span class="badge accent">Agile Architecture</span>
+          <span class="badge success">SAFe 6.0</span>
+          <span class="badge">Enterprise · Solution · System</span>
+          <span class="badge danger">Exam & Coaching Ready</span>
+        </div>
+      </div>
+      <div>
+        <div class="label">Quick Use</div>
+        <div class="pill-list">
+          <span class="pill accent">Training</span>
+          <span class="pill success">PI Planning</span>
+          <span class="pill warning">Architecture Reviews</span>
+          <span class="pill">DevOps Alignment</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- LEFT COLUMN: Definitions & Roles -->
+      <div>
+        <!-- Agile Architecture Definition -->
+        <section class="card">
+          <div class="card-inner">
+            <div class="card-header">
+              <div class="card-title">Agile Architecture – Definition</div>
+              <div class="card-tag">From SAFe for Architects Workbook (6.0)</div>
+            </div>
+            <p>
+              <span class="highlight">Agile Architecture</span> is the set of values, principles, and practices that
+              enable the <strong>active, continuous evolution</strong> of system design and technical structure while
+              maintaining a <strong>continuous flow of value</strong>.
+            </p>
+            <p>It is architecture designed to change, not architecture designed to be preserved.</p>
+
+            <h3>Key Characteristics</h3>
+            <ul>
+              <li><strong>Continuous evolution:</strong> Architecture evolves incrementally with each iteration and PI.</li>
+              <li><strong>Supports current and future needs:</strong> Systems remain useful today while being ready for tomorrow.</li>
+              <li><strong>Flow-oriented:</strong> Avoids phase-gated, heavy upfront design that delays value delivery.</li>
+              <li><strong>Always running systems:</strong> Architecture supports high availability and operational continuity.</li>
+              <li><strong>Intentional + emergent:</strong> Balances planned architectural direction with team-driven emergent design.</li>
+              <li><strong>DevOps & CI/CD enabled:</strong> Architecture is optimized for automation, integration, and deployment.</li>
+              <li><strong>Collaboration over documents:</strong> Architecture is expressed in code, models, and conversations—not just documents and review boards.</li>
+            </ul>
+
+            <div class="code">
+              Agile Architecture = Intentional Direction + Emergent Design + Continuous Flow + DevOps + Collaboration
+            </div>
+          </div>
+        </section>
+
+        <!-- SAFe Architect Roles -->
+        <section>
+          <h2 class="section-title">SAFe Architect Roles</h2>
+
+          <div class="grid-2">
+            <!-- Enterprise Architect -->
+            <div class="card">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="card-title">Enterprise Architect</div>
+                  <div class="card-tag">Portfolio / Across Value Streams</div>
+                </div>
+                <p>
+                  Operates at the <strong>portfolio level</strong>, aligning architecture with business strategy and
+                  guiding long-term technical direction across value streams and ARTs.
+                </p>
+                <h3>Core Responsibilities</h3>
+                <ul>
+                  <li><strong>Strategic alignment:</strong> Connects architecture to Strategic Themes and Portfolio Vision.</li>
+                  <li><strong>Architectural Runway strategy:</strong> Ensures runway exists for upcoming epics and capabilities.</li>
+                  <li><strong>Technology portfolio rationalization:</strong> Reduces duplication, legacy drag, and technical debt at scale.</li>
+                  <li><strong>Collaboration with LPM:</strong> Works with Lean Portfolio Management on investment and guardrails.</li>
+                  <li><strong>Innovation & modernization:</strong> Promotes modern practices (cloud, microservices, DevOps, security by design).</li>
+                </ul>
+                <div class="pill-list">
+                  <span class="pill accent">Portfolio Vision</span>
+                  <span class="pill">Strategic Themes</span>
+                  <span class="pill success">Architectural Runway</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Solution Architect -->
+            <div class="card">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="card-title">Solution Architect</div>
+                  <div class="card-tag">Solution Train / Across Systems</div>
+                </div>
+                <p>
+                  Operates at the <strong>large solution level</strong>, defining and evolving the architecture of
+                  complex solutions that span multiple ARTs and suppliers.
+                </p>
+                <h3>Core Responsibilities</h3>
+                <ul>
+                  <li><strong>Solution Intent & Vision:</strong> Defines and communicates the architectural intent of the solution.</li>
+                  <li><strong>NFRs across systems:</strong> Establishes and maintains non-functional requirements (performance, security, reliability).</li>
+                  <li><strong>CDP design:</strong> Supports the design of the Continuous Delivery Pipeline for the solution.</li>
+                  <li><strong>Built-in quality:</strong> Ensures quality is embedded across all participating systems and components.</li>
+                  <li><strong>Collaboration with System & Enterprise Architects:</strong> Aligns solution-level architecture with portfolio and ART-level concerns.</li>
+                </ul>
+                <div class="pill-list">
+                  <span class="pill accent">Solution Intent</span>
+                  <span class="pill warning">NFRs</span>
+                  <span class="pill success">CDP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-inner">
+              <div class="card-header">
+                <div class="card-title">System Architect</div>
+                <div class="card-tag">ART / Single System</div>
+              </div>
+              <p>
+                Operates at the <strong>ART level</strong>, defining and evolving the architecture of a single system
+                and enabling teams to deliver value continuously.
+              </p>
+              <h3>Core Responsibilities</h3>
+              <ul>
+                <li><strong>Architecture vision for ART:</strong> Provides a clear technical direction for the ART.</li>
+                <li><strong>Support DevOps & CI:</strong> Designs for continuous integration, testability, and automation.</li>
+                <li><strong>Built-in quality & NFRs:</strong> Ensures non-functional requirements are understood and implemented by teams.</li>
+                <li><strong>Collaboration with teams:</strong> Works closely with Agile teams to evolve design and resolve technical issues.</li>
+                <li><strong>Incremental evolution:</strong> Guides architecture changes through features, enablers, and refactoring.</li>
+              </ul>
+              <div class="pill-list">
+                <span class="pill accent">ART Vision</span>
+                <span class="pill success">CI / Testability</span>
+                <span class="pill warning">Built-in Quality</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT COLUMN: Principles Impact & Domains -->
+      <div>
+        <!-- SAFe Principles Impact -->
+        <section class="card">
+          <div class="card-inner">
+            <div class="card-header">
+              <div class="card-title">SAFe Principles – Impact on Architecture</div>
+              <div class="card-tag">Lean-Agile Principles → Architectural Behavior</div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">1. Economic View</div>
+              <div class="principle-impact">
+                Architects optimize for <strong>economic outcomes</strong>: cost of delay, value, lead time, risk.
+                Architectural decisions are evaluated based on their economic impact, not just technical elegance.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">2. Systems Thinking</div>
+              <div class="principle-impact">
+                Architecture considers the <strong>whole system</strong> across design, development, deployment, and operations.
+                Local optimizations are avoided when they harm end-to-end flow or customer outcomes.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">3. Variability & Options</div>
+              <div class="principle-impact">
+                Architects <strong>assume variability</strong> and preserve options, exploring alternatives and delaying
+                irreversible decisions until sufficient learning has occurred.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">4. Incremental Build</div>
+              <div class="principle-impact">
+                Architecture supports <strong>incremental development</strong> with fast learning cycles, enabling
+                frequent integration points and feedback from working systems.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">5. Objective Milestones</div>
+              <div class="principle-impact">
+                Milestones are based on <strong>working systems</strong>, not documents. Architecture must enable
+                demonstrable functionality early and often.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">6. Flow</div>
+              <div class="principle-impact">
+                Architects design for <strong>uninterrupted value flow</strong>, reducing bottlenecks such as monoliths,
+                manual compliance, and tight coupling between components.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">7. Cadence & Sync</div>
+              <div class="principle-impact">
+                Architecture work is aligned with <strong>cadence</strong> (iterations, PIs) and synchronized across
+                domains, enabling predictable integration and planning.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">8. Intrinsic Motivation</div>
+              <div class="principle-impact">
+                Architects unlock the <strong>intrinsic motivation</strong> of knowledge workers by empowering teams,
+                avoiding command-and-control, and fostering autonomy within clear guardrails.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">9. Decentralized Decisions</div>
+              <div class="principle-impact">
+                Architects define <strong>architectural guardrails</strong> so teams can make fast local decisions
+                without constant escalation, while keeping strategic decisions centralized.
+              </div>
+            </div>
+
+            <div class="principle-row">
+              <div class="principle-label">10. Organize Around Value</div>
+              <div class="principle-impact">
+                Architecture influences <strong>team topology</strong>, value streams, and ART structure, ensuring
+                systems and teams are organized around the flow of value to customers.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Architecture Domains -->
+        <section class="card" style="margin-top: 16px;">
+          <div class="card-inner">
+            <div class="card-header">
+              <div class="card-title">Architecture Domains</div>
+              <div class="card-tag">What Architects Shape</div>
+            </div>
+            <p>SAFe architects operate across multiple domains to ensure coherent, end-to-end solutions:</p>
+            <ul>
+              <li><strong>Business Architecture:</strong> Value streams, processes, organizational structure, and strategy.</li>
+              <li><strong>Information Architecture:</strong> Data models, data flow, storage, accuracy, and governance.</li>
+              <li><strong>Application Architecture:</strong> User-facing systems, services, and application components.</li>
+              <li><strong>Technical Architecture:</strong> Infrastructure, networks, hosting, platforms, and runtime environments.</li>
+              <li><strong>Integration Architecture:</strong> APIs, messaging, eventing, and interoperability between systems.</li>
+              <li><strong>Security Architecture:</strong> Protection, detection, response, and compliance-by-design.</li>
+            </ul>
+            <div class="pill-list">
+              <span class="pill accent">Value Streams</span>
+              <span class="pill">Data & Integration</span>
+              <span class="pill warning">Security & Compliance</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- FULL CHEAT SHEET -->
+    <section class="cheat-sheet">
+      <div class="divider"></div>
+      <h2 class="section-title">Full SAFe Architecture Cheat Sheet</h2>
+      <p>
+        Use this section as a <strong>one-page operational reference</strong> for SAFe architecture work:
+        PI planning, architecture reviews, coaching, and exam preparation.
+      </p>
+
+      <div class="cheat-grid">
+        <!-- Column 1: Core Concepts -->
+        <div class="card">
+          <div class="card-inner">
+            <div class="cheat-section-title">Agile Architecture – Core</div>
+            <ul>
+              <li><strong>Purpose:</strong> Enable continuous evolution of systems while maintaining flow of value.</li>
+              <li><strong>Mindset:</strong> Architecture is a living system, not a static blueprint.</li>
+              <li><strong>Balance:</strong> Intentional architecture (direction) + emergent design (team innovation).</li>
+              <li><strong>Expression:</strong> Code, models, tests, pipelines, and conversations.</li>
+              <li><strong>Outcome:</strong> Faster learning, safer change, and resilient systems.</li>
+            </ul>
+
+            <div class="cheat-section-title">Architectural Runway</div>
+            <ul>
+              <li><strong>Definition:</strong> Existing technical capabilities that enable near-term features.</li>
+              <li><strong>Goal:</strong> Avoid feature delays due to missing infrastructure or platform capabilities.</li>
+              <li><strong>Practice:</strong> Extend runway via enabler epics, capabilities, and features.</li>
+              <li><strong>Timing:</strong> Ensure runway is ready before PI Planning and major commitments.</li>
+            </ul>
+
+            <div class="cheat-section-title">Organizing Around Value</div>
+            <ul>
+              <li><strong>Conway’s Law:</strong> System design mirrors communication structure.</li>
+              <li><strong>Inverse Conway Maneuver:</strong> Adjust team structure to achieve desired architecture.</li>
+              <li><strong>Value Streams:</strong> Map systems to operational and development value streams.</li>
+              <li><strong>Team Topologies:</strong> Use natural architectural seams to define teams and ARTs.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Column 2: DevOps & CDP -->
+        <div class="card">
+          <div class="card-inner">
+            <div class="cheat-section-title">Architecture & DevOps (CALMR)</div>
+            <ul>
+              <li><strong>Culture:</strong> Shared responsibility for quality, reliability, and operability.</li>
+              <li><strong>Automation:</strong> CI/CD, automated tests, automated compliance, infrastructure as code.</li>
+              <li><strong>Lean Flow:</strong> Small batches, WIP limits, fast feedback loops.</li>
+              <li><strong>Measurement:</strong> Telemetry, dashboards, DORA metrics, business KPIs.</li>
+              <li><strong>Recovery:</strong> Rollback, fix-forward, chaos testing, resilience patterns.</li>
+            </ul>
+
+            <div class="cheat-section-title">Continuous Delivery Pipeline – Architectural Focus</div>
+            <h3>Continuous Exploration (CE)</h3>
+            <ul>
+              <li><strong>MVPs & MMFs:</strong> Define minimum viable architecture for early learning.</li>
+              <li><strong>Architectural runway:</strong> Identify enablers needed for upcoming features.</li>
+              <li><strong>Backlog contribution:</strong> Epics, capabilities, features, and NFRs.</li>
+            </ul>
+
+            <h3>Continuous Integration (CI)</h3>
+            <ul>
+              <li><strong>Loosely coupled systems:</strong> Enable independent build and test.</li>
+              <li><strong>Automated tests:</strong> Unit, integration, contract, performance, security.</li>
+              <li><strong>Trunk-based development:</strong> Short-lived branches, frequent integration.</li>
+              <li><strong>Automated compliance:</strong> Policy-as-code, security scanning.</li>
+            </ul>
+
+            <h3>Continuous Deployment (CD)</h3>
+            <ul>
+              <li><strong>One-click deploy:</strong> Automated deployment pipelines.</li>
+              <li><strong>Infrastructure as code:</strong> Repeatable, versioned environments.</li>
+              <li><strong>Release strategies:</strong> Feature toggles, blue/green, canary.</li>
+              <li><strong>Telemetry:</strong> Full-stack monitoring and logging.</li>
+            </ul>
+
+            <h3>Release on Demand</h3>
+            <ul>
+              <li><strong>Decouple deploy from release:</strong> Deploy frequently, release when business is ready.</li>
+              <li><strong>Architect for operations:</strong> NFRs, SLAs, disaster recovery, observability.</li>
+              <li><strong>Measure value:</strong> Business outcomes, customer satisfaction, usage patterns.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Column 3: Roles & Collaboration -->
+        <div class="card">
+          <div class="card-inner">
+            <div class="cheat-section-title">Roles & Collaboration</div>
+            <ul>
+              <li><strong>Enterprise Architect:</strong> Strategy, portfolio, runway, technology portfolio.</li>
+              <li><strong>Solution Architect:</strong> Solution intent, NFRs, CDP, cross-ART alignment.</li>
+              <li><strong>System Architect:</strong> ART vision, CI, built-in quality, team collaboration.</li>
+              <li><strong>Key partners:</strong> Product Management, RTE/STE, Business Owners, Epic Owners.</li>
+              <li><strong>Visibility:</strong> Architecture work appears in backlogs as enablers and NFRs.</li>
+            </ul>
+
+            <div class="cheat-section-title">SAFe Principles – Quick Mapping</div>
+            <ul>
+              <li><strong>1. Economic View:</strong> Evaluate architecture via cost of delay and value.</li>
+              <li><strong>2. Systems Thinking:</strong> Optimize end-to-end, not local components.</li>
+              <li><strong>3. Variability:</strong> Preserve options, avoid premature standardization.</li>
+              <li><strong>4. Incremental Build:</strong> Architect for small, testable increments.</li>
+              <li><strong>5. Objective Milestones:</strong> Working systems as proof, not documents.</li>
+              <li><strong>6. Flow:</strong> Remove architectural bottlenecks and manual gates.</li>
+              <li><strong>7. Cadence & Sync:</strong> Align architecture work with PI and iteration cadence.</li>
+              <li><strong>8. Motivation:</strong> Enable teams to own design within guardrails.</li>
+              <li><strong>9. Decentralized Decisions:</strong> Define what is centralized vs. local.</li>
+              <li><strong>10. Organize Around Value:</strong> Architect systems and teams around value streams.</li>
+            </ul>
+
+            <div class="cheat-section-title">PI Planning – Architecture Checklist</div>
+            <ul>
+              <li><strong>Before PI:</strong> Review architectural runway and key enablers.</li>
+              <li><strong>During PI:</strong> Present architecture vision and NFRs to ARTs.</li>
+              <li><strong>Align:</strong> Ensure features and enablers support architectural direction.</li>
+              <li><strong>Risks:</strong> Identify architectural risks and dependencies across teams.</li>
+              <li><strong>After PI:</strong> Track architectural enablers and NFR implementation.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        This page is designed as a detailed, exam-ready and implementation-ready reference for SAFe architects.
+      </div>
+    </section>
+  </div>
+</body>
+</html>

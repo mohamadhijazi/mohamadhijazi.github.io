@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unified Agentic AI Architecture – SAFe-Aligned Overview</title>
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-alt: #0f172a;
+      --card: #0b1220;
+      --border: #1f2937;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.12);
+      --gov: #f97316;
+      --sec: #22c55e;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #f97373;
+      --warning: #facc15;
+      --success: #4ade80;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top left, #1e293b 0, #020617 40%, #000 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+      letter-spacing: 0.04em;
+      color: #f9fafb;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.8);
+      color: var(--muted);
+    }
+
+    .badge.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .badge.success {
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .badge.danger {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    /* Overview diagram */
+
+    .diagram-wrapper {
+      margin-top: 28px;
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(2,6,23,0.98));
+      border: 1px solid var(--border);
+      box-shadow:
+        0 20px 40px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(15,23,42,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .diagram-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(56,189,248,0.18), transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .diagram-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr) 160px;
+      gap: 12px;
+    }
+
+    @media (max-width: 960px) {
+      .diagram-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .diagram-title {
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #f9fafb;
+      text-align: center;
+    }
+
+    .diagram-subtitle {
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .diagram-center {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .layer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+
+    .layer-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .layer-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .layer-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+      background: rgba(15,23,42,0.9);
+    }
+
+    .chip.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .chip.success {
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .chip.warning {
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .chip.danger {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .rail {
+      border-radius: 16px;
+      border: 1px dashed rgba(148,163,184,0.5);
+      padding: 10px 10px 12px;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .rail-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    .rail-title.gov { color: var(--gov); }
+    .rail-title.sec { color: var(--sec); }
+
+    .rail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .rail-item::before {
+      content: "• ";
+      color: rgba(148,163,184,0.8);
+    }
+
+    .diagram-footer {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .principle-pill {
+      font-size: 0.75rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.9);
+      color: var(--muted);
+    }
+
+    .principle-pill.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Sections */
+
+    h2.section-title {
+      margin: 32px 0 10px;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #f9fafb;
+    }
+
+    h3 {
+      margin: 18px 0 6px;
+      font-size: 1.05rem;
+      color: #e5e7eb;
+    }
+
+    p { margin: 4px 0 8px; font-size: 0.95rem; }
+
+    ul {
+      margin: 4px 0 10px 0;
+      padding-left: 18px;
+      font-size: 0.9rem;
+    }
+
+    li { margin-bottom: 4px; }
+
+    .card {
+      margin-top: 10px;
+      padding: 14px 16px 16px;
+      border-radius: 14px;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid var(--border);
+    }
+
+    .card-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2 { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: #020617;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      color: var(--muted);
+      margin-top: 6px;
+      overflow-x: auto;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Unified Agentic AI Architecture – SAFe-Aligned View</h1>
+      <p class="subtitle">
+        Build Once · Index Once · Govern Once · Reuse Everywhere – mapped to SAFe architecture, principles,
+        governance, security, and built-in quality.
+      </p>
+      <div class="badge-row">
+        <span class="badge accent">Agile Architecture</span>
+        <span class="badge success">SAFe 6.0</span>
+        <span class="badge">Enterprise · Solution · System</span>
+        <span class="badge danger">Governed & Compliant by Design</span>
+      </div>
+    </header>
+
+    <!-- SLIDE 1: Overview diagram recreated in HTML/CSS -->
+    <section class="diagram-wrapper">
+      <div class="diagram-title">Unified Agentic AI Architecture</div>
+      <div class="diagram-subtitle">Layers, Governance, Security & Principles – SAFe-Aligned</div>
+
+      <div class="diagram-inner">
+        <!-- Left rail: Governance -->
+        <div class="rail">
+          <div class="rail-title gov">Governance, Risk & Compliance (Cross-Cutting)</div>
+          <div class="rail-list">
+            <div class="rail-item">AI Governance</div>
+            <div class="rail-item">Architecture Governance</div>
+            <div class="rail-item">Risk Management</div>
+            <div class="rail-item">Compliance Management</div>
+            <div class="rail-item">Data Governance</div>
+            <div class="rail-item">Privacy & Responsible AI</div>
+            <div class="rail-item">Audit & Assurance</div>
+            <div class="rail-item">Policy & Standards</div>
+            <div class="rail-item">Ethics & Fairness</div>
+            <div class="rail-item">Model Governance</div>
+          </div>
+        </div>
+
+        <!-- Center: Layers -->
+        <div class="diagram-center">
+          <!-- L7 -->
+          <div class="layer">
+            <div>
+              <div class="layer-label">L7</div>
+              <div class="layer-name">Business Value & Outcomes</div>
+            </div>
+            <div class="layer-items">
+              <span class="chip success">ROI</span>
+              <span class="chip">Cost Savings</span>
+              <span class="chip">Compliance</span>
+              <span class="chip">Productivity</span>
+              <span class="chip">Better Decisions</span>
+            </div>
+          </div>
+          <!-- L6 -->
+          <div class="layer">
+            <div>
+              <div class="layer-label">L6</div>
+              <div class="layer-name">Users & Experience</div>
+            </div>
+            <div class="layer-items">
+              <span class="chip">Business Users</span>
+              <span class="chip">Analysts</span>
+              <span class="chip">Managers</span>
+              <span class="chip">Developers</span>
+            </div>
+          </div>
+          <!-- L5 -->
+          <div class="layer">
+            <div>
+              <div class="layer-label">L5</div>
+              <div class="layer-name">Agentic AI Services</div>
+            </div>
+            <div class="layer-items">
+              <span class="chip">Agent Catalogue</span>
+              <span class="chip">Skills Catalogue</span>
+              <span class="chip">Tools Catalogue</span>
+              <span class="chip">Prompt Catalogue</span>
+              <span class="chip">Flow Catalogue</span>
+              <span class="chip">Agent Orchestration</span>
+              <span class="chip">Multi-Agent Runtime</span>
+              <span class="chip">Human in the Loop</span>
+            </div>
+          </div>
+          <!-- L4 -->
+          <div class="layer">
+            <div>
+              <div class="layer-label">L4</div>
+              <div class="layer-name">Knowledge & Intelligence</div>
+            </div>
+            <div class="layer-items">
+              <span class="chip">Unified Search Index</span>
+              <span class="chip">Semantic Search</span>
+              <span class="chip">Vector Store</span>
+              <span class="chip">Knowledge Graph</span>
+              <span class="chip">Ontology</span>
+              <span class="chip">Content Manager</span>
+              <span class="chip">RAG Services</span>
+              <span class="chip">Knowledge Federation</span>
+            </div>
+          </div>
+          <!-- L3 -->
+          <div class="layer">
+            <div>
+              <div class="layer-label">L3</div>
+              <div class="layer-name">Enterprise Information</div>
+            </div>
+            <div class="layer-items">
+              <span class="chip">Documents</span>
+              <span class="chip">Applications</span>
+              <span class="chip">Databases</span>
+              <span class="chip">Data Lake</span>
+              <span class="chip">APIs</span>
+              <span class="chip">Events</span>
+            </div>
+          </div>
+          <!-- L2 -->
+          <div class="layer">
+            <div>
+              <div class="layer-label">L2</div>
+              <div class="layer-name">AI Platform & Integration</div>
+            </div>
+            <div class="layer-items">
+              <span class="chip">AI Gateway</span>
+              <span class="chip">LLM Services</span>
+              <span class="chip">Integration Services</span>
+              <span class="chip">MCP</span>
+              <span class="chip">Prompt Management</span>
+            </div>
+          </div>
+          <!-- L1 -->
+          <div class="layer">
+            <div>
+              <div class="layer-label">L1</div>
+              <div class="layer-name">Infrastructure</div>
+            </div>
+            <div class="layer-items">
+              <span class="chip">Cloud</span>
+              <span class="chip">Containers</span>
+              <span class="chip">Storage</span>
+              <span class="chip">Network</span>
+              <span class="chip">Monitoring</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right rail: Security -->
+        <div class="rail">
+          <div class="rail-title sec">Security & Access Management (Cross-Cutting)</div>
+          <div class="rail-list">
+            <div class="rail-item">Identity & Access Management</div>
+            <div class="rail-item">RBAC / ABAC</div>
+            <div class="rail-item">SSO & Federation</div>
+            <div class="rail-item">Data Loss Prevention (DLP)</div>
+            <div class="rail-item">Encryption (Transit & At Rest)</div>
+            <div class="rail-item">Secrets & Key Management</div>
+            <div class="rail-item">Network Security & Zero Trust</div>
+            <div class="rail-item">SIEM / SOC</div>
+            <div class="rail-item">Audit Logs</div>
+            <div class="rail-item">Privacy Controls</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diagram-footer">
+        <span class="principle-pill accent">Governed & Compliant by Design</span>
+        <span class="principle-pill">Reusable & Composable by Default</span>
+        <span class="principle-pill">Unified Search & Index Right Context</span>
+        <span class="principle-pill">Secure, Trustworthy & Responsible AI</span>
+        <span class="principle-pill">Observability & Insights End-to-End</span>
+        <span class="principle-pill">Cost Optimized Always</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2+: Layers with SAFe architecture mapping -->
+
+    <section>
+      <h2 class="section-title">L1 – Infrastructure Layer (SAFe Architecture View)</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">SAFe Roles & Architecture</div>
+          <ul>
+            <li><strong>Enterprise Architect:</strong> cloud strategy, regions, landing zones, infra runway.</li>
+            <li><strong>System Architect:</strong> Kubernetes patterns, monitoring, logging, resilience.</li>
+            <li><strong>Architectural Runway:</strong> infra-as-code, observability, DR ready for features.</li>
+          </ul>
+          <div class="card-label">Principles</div>
+          <ul>
+            <li><strong>P1 Economic View:</strong> cost-optimized infra, autoscaling, right-sizing.</li>
+            <li><strong>P2 Systems Thinking:</strong> latency, throughput, reliability across stack.</li>
+            <li><strong>P6 Flow:</strong> automated provisioning, no manual infra gates.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Security, Governance & Quality</div>
+          <ul>
+            <li><strong>Security:</strong> Zero Trust, encryption, secrets management, SIEM/SOC.</li>
+            <li><strong>Governance:</strong> approved infra patterns, architecture standards, audit trails.</li>
+            <li><strong>Quality:</strong> SLOs, DR tests, chaos engineering, infra tests (Terraform, Helm).</li>
+          </ul>
+          <div class="code">
+            L1 = Reliable, observable, secure foundation for all AI and agentic services.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">L2 – AI Platform & Integration Layer</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">SAFe Roles & Architecture</div>
+          <ul>
+            <li><strong>System Architect:</strong> AI gateway, LLM integration, MCP contracts, prompt infra.</li>
+            <li><strong>Solution Architect:</strong> cross-ART interoperability, multi-LLM strategy.</li>
+            <li><strong>Runway:</strong> reusable AI platform capabilities for all ARTs and agents.</li>
+          </ul>
+          <div class="card-label">Principles</div>
+          <ul>
+            <li><strong>P3 Variability & Options:</strong> multi-LLM, pluggable gateways, configurable prompts.</li>
+            <li><strong>P4 Incremental Build:</strong> start with core flows, extend tools and MCP over PIs.</li>
+            <li><strong>P7 Cadence & Sync:</strong> platform roadmap aligned with PI cadence.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Security, Governance & Quality</div>
+          <ul>
+            <li><strong>Security:</strong> IAM, RBAC/ABAC for models, tools, prompts.</li>
+            <li><strong>Governance:</strong> model governance, prompt governance, usage policies.</li>
+            <li><strong>Quality:</strong> latency, throughput, safety filters, integration tests.</li>
+          </ul>
+          <div class="code">
+            L2 = Governed AI platform enabling safe, composable agent and app integration.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">L3 – Enterprise Information Layer</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">SAFe Roles & Architecture</div>
+          <ul>
+            <li><strong>Enterprise Architect:</strong> data strategy, domains, canonical models.</li>
+            <li><strong>System Architect:</strong> API contracts, event schemas, data access patterns.</li>
+            <li><strong>Organize Around Value:</strong> data domains aligned to value streams.</li>
+          </ul>
+          <div class="card-label">Principles</div>
+          <ul>
+            <li><strong>P2 Systems Thinking:</strong> data as product, end-to-end lineage.</li>
+            <li><strong>P10 Organize Around Value:</strong> information mapped to operational flows.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Security, Governance & Quality</div>
+          <ul>
+            <li><strong>Security:</strong> DLP, access controls on APIs, DBs, lakes.</li>
+            <li><strong>Governance:</strong> data governance, privacy, retention, regulatory compliance.</li>
+            <li><strong>Quality:</strong> data quality (accuracy, freshness), lineage, NFRs for performance.</li>
+          </ul>
+          <div class="code">
+            L3 = Trusted, governed enterprise information feeding knowledge and agents.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">L4 – Knowledge & Intelligence Layer</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">SAFe Roles & Architecture</div>
+          <ul>
+            <li><strong>Solution/System Architect:</strong> unified index, RAG patterns, KG & ontology.</li>
+            <li><strong>Runway:</strong> shared search and knowledge services for all ARTs.</li>
+          </ul>
+          <div class="card-label">Principles</div>
+          <ul>
+            <li><strong>P3 Variability:</strong> multiple retrieval strategies (BM25, vectors, KG).</li>
+            <li><strong>P5 Objective Milestones:</strong> validate via working RAG use cases.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Security, Governance & Quality</div>
+          <ul>
+            <li><strong>Security:</strong> access-aware search, RBAC/ABAC in index.</li>
+            <li><strong>Governance:</strong> policies for indexing scope, PII handling, retention.</li>
+            <li><strong>Quality:</strong> relevance metrics, feedback loops, KG consistency checks.</li>
+          </ul>
+          <div class="code">
+            L4 = Unified, governed knowledge fabric powering precise, context-aware AI.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">L5 – Agentic AI Services Layer</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">SAFe Roles & Architecture</div>
+          <ul>
+            <li><strong>System Architect:</strong> agent orchestration, tool contracts, HITL integration.</li>
+            <li><strong>Solution Architect:</strong> multi-agent flows across systems and ARTs.</li>
+          </ul>
+          <div class="card-label">Principles</div>
+          <ul>
+            <li><strong>P8 Intrinsic Motivation:</strong> empower teams to build agents within guardrails.</li>
+            <li><strong>P9 Decentralized Decisions:</strong> local agent design, centralized safety standards.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Security, Governance & Quality</div>
+          <ul>
+            <li><strong>Security:</strong> audit logs for agent actions, tool calls, HITL approvals.</li>
+            <li><strong>Governance:</strong> Responsible AI, ethics, model governance for agent behavior.</li>
+            <li><strong>Quality:</strong> scenario tests, failure modes, escalation paths, HITL gates.</li>
+          </ul>
+          <div class="code">
+            L5 = Governed, testable agent ecosystem with human oversight for high-risk decisions.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">L6 – Users & Experience Layer</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">SAFe Roles & Architecture</div>
+          <ul>
+            <li><strong>Product Management + Architects:</strong> UX patterns, personas, value hypotheses.</li>
+            <li><strong>System Architect:</strong> safe integration of UX with agents and knowledge.</li>
+          </ul>
+          <div class="card-label">Principles</div>
+          <ul>
+            <li><strong>P4 Incremental Build:</strong> ship small UX slices, learn from usage.</li>
+            <li><strong>P5 Objective Milestones:</strong> measure UX via working features.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Security, Governance & Quality</div>
+          <ul>
+            <li><strong>Security:</strong> SSO, federation, RBAC/ABAC per persona.</li>
+            <li><strong>Governance:</strong> privacy controls in UI, consent, data visibility.</li>
+            <li><strong>Quality:</strong> usability, accessibility, feedback loops, telemetry.</li>
+          </ul>
+          <div class="code">
+            L6 = Secure, role-aware experiences that expose AI safely and usefully.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">L7 – Business Value & Outcomes Layer</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">SAFe Roles & Architecture</div>
+          <ul>
+            <li><strong>Enterprise Architect + Business Owners:</strong> tie architecture to ROI, risk, productivity.</li>
+            <li><strong>Lean Portfolio Management:</strong> epics and guardrails aligned to outcomes.</li>
+          </ul>
+          <div class="card-label">Principles</div>
+          <ul>
+            <li><strong>P1 Economic View:</strong> architecture choices justified by ROI and cost of delay.</li>
+            <li><strong>P6 Flow:</strong> measure impact on lead time, throughput, incident reduction.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Security, Governance & Quality</div>
+          <ul>
+            <li><strong>Security & Governance:</strong> compliance management, audit & assurance, risk management.</li>
+            <li><strong>Quality:</strong> outcome metrics, user satisfaction, continuous improvement.</li>
+          </ul>
+          <div class="code">
+            L7 = Portfolio-level view where architecture is judged by business outcomes.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cross-cutting & cheat sheet -->
+
+    <section>
+      <h2 class="section-title">Cross-Cutting Rails & SAFe Cheat Sheet</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-label">Cross-Cutting Governance & Security</div>
+          <ul>
+            <li><strong>Governance:</strong> AI, data, model, architecture, compliance embedded as enabler epics/features.</li>
+            <li><strong>Security:</strong> treated as NFRs at every layer; reusable platform capabilities.</li>
+            <li><strong>Policies & Standards:</strong> SAFe guardrails visible in backlogs and PI planning.</li>
+          </ul>
+          <div class="card-label">Observability & Cost</div>
+          <ul>
+            <li><strong>Observability:</strong> telemetry, tracing, metrics from L1–L7.</li>
+            <li><strong>Cost Optimization:</strong> economic view applied to infra, models, agents, features.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">SAFe Architecture Cheat Sheet (Condensed)</div>
+          <ul>
+            <li><strong>Agile Architecture:</strong> intentional + emergent, continuous evolution, DevOps-enabled.</li>
+            <li><strong>Roles:</strong> Enterprise (strategy), Solution (large solution), System (ART/system).</li>
+            <li><strong>Runway:</strong> technical capabilities ready before features.</li>
+            <li><strong>Principles:</strong> economic view, systems thinking, variability, incremental build, objective milestones, flow, cadence, motivation, decentralized decisions, organize around value.</li>
+            <li><strong>DevOps (CALMR):</strong> culture, automation, lean flow, measurement, recovery.</li>
+          </ul>
+          <div class="code">
+            SAFe + Unified Agentic AI = Governed, secure, value-centric architecture from infra to outcomes.
+          </div>
+        </div>
+      </div>
+      <div class="footer-note">
+        Single-page HTML: overview diagram + full SAFe mapping across all layers, governance, security, and quality.
+      </div>
+    </section>
+  </div>
+</body>
+</html>
