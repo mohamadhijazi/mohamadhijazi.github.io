@@ -1,0 +1,569 @@
+/* ==========================================================================
+   PORTFOLIO & LANDING PAGE STYLES - MOHAMMAD HIJAZI
+   ========================================================================== */
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  background: rgba(7, 10, 18, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-glass);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-main);
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--grad-primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #040914;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color var(--transition-fast);
+}
+
+.nav-links a:hover {
+  color: var(--accent-cyan);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  padding-top: 140px;
+  padding-bottom: 90px;
+  overflow: hidden;
+}
+
+.hero-bg-glow {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: var(--grad-glow);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  border-radius: var(--radius-full);
+  color: var(--accent-cyan);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  max-width: 540px;
+}
+
+.hero-author-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+  width: fit-content;
+}
+
+.hero-avatar-mini {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-cyan);
+}
+
+.hero-author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-author-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.hero-author-title {
+  font-size: 0.78rem;
+  color: var(--accent-cyan);
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero-preview-card {
+  position: relative;
+  padding: 1.5rem;
+  background: rgba(13, 19, 32, 0.85);
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.15);
+}
+
+.hero-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.window-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.preview-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stat-item {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.stat-val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+}
+
+.stat-lbl {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Portfolio & Bio Section */
+.section {
+  padding: 90px 0;
+  position: relative;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3.5rem auto;
+}
+
+.section-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.section-desc {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+/* Portfolio Cards & Grid */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.portfolio-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform var(--transition-slow);
+}
+
+.portfolio-card:hover {
+  transform: translateY(-6px);
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 242, 254, 0.1);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--accent-cyan);
+  margin-bottom: 1.25rem;
+}
+
+.portfolio-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.portfolio-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  flex-grow: 1;
+  margin-bottom: 1.25rem;
+}
+
+/* How It Works & Value Prop */
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.step-card {
+  padding: 1.75rem;
+  position: relative;
+}
+
+.step-num {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.08);
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+}
+
+.step-card h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--accent-cyan);
+}
+
+.step-card p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+/* Domain Intelligence Pills Matrix */
+.domain-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.domain-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.domain-pill:hover {
+  background: rgba(0, 242, 254, 0.08);
+  border-color: var(--border-accent);
+  color: var(--accent-cyan);
+}
+
+.domain-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+}
+
+/* Detailed Vibe Instructions Card Banner */
+.vibe-banner {
+  background: linear-gradient(135deg, rgba(127, 0, 255, 0.15) 0%, rgba(0, 242, 254, 0.15) 100%);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.vibe-content {
+  max-width: 650px;
+}
+
+.vibe-content h3 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.vibe-content p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Footer Section with Mohammad Hijazi Profile */
+.footer-section {
+  background: #04070f;
+  border-top: 1px solid var(--border-glass);
+  padding: 70px 0 40px 0;
+  margin-top: 80px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+}
+
+.footer-profile-box {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.footer-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent-cyan);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+  flex-shrink: 0;
+}
+
+.profile-details h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.profile-role {
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.profile-bio {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.social-links-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.social-link:hover {
+  background: rgba(0, 242, 254, 0.12);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+.footer-col h5 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: var(--text-main);
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--accent-cyan);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .how-it-works-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* Light Theme Overrides - Portfolio */
+:root[data-theme="light"] .vibe-banner {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(244, 208, 63, 0.12) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+:root[data-theme="light"] .section#value-prop {
+  background: rgba(212, 175, 55, 0.03) !important;
+}
+
+:root[data-theme="light"] .hero-tag {
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  color: var(--accent-gold-dark);
+}
+
+:root[data-theme="light"] .hero-author-badge {
+  background: rgba(212, 175, 55, 0.04);
+}
+
+:root[data-theme="light"] .card-icon {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--accent-gold-dark);
+}
+
+:root[data-theme="light"] .domain-pill:hover {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: rgba(212, 175, 55, 0.3);
+  color: var(--accent-gold-dark);
+}
+
+:root[data-theme="light"] .domain-dot {
+  background: var(--accent-gold);
+}
+
+:root[data-theme="light"] .social-link:hover {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold-dark);
+}
+
+:root[data-theme="light"] .btn-primary {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+:root[data-theme="light"] .brand-icon {
+  color: #ffffff;
+}

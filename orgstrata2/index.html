@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mohammad Hijazi | Digital Twin Universal Workspace — Architect & Portfolio</title>
+  <meta name="description" content="Professional portfolio of Mohammad Hijazi, Senior Systems Architect & Digital Twin Specialist. Launch the Digital Twin Universal Workspace: a local-first PWA for personal life and enterprise operations modeling.">
+  <meta name="author" content="Mohammad Hijazi">
+  <meta name="keywords" content="Digital Twin, Workspace, Mohammad Hijazi, PWA, BPMN, Highcharts, FullCalendar, Local-First, Enterprise Architecture">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icon Library (local) -->
+  <link rel="stylesheet" href="vendor/css/fontawesome.all.min.css">
+
+  <!-- Vendor CSS Libraries (local) -->
+  <link rel="stylesheet" href="vendor/css/leaflet.css">
+  <link rel="stylesheet" href="vendor/css/fullcalendar.min.css">
+  <link rel="stylesheet" href="vendor/css/bpmn-js.css">
+  <link rel="stylesheet" href="vendor/css/jquery.dataTables.min.css">
+
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/portfolio.css">
+  <link rel="stylesheet" href="css/workspace.css">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#d4af37" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#070a12" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+<!-- ========================================================================
+     PORTFOLIO LANDING PAGE
+     ======================================================================== -->
+
+  <!-- TOP NAVIGATION BAR -->
+  <nav class="navbar" id="topNavbar">
+    <div class="container">
+      <a href="#" class="nav-brand">
+        <div class="brand-icon"><i class="fa-solid fa-network-wired"></i></div>
+        <span>OrgStrata <span style="font-size:0.75rem;color:var(--accent-cyan);font-weight:600;margin-left:4px;">UNIVERSAL TWIN</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about"><i class="fa-solid fa-microchip"></i> Architecture</a></li>
+        <li><a href="#value-prop"><i class="fa-solid fa-cubes"></i> How It Works</a></li>
+        <li><a href="#domains"><i class="fa-solid fa-layer-group"></i> 11 Domains</a></li>
+        <li><a href="#vibe-instructions"><i class="fa-solid fa-file-code"></i> Vibe Manual</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" id="btnThemeToggleNav" title="Toggle light/dark theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="theme-toggle-btn" id="btnInstallPwaNav" title="Install PWA (download & run offline)" style="display:none;">
+          <i class="fa-solid fa-download"></i>
+        </button>
+        <button class="btn btn-primary btn-launch-workspace" id="btnNavLaunch">
+          <i class="fa-solid fa-rocket"></i> Launch Workspace App
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section" id="hero">
+    <div class="hero-bg-glow"></div>
+    <div class="container">
+      <div class="hero-grid">
+
+        <div class="hero-text-content">
+          <div class="hero-tag">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> LOCAL-FIRST PWA ARCHITECTURE
+          </div>
+          <h1 class="hero-title">
+            Digital Twin <br>
+            <span class="gradient-text">Universal Workspace</span>
+          </h1>
+          <p class="hero-subtitle">
+            A high-fidelity digital mirroring platform unifying personal life management ("Family of 4") and enterprise-scale operations ("Company of 200") into a single real-time, offline-first ecosystem.
+          </p>
+
+          <div class="hero-author-badge">
+            <img src="assets/mohammad-hijazi.png" alt="Mohammad Hijazi" class="hero-avatar-mini">
+            <div class="hero-author-info">
+              <span class="hero-author-name">Designed & Engineered by Mohammad Hijazi</span>
+              <span class="hero-author-title">Senior Enterprise & Digital Twin Architect</span>
+            </div>
+          </div>
+
+          <div class="hero-cta-group">
+            <button class="btn btn-primary btn-launch-workspace" id="btnHeroStart">
+              <i class="fa-solid fa-bolt"></i> Start Workspace App
+            </button>
+            <a href="VIBE_CODING_INSTRUCTIONS.md" class="btn btn-secondary" target="_blank">
+              <i class="fa-solid fa-file-lines"></i> View Vibe Coding .md
+            </a>
+          </div>
+        </div>
+
+        <!-- Live Preview Card -->
+        <div class="hero-preview-card glass-panel">
+          <div class="hero-preview-header">
+            <div class="window-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="badge badge-cyan"><i class="fa-solid fa-wifi"></i> SignalR Engine Active</span>
+          </div>
+          <div class="preview-stats-grid">
+            <div class="stat-item"><div class="stat-val">100%</div><div class="stat-lbl">Local Data Sovereignty</div></div>
+            <div class="stat-item"><div class="stat-val">11</div><div class="stat-lbl">Intelligence Domains</div></div>
+            <div class="stat-item"><div class="stat-val">8</div><div class="stat-lbl">Component Types</div></div>
+            <div class="stat-item"><div class="stat-val">&lt; 16ms</div><div class="stat-lbl">Signal Latency</div></div>
+          </div>
+          <div style="margin-top:1.25rem;padding:0.85rem;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border-glass);font-size:0.82rem;">
+            <div style="color:var(--accent-cyan);font-weight:700;margin-bottom:0.25rem;"><i class="fa-solid fa-tower-broadcast"></i> Live Signal Stream</div>
+            <div style="color:var(--text-muted);">Streaming events from SAP, Oracle, Nvidia, Gartner, Reuters...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE & PORTFOLIO BIO SECTION -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">About the Architect & Engineering Vision</h2>
+        <p class="section-desc">Created by <strong>Mohammad Hijazi</strong>, this platform demonstrates the power of zero-dependency, local-first web architecture.</p>
+      </div>
+      <div class="portfolio-grid">
+        <div class="portfolio-card glass-panel">
+          <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+          <h3>Zero-Framework Vanilla JS</h3>
+          <p>Built strictly with native ES6 JavaScript, HTML5, and modular CSS3. No NPM, no Webpack, no frameworks — runs by opening index.html directly.</p>
+          <span class="badge badge-purple"><i class="fa-solid fa-code"></i> Standard Web API</span>
+        </div>
+        <div class="portfolio-card glass-panel">
+          <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3>Local-First Data Sovereignty</h3>
+          <p>All workspace data persists exclusively in your browser's LocalStorage. Full workspace CRUD: create, clone, delete workspaces, pages, and components.</p>
+          <span class="badge badge-cyan"><i class="fa-solid fa-user-lock"></i> Privacy Sovereign</span>
+        </div>
+        <div class="portfolio-card glass-panel">
+          <div class="card-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+          <h3>Universal Component Studio</h3>
+          <p>Every component has a Settings drawer and paired Data Table editor. Import/export via CSV or JSON. Live chart updates on data change.</p>
+          <span class="badge badge-green"><i class="fa-solid fa-bolt-lightning"></i> Real-Time Driven</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="value-prop" style="background:rgba(0,0,0,0.2);">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How the Workspace Works</h2>
+        <p class="section-desc">From personal 5-year planning to enterprise value chains — manage everything through unified component pages.</p>
+      </div>
+      <div class="how-it-works-grid">
+        <div class="step-card glass-panel">
+          <span class="step-num">01</span>
+          <h4><i class="fa-solid fa-layer-group"></i> Select Workspace</h4>
+          <p>Switch between Personal Twin ("Family of 4") and Enterprise Twin ("Company of 200") or create/clone your own.</p>
+        </div>
+        <div class="step-card glass-panel">
+          <span class="step-num">02</span>
+          <h4><i class="fa-solid fa-file-circle-plus"></i> Manage Pages</h4>
+          <p>Add, rename, or delete pages in the left sidebar. Each page holds an independent component grid.</p>
+        </div>
+        <div class="step-card glass-panel">
+          <span class="step-num">03</span>
+          <h4><i class="fa-solid fa-chart-pie"></i> Add Components</h4>
+          <p>Choose from 11 component types: Charts, Calendar, Map, BPMN, DataTable, Kanban, Gantt, Risk Matrix, Capabilities, Maturity, 3D Floor Plan.</p>
+        </div>
+        <div class="step-card glass-panel">
+          <span class="step-num">04</span>
+          <h4><i class="fa-solid fa-sliders"></i> Studio & Data I/O</h4>
+          <p>Click the ⚙ gear on any component to open Component Studio: edit data, import/export CSV or JSON, and configure layout settings.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 INTELLIGENCE DOMAINS -->
+  <section class="section" id="domains">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">11 Core Operational Intelligence Domains</h2>
+        <p class="section-desc">Events are categorized across 11 core domains, triggering dynamic workspace highlights.</p>
+      </div>
+      <div class="domain-matrix">
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-display"></i> UX & Usability</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-chess"></i> Strategic Capabilities</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-graduation-cap"></i> Talent & Training</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-truck-fast"></i> Operations & Logistics</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-diagram-project"></i> BPMN Process Workflows</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-users-gear"></i> Org Hierarchy & HR</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-laptop-code"></i> Applications & SaaS</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-database"></i> Data Governance</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-server"></i> Infrastructure & Tech</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-user-shield"></i> Cyber Security (CS)</div>
+        <div class="domain-pill"><span class="domain-dot"></span> <i class="fa-solid fa-robot"></i> Autonomous AI Agents</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIBE CODING BANNER -->
+  <section class="section" id="vibe-instructions">
+    <div class="container">
+      <div class="vibe-banner">
+        <div class="vibe-content">
+          <span class="badge badge-cyan" style="margin-bottom:0.75rem;"><i class="fa-solid fa-microchip"></i> AI VIBE CODING SPECIFICATION</span>
+          <h3>Detailed Instruction .md File Included</h3>
+          <p>A comprehensive, modular specification covering all functional requirements, data schemas, wireframe architecture, and zero-NPM constraints.</p>
+          <a href="VIBE_CODING_INSTRUCTIONS.md" target="_blank" class="btn btn-primary">
+            <i class="fa-solid fa-book-open"></i> Read VIBE_CODING_INSTRUCTIONS.md
+          </a>
+        </div>
+        <div style="font-size:5rem;opacity:0.8;"><i class="fa-solid fa-file-code"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer-section">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-profile-box">
+          <img src="assets/mohammad-hijazi.png" alt="Mohammad Hijazi" class="footer-avatar">
+          <div class="profile-details">
+            <h4>Mohammad Hijazi</h4>
+            <div class="profile-role">Senior Systems Architect & Digital Twin Specialist</div>
+            <p class="profile-bio">Specializing in high-performance digital twin mirroring systems, enterprise architectures, local-first applications, and strategic data intelligence platforms.</p>
+            <div class="social-links-group">
+              <a href="https://github.com" target="_blank" class="social-link"><i class="fa-brands fa-github"></i> GitHub</a>
+              <a href="https://linkedin.com" target="_blank" class="social-link"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Quick Navigation</h5>
+          <ul class="footer-links">
+            <li><a href="#hero">Overview</a></li>
+            <li><a href="#about">Architecture</a></li>
+            <li><a href="#value-prop">How It Works</a></li>
+            <li><a href="#domains">11 Domains</a></li>
+            <li><a href="#vibe-instructions">Vibe Coding Manual</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>System Metadata</h5>
+          <div style="font-size:0.85rem;color:var(--text-muted);line-height:1.8;">
+            <div><strong>Platform:</strong> OrgStrata Universal Workspace</div>
+            <div><strong>Version:</strong> PWA v2.3.0 (Payment SMS + Cost Reconciliation)</div>
+            <div><strong>Persistence:</strong> LocalStorage Sovereignty</div>
+            <div><strong>Components:</strong> 11 Types with Studio</div>
+            <div><strong>Author:</strong> Mohammad Hijazi</div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 Mohammad Hijazi. All rights reserved.</div>
+        <div>Built with Vanilla JS, Highcharts, FullCalendar, Leaflet, BPMN.js & Three.js</div>
+      </div>
+    </div>
+  </footer>
+
+
+<!-- ========================================================================
+     WORKSPACE APPLICATION (fullscreen overlay)
+     Layout: Header → Workspace Tabs → Pages Sidebar + Component Canvas
+     ======================================================================== -->
+<div class="workspace-app-container" id="workspaceAppContainer">
+
+  <!-- APP HEADER -->
+  <header class="app-header">
+    <a class="app-logo" href="#">
+      <div class="logo-icon"><i class="fa-solid fa-network-wired"></i></div>
+      <div>
+        <div>OrgStrata</div>
+        <div class="logo-sub">Universal Twin</div>
+      </div>
+    </a>
+
+    <div class="header-center">
+      <div class="signal-ticker-bar">
+        <div class="ticker-pulse"></div>
+        <div class="ticker-text" id="signalTickerText">Initializing SignalR Event Engine...</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="theme-toggle-btn" id="btnThemeToggleWs" title="Toggle light/dark theme" style="width:30px;height:30px;font-size:0.8rem;">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button class="theme-toggle-btn" id="btnInstallPwaWs" title="Install PWA (download & run offline)" style="width:30px;height:30px;font-size:0.8rem;display:none;">
+        <i class="fa-solid fa-download"></i>
+      </button>
+      <button class="btn btn-sm btn-outline" id="btnSimulateSignal" title="Simulate live signal">
+        <i class="fa-solid fa-bolt"></i> Simulate Signal
+      </button>
+      <button class="btn btn-sm btn-secondary" id="btnReadPaymentSms" title="Read payment SMS and feed the cost ledger">
+        <i class="fa-solid fa-sms"></i> Read Payment SMS
+      </button>
+      <button class="btn btn-sm btn-secondary" id="btnReconcileCosts" title="Reconcile payment SMS with the cost management table">
+        <i class="fa-solid fa-wallet"></i> Reconcile Costs
+      </button>
+      <button class="btn btn-sm btn-secondary" id="btnExportWs" title="Export workspace JSON">
+        <i class="fa-solid fa-download"></i> Export
+      </button>
+      <button class="btn btn-sm btn-secondary" id="btnImportJsonModal" title="Import workspace JSON">
+        <i class="fa-solid fa-upload"></i> Import
+      </button>
+      <button class="btn btn-sm btn-secondary" id="btnAddComponent" title="Add component to current page">
+        <i class="fa-solid fa-plus"></i> Add Component
+      </button>
+      <button class="btn btn-sm btn-secondary" id="btnGlobalSettings" title="Global settings">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+      <button class="btn btn-sm btn-primary" id="btnExitWorkspace" title="Exit to portfolio">
+        <i class="fa-solid fa-xmark"></i> Exit
+      </button>
+    </div>
+  </header>
+
+  <!-- WORKSPACE TABS BAR -->
+  <div class="workspace-tabs-bar" id="workspaceTabsBar">
+    <!-- Rendered dynamically by app.js -->
+  </div>
+
+  <!-- WORKSPACE BODY (Pages Sidebar + Component Canvas) -->
+  <div class="workspace-body">
+
+    <!-- LEFT PAGES SIDEBAR -->
+    <aside class="pages-sidebar" id="pagesSidebar">
+      <div class="pages-sidebar-header">
+        <span><i class="fa-solid fa-file-lines"></i> Pages</span>
+      </div>
+
+      <div class="pages-list" id="pagesList">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <div class="pages-sidebar-footer">
+        <input type="text" class="pages-search-input" id="pagesSearchInput" placeholder="&#xf002; Search pages...">
+        <div class="pages-footer-btn-row">
+          <button class="footer-icon-btn" id="btnPageSettings" title="Page Settings">
+            <i class="fa-solid fa-gear"></i>
+          </button>
+          <button class="add-page-btn" id="btnAddPage">
+            <i class="fa-solid fa-plus"></i> Create Page
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN COMPONENT CANVAS -->
+    <main class="component-canvas" id="componentCanvas">
+      <!-- Canvas Toolbar -->
+      <div class="canvas-toolbar">
+        <div class="canvas-page-title" id="canvasPageTitle">
+          <i class="fa-solid fa-gauge-high"></i> Loading workspace...
+        </div>
+        <div style="display:flex;gap:0.4rem;">
+          <button class="btn btn-sm btn-secondary" id="btnToggleSidebar" title="Toggle pages sidebar">
+            <i class="fa-solid fa-sidebar"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Component Grid -->
+      <div class="component-grid" id="componentGrid">
+        <!-- Components rendered dynamically by app.js -->
+      </div>
+    </main>
+
+  </div><!-- /workspace-body -->
+
+</div><!-- /workspace-app-container -->
+
+
+<!-- IMPORT JSON MODAL -->
+<div class="ws-modal-overlay" id="importModalOverlay">
+  <div class="ws-modal">
+    <h3><i class="fa-solid fa-file-import"></i> Import Workspace JSON</h3>
+    <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.75rem;">Paste your exported Digital Twin Workspace JSON below. Schema validation runs automatically.</p>
+    <textarea id="jsonImportTextArea" style="width:100%;height:180px;background:rgba(0,0,0,0.5);border:1px solid var(--border-glass);border-radius:8px;color:var(--text-main);padding:0.75rem;font-family:var(--font-code);font-size:0.82rem;outline:none;resize:vertical;" placeholder='{"app": "Digital Twin Universal Workspace", ...}'></textarea>
+    <div class="ws-modal-footer">
+      <button class="btn btn-secondary btn-sm" id="btnCloseImportModal"><i class="fa-solid fa-xmark"></i> Cancel</button>
+      <button class="btn btn-primary btn-sm" id="btnSubmitImportJson"><i class="fa-solid fa-check"></i> Import Workspace</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification container -->
+<div class="toast-container" id="toastContainer"></div>
+
+
+<!-- ========================================================================
+     VENDOR JAVASCRIPT LIBRARIES (local, offline-first)
+     ======================================================================== -->
+<script src="components/blueprint3d/js/blueprint3d.js"></script>
+<script src="vendor/js/jquery.min.js"></script>
+<script src="vendor/js/leaflet.js"></script>
+<script src="vendor/js/highcharts.js"></script>
+<script src="vendor/js/highcharts-more.js"></script>
+<script src="vendor/js/exporting.js"></script>
+<script src="vendor/js/fullcalendar.min.js"></script>
+<script src="vendor/js/bpmn-navigated-viewer.js"></script>
+<script src="vendor/js/jquery.dataTables.min.js"></script>
+<script src="vendor/js/three.min.js"></script>
+
+<!-- Application Data & State -->
+<script src="js/mock-data.js"></script>
+<script src="js/state.js"></script>
+
+<!-- Component Modules -->
+<script src="components/highcharts-component.js"></script>
+<script src="components/fullcalendar-component.js"></script>
+<script src="components/openmap-component.js"></script>
+<script src="components/bpmn-component.js"></script>
+<script src="components/jqtable-component.js"></script>
+<script src="components/kanban-gantt-component.js"></script>
+<script src="components/entity-tools-component.js"></script>
+<script src="components/spatial3d-component.js"></script>
+
+<!-- Application Logic -->
+<script src="js/component-studio.js"></script>
+<script src="js/app.js"></script>
+
+<!-- Sidebar toggle -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('btnToggleSidebar');
+    const sidebar   = document.getElementById('pagesSidebar');
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+    }
+  });
+</script>
+
+</body>
+</html>
