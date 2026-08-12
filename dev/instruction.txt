@@ -1,0 +1,858 @@
+Phase 0: Polymorphic Data Model Architecture
+===============================================
+Core Requirement: All entities must be connected through polymorphic relationships from a business perspective. The data model must support hierarchical spatial nesting, multi-party associations, and routine-based temporal patterns.
+
+0.1 Polymorphic Entity Connection Framework
+  - Every entity (Contact, Location, Routine, Trip, Plan) must support polymorphic references
+  - Entities connect through shared spatial and temporal dimensions
+  - Relationships are bidirectional and queryable from any connected node
+
+0.2 Spatial Hierarchy (Location Polymorphism)
+  - Contacts can be connected to locations at multiple granularity levels:
+    * Geographic Level: lat/lng coordinates on a map
+    * Building Level: structured building with unique identifier
+    * Floor Level: floors within a building (e.g., Floor 1, Floor 2)
+    * Room Level: rooms within floors (e.g., Room 101, Conference Room A)
+  - A single contact can have multiple location associations (home, office, frequent visits)
+  - Spatial hierarchy: Map Region → Building → Floor → Room
+  - Each level inherits spatial properties and can have its own metadata
+
+0.3 Temporal Routine Model (Trip as Routine)
+  - Daily trips on the road are modeled as Routines with multi-stop patterns
+  - A Routine represents a planned sequence of activities over time
+  - Routine Components:
+    * Multiple location stops (ordered sequence)
+    * Planned duration per stop
+    * Total trip duration estimate
+    * Start and end time windows
+    * Assigned participants (persons)
+  - A single trip can have multiple persons onboard (many-to-many relationship)
+  - Routines can be recurring (daily, weekly, custom schedule)
+
+0.4 Multi-Party Associations
+  - Trips/Routines can have multiple persons assigned
+  - Persons (Contacts) can be assigned to multiple trips
+  - Relationship supports: primary organizer, participants, observers
+  - Attendance tracking per routine execution
+
+0.5 Entity Relationship Map
+  - Contact ↔ Location (many-to-many, via spatial associations)
+  - Location ↔ Building (one-to-many, building contains locations)
+  - Building ↔ Floor (one-to-many, floor belongs to building)
+  - Floor ↔ Room (one-to-many, room belongs to floor)
+  - Routine ↔ LocationStop (one-to-many, routine has multiple stops)
+  - Routine ↔ Person/Contact (many-to-many, routine has multiple participants)
+  - Trip ↔ Plan (one-to-one or one-to-many, trip may have associated plans)
+
+0.6 Cost Model (v4.0 Financial Polymorphism)
+  - Every entity supports cost tracking for financial management
+  - Cost Categories:
+    * Trip Cost: total budget, actual spending, currency, breakdown by category
+    * Routine Cost: per-routine budget, execution cost, recurring expenses
+    * Floor Cost: maintenance cost, utility cost, rental/lease cost
+    * Room Cost: equipment cost, setup cost, per-use cost
+    * Contact Cost: living cost, support cost, compensation
+    * Contact Cost Breakdown: housing, food, transport, health, education, entertainment
+  - Cost Structure per Entity:
+    {
+      "cost": {
+        "currency": "USD",
+        "budget": number,
+        "actual": number,
+        "categories": [
+          {
+            "name": "string",
+            "amount": number,
+            "date": "ISO timestamp",
+            "description": "string"
+          }
+        ],
+        "income": [
+          {
+            "source": "string",
+            "amount": number,
+            "date": "ISO timestamp",
+            "type": "salary | investment | freelance | other"
+          }
+        ],
+        "assets": [
+          {
+            "name": "string",
+            "value": number,
+            "type": "real_estate | vehicle | investment | cash | other",
+            "purchaseDate": "ISO timestamp"
+          }
+        ],
+        "liabilities": [
+          {
+            "name": "string",
+            "balance": number,
+            "type": "mortgage | loan | credit_card | other",
+            "interestRate": number,
+            "dueDate": "ISO timestamp"
+          }
+        ]
+      }
+    }
+  - Cost aggregation: entity costs roll up to parent entities
+  - Financial reports: net worth, cash flow, budget vs actual
+
+0.7 Event Taxonomy (v4.0 External Events)
+  - Calendar supports multiple event types with distinct visual representations
+  - Event Types:
+    * Routine Events: linked to user routines, recurring patterns
+    * External Events: third-party events imported or manually added
+    * Activities: personal activities with duration and location
+    * International Events: global holidays, cultural celebrations
+    * Economic Events: market openings, financial reports, policy changes
+    * Political Events: summits, elections, treaties, diplomatic meetings
+    * Technology Events: product launches, conferences, software releases
+  - Technology Event Sources:
+    * Apple: WWDC, iPhone launches, iPad events, Apple Watch announcements
+    * Microsoft: Build, Surface events, Windows announcements, Azure updates
+    * IBM: Think conference, quantum computing events, hybrid cloud announcements
+    * NVIDIA: GTC conference, GPU launches, AI announcements
+    * OpenAI: model releases, research publications, partnership announcements
+    * Tesla: Battery Day, AI Day, vehicle launches, energy product events
+    * Gartner: Hype Cycle releases, IT conferences, market research publications
+  - Event Properties:
+    {
+      "eventId": "string",
+      "title": "string",
+      "type": "routine | external | activity | international | economic | political | technology",
+      "source": "string | null",
+      "startDate": "ISO timestamp",
+      "endDate": "ISO timestamp",
+      "location": {
+        "venue": "string",
+        "address": "string",
+        "coordinates": { "lat": number, "lng": number }
+      },
+      "description": "string",
+      "tags": ["string"],
+      "priority": "low | medium | high | critical",
+      "cost": costObject,
+      "attendees": ["contactId"],
+      "color": "string",
+      "externalUrl": "string",
+      "createdAt": "ISO timestamp"
+    }
+
+===============================================================
+
+Phase 1: Core Architecture & State Storage Scaffold
+====================================================
+Activity 1.1: PWA Shell & Theme Layout
+Deliverable: Single-page application skeleton (index.html, styles.css, app.js) with responsive navigation and mode toggle switch (Lite Mode vs Power Mode).
+
+Activity 1.2: LocalStorage Schema & Versioned Migration Engine
+Deliverable: storage.js module handling local state persistence, initial schema seeding, and version checks.
+
+===============================================================
+
+Phase 2: Template Library & Form-to-JSON Engine
+================================================
+Activity 2.1: Pre-Packaged Starter Templates
+Activity 2.2: Routine Wizard (Form → BPMN JSON Compiler)
+Activity 2.3: Quick Contact Form (Form → OrgChart JSON Compiler)
+
+===============================================================
+
+Phase 3: Lite UI Component Wrappers
+=====================================
+Activity 3.1: Execution Checklist View (Lite BPMN Wrapper) - routineView.js
+Activity 3.2: 1-Click Floor Plan Selector (Lite Blueprint3d Wrapper) - spatialView.js
+Activity 3.3: Simple Address Geocoder & Map Pins (Lite OpenMap Wrapper) - mapView.js
+
+===============================================================
+
+Phase 3.5: Calendar View (Main Landing Visual) - v4.0
+=====================================================
+Activity 3.5.1: FullCalendar.js Integration - calendarView.js
+Activity 3.5.2: Calendar Event Management
+Activity 3.5.3: Technology Events Database
+
+===============================================================
+
+Phase 4: Event Telemetry & Status Badges
+=========================================
+Activity 4.1: Mock SignalR Event Streamer - eventEngine.js
+Activity 4.2: Tag-Based Visual Alert Dispatcher
+
+===============================================================
+
+Phase 4.5: Cost Planning Visual (Assets & Liabilities) - v4.0
+=============================================================
+Activity 4.5.1: Cost Planning Dashboard - costView.js
+Activity 4.5.2: Cost Data Entry Forms
+
+===============================================================
+
+Phase 5: Maturity Radar Visualization (Highcharts) - v4.0
+==========================================================
+Activity 5.1: Highcharts.js Integration - maturityView.js
+Activity 5.2: Maturity Score Calculation Engine
+
+===============================================================
+
+Phase 6: PWA Packaging & Local Portability
+===========================================
+Activity 6.1: JSON Import/Export Portability Tool - portability.js
+Activity 6.2: Service Worker Offline Caching - sw.js
+
+===============================================================
+
+Updated Data Schema (v4.0 - Polymorphic Entity Model with Cost & Calendar)
+==========================================================================
+{
+  "version": "4.0",
+  "createdAt": "ISO timestamp",
+  "updatedAt": "ISO timestamp",
+  
+  "buildings": [...],
+  "mapPins": [...],
+  "contacts": [...],
+  "routines": [...],
+  "plans": [...],
+  "calendarEvents": [...],
+  "floorPlans": [...],
+  "alerts": [...],
+  "maturityScores": {
+    "financial": { ... },
+    "health": { ... },
+    "skills": { ... }
+  },
+  "preferences": {
+    "mode": "lite | power",
+    "theme": "light | dark",
+    "sidebarCollapsed": boolean,
+    "defaultView": "dashboard | calendar"
+  }
+}
+
+===============================================================
+
+Polymorphic Connection Guidelines
+==================================
+1. Every entity must have at least one connection point to another entity type
+2. Location hierarchy is universal: Map → Building → Floor → Room
+3. Contacts connect to locations via locationAssociations array
+4. Routines/Trips connect to locations via locationStops array
+5. Routines/Trips connect to persons via assignedPersons array
+6. Plans connect to routines via routineId reference
+7. All connections are bidirectional and queryable
+8. Deletion of an entity must cascade or prompt for orphaned connection handling
+9. Cost data rolls up through entity hierarchy (room → floor → building)
+10. Calendar events connect to routines, contacts, and locations
+11. Maturity scores are calculated from entity data (cost, health, skills)
+
+===============================================================
+
+Updated Navigation Structure (v4.0)
+====================================
+Side Navigation Items:
+- 📊 Dashboard (default landing with calendar view)
+- 📅 Calendar (main FullCalendar view)
+- 📋 Routines
+- 🏠 Floor Plans
+- 👥 Contacts
+- 📍 Map
+- 💰 Cost Planning (new)
+- 📈 Maturity Radar (new)
+- 🔔 Alerts
+
+Header Actions:
+- Export Workspace
+- Import Workspace
+- Lite/Power Mode Toggle
+
+===============================================================
+
+Third-Party Libraries Required (v4.0)
+======================================
+1. Leaflet.js - Map rendering
+2. FullCalendar.js - Calendar view
+3. Highcharts.js - Maturity radar charts
+4. Chart.js - Cost planning charts
+
+===============================================================
+
+Phase 7: UX Touchpoint Matrix - 4 Stages of Competence → Personal Digital Twin
+=================================================================================
+NEW SCOPE: Implement the UX Touchpoint Matrix that maps personal development stages 
+to digital touchpoints. This transforms the application from a workspace tool into 
+a Personal Digital Twin that guides users through competence development.
+
+7.1 Core Concept: Four Stages of Competence
+-------------------------------------------
+Stage 1: SENSING (Unconscious Incompetence → Awareness)
+  - Goal: Surface unmonitored life metrics without active effort from user
+  - Current Coverage: ✅ Highcharts Baseline, ✅ Telemetry Signal Engine, ✅ Open Map
+  - Gap: No automatic detection of "life metrics" or "energy leaks"
+  - Enhancement: Add passive data ingestion from device sensors, calendar, and utilities
+
+Stage 2: DIAGNOSTICS (Conscious Incompetence → Gap Analysis)
+  - Goal: Create cognitive friction highlighting reality vs goals
+  - Current Coverage: ✅ Maturity Assistant (Likert scale), ✅ Personal Risk Table, ✅ Capabilities Canvas
+  - Gap: No radar overlay comparing current vs target baselines
+  - Enhancement: Add "Prefrontal Friction" visualization showing gap magnitude
+
+Stage 3: ORCHESTRATION (Conscious Competence → Deliberate Practice)
+  - Goal: Structured execution workbench for habit building
+  - Current Coverage: ✅ BPMN.js Workflow (routineView.js), ✅ Kanban/Gantt, ✅ FullCalendar
+  - Gap: No "Synaptic Myelination" tracking (repetition consistency metrics)
+  - Enhancement: Add streak tracking, consistency heatmaps, neural pathway visualization
+
+Stage 4: AUTOMATED TWIN (Unconscious Competence → Basal Ganglia Automation)
+  - Goal: Frictionless automated baseline operation
+  - Current Coverage: ✅ SignalR Auto-Alerts, ✅ OrgChart Kinship Badges
+  - Gap: No "Executive Dashboard" for whole-family oversight
+  - Enhancement: Add automated exception handling, predictive alerts, cultural co-regulation
+
+7.2 Right Panel Enhancement: Competence & Consciousness Detector
+----------------------------------------------------------------
+NEW COMPONENT: Right-side expandable panel (width: 380px, collapsible to 48px)
+Position: Right edge of #workspace-container, overlaying content when expanded
+
+Panel Structure:
+┌─────────────────────────────────────────┐
+│ 🧠 Competence Detector    [◀] [─] [X] │
+├─────────────────────────────────────────┤
+│ Tab Bar: [Domains] [Paths] [Enhance]   │
+├─────────────────────────────────────────┤
+│                                         │
+│ Domain: Sleep Hygiene                   │
+│ ─────────────────────────────────────── │
+│ Conscious Level: ████████░░ 80%        │
+│ Detected State: Conscious Competence    │
+│ Recommended Action: Automate bedtime    │
+│ Data Gap: Missing evening routine log   │
+│ Enhancement: Add sleep score tracking   │
+│                                         │
+│ Domain: Financial Runway                │
+│ ─────────────────────────────────────── │
+│ Conscious Level: ████░░░░░ 40%         │
+│ Detected State: Conscious Incompetence  │
+│ Recommended Action: Run maturity eval   │
+│ Data Gap: No budget vs actual comparison│
+│ Enhancement: Link bank statements       │
+│                                         │
+│ Domain: Stress Management               │
+│ ─────────────────────────────────────── │
+│ Conscious Level: ██████░░░░ 60%        │
+│ Detected State: Conscious Incompetence  │
+│ Recommended Action: Log stress triggers │
+│ Data Gap: No stress telemetry data      │
+│ Enhancement: Connect heart rate monitor │
+│                                         │
+└─────────────────────────────────────────┘
+
+Panel Features:
+1. Expand/Collapse: Click header to toggle (animated CSS transition)
+2. Domain Tabs: Show all assessed domains with scores and status
+3. Path Tab: Show recommended data entry sequence (prioritized by maturity level)
+4. Enhance Tab: Show actionable enhancement suggestions per domain
+5. Auto-Update: React to telemetry events and update competence levels
+6. Export: Generate "Personal Development Path" report
+
+Implementation:
+- File: rightPanel.js (new)
+- CSS: styles.css additions (.right-panel, .panel-header, .domain-card, etc.)
+- State: localStorage.pwa_rightPanel (collapsed, activeTab, selectedDomain)
+- Integration: App.js panel toggle, telemetry event listener
+
+7.3 Stage-Specific UX Touchpoint Mapping
+-----------------------------------------
+Touchpoint 1.1: Spatial & Environment Onboarding
+  Current: mapView.js (Leaflet + OpenStreetMap)
+  Enhancement: Add "Energy Leak Detection" overlay showing locations with high friction
+  Data Captured: Commute radiuses, home quiet zones, habit-station layouts
+  Neuro-Trigger: DMN disruption via visual environment rendering
+
+Touchpoint 1.2: Passive Telemetry Ingestion
+  Current: eventEngine.js (mock SignalR), Highcharts baseline
+  Enhancement: Add device sensor integration (sleep hours, movement, heart rate)
+  Data Captured: Sleep duration, utility spend, travel history
+  Neuro-Trigger: Objective zero-line baselines eliminating cognitive bias
+
+Touchpoint 2.1: Personal Maturity Evaluation
+  Current: maturityView.js (Highcharts radar, Likert scale)
+  Enhancement: Add current vs target radar overlay with gap visualization
+  Data Captured: Life domain ratings (Sleep, Stress, Family, Financial)
+  Neuro-Trigger: Prefrontal cortex engagement via explicit gap awareness
+
+Touchpoint 2.2: Life Threat & Dependency Scoring
+  Current: alerts system (severity-based)
+  Enhancement: Add dedicated "Risk Table" view with probability × impact matrix
+  Data Captured: Vulnerabilities with probability and impact scores
+  Neuro-Trigger: Color-coded priority matrix for urgent personal risks
+
+Touchpoint 2.3: Strengths & Skill Assessment
+  Current: contact.skillTags, maturityView.js skills radar
+  Enhancement: Add "Capabilities Canvas" with family competency mapping
+  Data Captured: Personal/family competencies and missing capabilities
+  Neuro-Trigger: Visual identification of capability gaps
+
+Touchpoint 3.1: Routine & Habit Modeling
+  Current: routineView.js (BPMN checklist), routineWizard.js
+  Enhancement: Add "Myelination Tracker" showing repetition consistency
+  Data Captured: Daily routine execution, step completion, timing
+  Neuro-Trigger: Myelination via deliberate structured repetition
+
+Touchpoint 3.2: Milestone & Life Event Scheduling
+  Current: calendarView.js (FullCalendar)
+  Enhancement: Add automated countdown triggers for personal milestones
+  Data Captured: 5-year horizons, school terms, renewals, payment schedules
+  Neuro-Trigger: Temporal awareness and planning horizon expansion
+
+Touchpoint 3.3: Habit Execution Tracking
+  Current: routineView.js (card checklist with progress)
+  Enhancement: Add Kanban board view for habit workflow (To Do → In Progress → Done)
+  Data Captured: Daily micro-task completion across life domains
+  Neuro-Trigger: Visual progress reinforcement for habit formation
+
+Touchpoint 4.1: Real-Time Family Status Monitoring
+  Current: orgChart.js integration (via contactWizard.js)
+  Enhancement: Add real-time status badges (sleep goals, document renewals)
+  Data Captured: Family member status, health indicators, admin readiness
+  Neuro-Trigger: Cultural co-regulation via visual household alignment
+
+Touchpoint 4.2: Automated Exception Handling
+  Current: eventEngine.js (mock telemetry), SignalR simulation
+  Enhancement: Add external impact detection (flight changes, price shifts)
+  Data Captured: External events affecting personal plans and routines
+  Neuro-Trigger: Basal ganglia automation via reduced manual monitoring
+
+7.4 Daily & Weekly Personal Operating Cadence
+----------------------------------------------
+Morning Reset (2 mins):
+  - UX: BPMN.js Routine Node in routineView.js
+  - Action: Check off morning routine steps
+  - Display: Daily high-priority micro-tasks from right panel
+
+Midday Check-In (1 min):
+  - UX: Open Map / Blueprint3d in mapView.js
+  - Action: Review location-based reminders
+  - Display: Pick-up routes, workout space prep alerts
+
+Evening Shutdown (3 mins):
+  - UX: Highcharts.js telemetry log, Kanban board
+  - Action: Log sleep, hydration, movement metrics
+  - Display: Clear completed habit cards, update maturity scores
+
+Weekly Review (15 mins):
+  - UX: Risk Table view, jqTable for financial logs
+  - Action: Review renewal dates, update maturity scores
+  - Display: Priority alignment for upcoming week
+
+Monthly Scan (30 mins):
+  - UX: FullCalendar.js, OrgChart family tree
+  - Action: Scan 5-year milestones, update family skill badges
+  - Display: Strategic horizon adjustment recommendations
+
+7.5 Data Model Extensions Required (v5.0)
+------------------------------------------
+Add to workspace schema:
+
+// Competence & Consciousness Tracking
+"competenceDomains": [
+  {
+    "domainId": "string",
+    "domainName": "string",
+    "stage": "sensing | diagnostics | orchestration | automated",
+    "consciousLevel": number, // 0-100
+    "consciousState": "unconsciousIncompetence | consciousIncompetence | consciousCompetence | unconsciousCompetence",
+    "targetLevel": number,
+    "currentScore": number,
+    "gap": number,
+    "dataGaps": ["string"],
+    "recommendedActions": ["string"],
+    "enhancementSuggestions": ["string"],
+    "repetitionCount": number,
+    "streakDays": number,
+    "lastAssessed": "ISO timestamp",
+    "telemetrySources": ["string"]
+  }
+],
+
+// Personal Development Path
+"developmentPath": {
+  "currentStage": "sensing | diagnostics | orchestration | automated",
+  "progression": [
+    {
+      "domainId": "string",
+      "prerequisites": ["domainId"],
+      "recommendedOrder": number,
+      "status": "notStarted | inProgress | mastered"
+    }
+  ],
+  "nextRecommendedAction": "string",
+  "lastReview": "ISO timestamp"
+},
+
+// Telemetry Baselines
+"telemetryBaselines": {
+  "sleep": { "avgHours": number, "targetHours": number, "source": "string" },
+  "movement": { "avgSteps": number, "targetSteps": number, "source": "string" },
+  "utilitySpend": { "avgMonthly": number, "targetMonthly": number, "source": "string" },
+  "stress": { "avgLevel": number, "targetLevel": number, "source": "string" }
+},
+
+// Family Status (for Stage 4)
+"familyStatus": {
+  "members": [
+    {
+      "contactId": "string",
+      "realTimeStatus": {
+        "sleepGoalMet": boolean,
+        "exerciseGoalMet": boolean,
+        "nutritionGoalMet": boolean,
+        "documentRenewals": [{ "name": "string", "dueDate": "ISO", "status": "valid | expiring | expired" }]
+      },
+      "skillBadges": ["string"],
+      "lastUpdated": "ISO timestamp"
+    }
+  ]
+}
+
+7.6 UI/UX Enhancement Requirements
+-----------------------------------
+1. Right Panel (rightPanel.js):
+   - Expandable/collapsible (380px width, CSS transition)
+   - Three tabs: Domains, Paths, Enhance
+   - Domain cards with progress bars and status indicators
+   - Color coding by stage: Sensing (blue), Diagnostics (amber), Orchestration (green), Automated (purple)
+   - Responsive: collapses to icon strip on mobile
+
+2. Stage Indicator (header badge):
+   - Show current application stage based on dominant user activity
+   - Updates based on most frequently accessed view
+   - Click to see stage progression recommendations
+
+3. Gap Visualization:
+   - Radar chart overlay: current vs target maturity scores
+   - Animated gap-closing animation when scores improve
+   - Heat map showing domains needing attention
+
+4. Repetition Tracking:
+   - Streak counter for routine completion
+   - Consistency heatmap (like GitHub contributions)
+   - Myelination score based on repetition consistency
+
+5. Executive Dashboard (Stage 4):
+   - Single-screen family overview
+   - Real-time status badges on family members
+   - Automated alert aggregation
+   - Predictive recommendations
+
+7.7 Neuro-Trigger Implementation Notes
+----------------------------------------
+DMN Disruption (Stage 1):
+  - Visual rendering of physical environments
+  - Unexpected data revelations about habits
+  - Spatial friction heatmaps
+
+Prefrontal Friction (Stage 2):
+  - Constructive cognitive dissonance via gap visualization
+  - Explicit awareness of functional deficits
+  - Probability/impact risk matrices
+
+Synaptic Myelination (Stage 3):
+  - Structured repetition tracking
+  - Consistency rewards and streaks
+  - Visual pathway progression
+
+Basal Ganglia Automation (Stage 4):
+  - Reduced manual input required
+  - Automated exception handling
+  - Cultural co-regulation via family visibility
+
+7.8 Integration with Existing Components
+-----------------------------------------
+rightPanel.js integrates with:
+  - maturityView.js: Read maturity scores, display domain gaps
+  - routineView.js: Track routine repetition, show streaks
+  - mapView.js: Display spatial energy leaks
+  - eventEngine.js: React to telemetry events, update competence levels
+  - costView.js: Include financial domain in competence assessment
+  - contactWizard.js: Family status badges for Stage 4
+  - calendarView.js: Milestone countdown triggers
+
+7.9 Priority Implementation Order
+----------------------------------
+1. rightPanel.js - Core panel structure with expand/collapse
+2. Data model extension (v5.0) - Add competenceDomains, developmentPath
+3. Domain assessment engine - Auto-calculate competence levels
+4. Path recommendation engine - Prioritized data entry sequence
+5. Enhancement suggestion engine - Actionable improvement tips
+6. Stage indicator in header
+7. Gap visualization (radar overlay)
+8. Repetition tracking and streak counters
+9. Family status badges (Stage 4)
+10. Executive dashboard (Stage 4)
+
+===============================================================
+
+Updated Phase Summary
+=====================
+Phase 0: Polymorphic Data Model (v4.0 - Added Cost Model & Event Taxonomy)
+Phase 1: Core Architecture & State Storage (v4.0 - Schema migration)
+Phase 2: Template Library & Form Engine (v4.0 - Cost & event templates)
+Phase 3: Lite UI Components (v4.0 - Cost-aware components)
+Phase 3.5: Calendar View (NEW - FullCalendar.js main landing visual)
+Phase 4: Event Telemetry & Alerts
+Phase 4.5: Cost Planning Visual (NEW - Assets & Liabilities dashboard)
+Phase 5: Maturity Radar (NEW - Highcharts.js radar visualization)
+Phase 6: PWA Packaging & Portability
+Phase 7: UX Touchpoint Matrix (NEW - 4 Stages of Competence → Personal Digital Twin)
+
+SCOPE REQUIREMENT REVIEW: 4 Stages of Competence → Personal Digital Twin
+Date: 2026-08-12
+Review Type: Architecture & UX Gap Analysis
+
+PART I: CURRENT APPLICATION CAPABILITY MAPPING
+
+A. STAGE 1: SENSING (Unconscious Incompetence → Awareness)
+----------------------------------------------------------
+Requirement                    | Current Coverage | Fulfillment | Gap Analysis
+-------------------------------|------------------|-------------|---------------------------
+Open Map / Blueprint3d         | ✅ mapView.js     | 90%         | Missing: Energy leak overlay, spatial friction heatmap
+Highcharts Baseline            | ✅ maturityView.js| 70%         | Missing: Passive telemetry baselines, device sensor integration
+Telemetry Signal Engine        | ✅ eventEngine.js | 60%         | Missing: Real device sensor API, actual utility/health data feeds
+Spatial Onboarding (GIS pins)  | ✅ mapView.js     | 85%         | Missing: Commute radius calculation, quiet zone detection
+Passive Data Ingestion         | ❌               | 0%          | Full gap: No health tracker, sleep monitor, or utility API integration
+
+Stage 1 Overall Fulfillment: 61%
+
+B. STAGE 2: DIAGNOSTICS (Conscious Incompetence → Gap Analysis)
+----------------------------------------------------------------
+Requirement                      | Current Coverage | Fulfillment | Gap Analysis
+---------------------------------|------------------|-------------|---------------------------
+Maturity Assistant (Likert scale)| ✅ maturityView.js| 85%         | Missing: Current vs target radar overlay with animated gap
+Personal Risk Table              | ⚠️ alerts system  | 30%         | Missing: Dedicated risk matrix view (probability × impact)
+Capabilities Canvas              | ⚠️ skillTags      | 25%         | Missing: Family competency mapping, visual capability gap display
+Prefrontal Friction Visualization| ❌               | 0%          | Full gap: No cognitive dissonance display
+Radar Overlay (Current vs Target)| ❌               | 0%          | Full gap: Highcharts needs dual-series comparison
+
+Stage 2 Overall Fulfillment: 28%
+
+C. STAGE 3: ORCHESTRATION (Conscious Competence → Deliberate Practice)
+-----------------------------------------------------------------------
+Requirement                    | Current Coverage | Fulfillment | Gap Analysis
+-------------------------------|------------------|-------------|---------------------------
+BPMN.js Workflow               | ✅ routineView.js | 80%         | Missing: Myelination tracker, repetition consistency metrics
+Kanban / Gantt Board           | ❌               | 0%          | Full gap: No Kanban or Gantt visualization
+FullCalendar                   | ✅ calendarView.js| 75%         | Missing: Automated countdown triggers for milestones
+jqTable Integration            | ❌               | 0%          | Full gap: No jQuery DataTable for structured data
+Streak Tracking                | ❌               | 0%          | Full gap: No habit streak or consistency heatmap
+Synaptic Myelination Tracking  | ❌               | 0%          | Full gap: No neural pathway visualization
+
+Stage 3 Overall Fulfillment: 39%
+
+D. STAGE 4: AUTOMATED TWIN (Unconscious Competence → Basal Ganglia Automation)
+-------------------------------------------------------------------------------
+Requirement                    | Current Coverage | Fulfillment | Gap Analysis
+-------------------------------|------------------|-------------|---------------------------
+SignalR Auto-Alerts            | ✅ eventEngine.js | 50%         | Missing: Real SignalR connection (currently mock data)
+OrgChart Kinship Badges        | ⚠️ contactWizard  | 30%         | Missing: Real-time status badges (sleep goals, document renewals)
+Executive Dashboard            | ❌               | 0%          | Full gap: No single-screen family overview
+Automated Exception Handling   | ❌               | 0%          | Full gap: No external impact detection (flight changes, price shifts)
+Predictive Alerts              | ❌               | 0%          | Full gap: No ML or rule-based prediction engine
+
+Stage 4 Overall Fulfillment: 20%
+
+OVERALL APPLICATION FULFILLMENT: 37%
+
+PART II: REQUIRED UX ENHANCEMENTS
+
+A. RIGHT PANEL (PRIMARY NEW COMPONENT)
+---------------------------------------
+Component: rightPanel.js (NEW FILE)
+Width: 380px expanded, 48px collapsed (icon strip)
+Position: Right edge of #workspace-container, overlay with z-index
+Animation: CSS transition (transform: translateX)
+
+Panel Structure:
+┌─────────────────────────────────────────┐
+│ 🧠 Competence Detector    [◀] [─] [X] │
+├─────────────────────────────────────────┤
+│ Tab Bar: [Domains] [Paths] [Enhance]   │
+├─────────────────────────────────────────┤
+│                                         │
+│ Domain: Sleep Hygiene                   │
+│ ─────────────────────────────────────── │
+│ Conscious Level: ████████░░ 80%        │
+│ Detected State: Conscious Competence    │
+│ Recommended Action: Automate bedtime    │
+│ Data Gap: Missing evening routine log   │
+│ Enhancement: Add sleep score tracking   │
+│                                         │
+│ Domain: Financial Runway                │
+│ ─────────────────────────────────────── │
+│ Conscious Level: ████░░░░░ 40%         │
+│ Detected State: Conscious Incompetence  │
+│ Recommended Action: Run maturity eval   │
+│ Data Gap: No budget vs actual comparison│
+│ Enhancement: Link bank statements       │
+│                                         │
+└─────────────────────────────────────────┘
+
+Panel Features:
+1. Expand/Collapse: CSS animated transition, state persisted in localStorage
+2. Domain Tab: All assessed domains with progress bars and status indicators
+3. Path Tab: Prioritized data entry sequence based on maturity progression
+4. Enhance Tab: Actionable enhancement suggestions per domain
+5. Auto-Update: Reacts to telemetry events and maturity score changes
+6. Export: Generates "Personal Development Path" JSON/PDF report
+
+State Management:
+- localStorage key: pwa_rightPanel
+- Properties: { collapsed: boolean, activeTab: string, selectedDomain: string, scrollPosition: number }
+
+Integration Points:
+- maturityView.js: Read maturity scores, compute domain gaps
+- routineView.js: Track routine repetition, compute streaks
+- mapView.js: Display spatial energy leaks
+- eventEngine.js: Listen to telemetry events, update competence levels
+- costView.js: Include financial domain in competence assessment
+- contactWizard.js: Family status badges for Stage 4
+- calendarView.js: Milestone countdown triggers
+
+B. STAGE INDICATOR (HEADER BADGE)
+----------------------------------
+Location: Top header bar, near mode toggle
+Display: Colored badge showing dominant stage based on user activity
+Colors: Sensing (blue #2196F3), Diagnostics (amber #FF9800), Orchestration (green #4CAF50), Automated (purple #9C27B0)
+Update Trigger: View navigation frequency, time spent per view
+Interaction: Click shows stage progression recommendations modal
+
+C. GAP VISUALIZATION ENHANCEMENT
+---------------------------------
+Component: maturityView.js enhancement
+Feature: Dual-series radar chart (current vs target)
+Implementation: Add second series to existing Highcharts radar with target scores
+Animation: Smooth transition when scores improve
+Heat Map: Color-coded domain cards showing urgency
+
+D. REPETITION TRACKING SYSTEM
+------------------------------
+Component: rightPanel.js (repetition sub-module)
+Features:
+- Streak counter for daily routine completion
+- Consistency heatmap (GitHub-style contribution grid)
+- Myelination score = (consecutive completions / target completions) × 100
+- Weekly/monthly consistency trends
+
+E. EXECUTIVE DASHBOARD (STAGE 4)
+---------------------------------
+Component: executiveDashboard.js (NEW FILE)
+Features:
+- Single-screen family overview with OrgChart.js
+- Real-time status badges on each family member node
+- Automated alert aggregation by priority
+- Predictive recommendations based on patterns
+
+F. KANBAN / GANTT BOARD
+-------------------------
+Component: kanbanView.js (NEW FILE)
+Features:
+- Drag-and-drop habit task board (To Do → In Progress → Completed)
+- Gantt timeline view for multi-day habit sequences
+- Integration with routineView.js steps
+- Color coding by life domain
+
+G. RISK MATRIX VIEW
+---------------------
+Component: riskView.js (NEW FILE)
+Features:
+- Probability × Impact scatter plot (Highcharts bubble chart)
+- Color-coded risk zones (low/medium/high/critical)
+- Automated risk scoring based on expiration dates, deadlines
+- Export risk report functionality
+
+PART III: DATA MODEL EXTENSIONS (v5.0)
+
+The following additions are required to the workspace schema:
+
+1. competenceDomains[] - Array of domain assessments
+2. developmentPath - Overall progression tracking
+3. telemetryBaselines - Passive metric baselines
+4. familyStatus - Stage 4 family monitoring
+5. repetitionStats - Habit tracking data
+6. riskRegister - Personal vulnerability registry
+
+See Section 7.5 for detailed schema definitions.
+
+PART IV: IMPLEMENTATION PRIORITY MATRIX
+
+CRITICAL PATH (Sprint 1 - Week 1-2):
+1. rightPanel.js - Core panel with expand/collapse
+2. Data model v5.0 extension - competenceDomains, developmentPath
+3. Domain assessment engine - Auto-calculate from existing maturity scores
+4. Basic domain cards with progress bars
+5. CSS styling for panel animation
+
+HIGH PRIORITY (Sprint 2 - Week 3-4):
+6. Path recommendation engine - Prioritized data entry sequence
+7. Enhancement suggestion engine - Actionable tips per domain
+8. Stage indicator in header
+9. Gap visualization - Radar overlay (current vs target)
+10. Risk matrix view (riskView.js)
+
+MEDIUM PRIORITY (Sprint 3 - Week 5-6):
+11. Repetition tracking and streak counters
+12. Consistency heatmap component
+13. Kanban board view (kanbanView.js)
+14. Spatial energy leak overlay (mapView.js enhancement)
+15. Family status badges (contactWizard.js enhancement)
+
+LOWER PRIORITY (Sprint 4 - Week 7-8):
+16. Executive dashboard (executiveDashboard.js)
+17. Automated exception handling
+18. Predictive alert system
+19. Real SignalR integration
+20. PDF export for development path reports
+
+PART V: NEURO-TRIGGER IMPLEMENTATION MAPPING
+
+Neuro-Trigger              | Stage | Implementation Approach
+---------------------------|-------|------------------------------------------
+DMN Disruption             | 1     | Spatial friction heatmap + unexpected data revelations
+Prefrontal Friction        | 2     | Gap visualization with animated current→target comparison
+Synaptic Myelination       | 3     | Streak counters + consistency heatmap + repetition tracking
+Basal Ganglia Automation   | 4     | Automated alerts + family status badges + predictive recommendations
+
+PART VI: DAILY CADENCE COMPONENT MAPPING
+
+Cadence Window    | Primary Component    | Current Status    | Enhancement Needed
+------------------|----------------------|-------------------|-------------------
+Morning Reset     | routineView.js       | ✅ 80%            | Add right panel daily tasks
+Midday Check-In   | mapView.js           | ✅ 70%            | Add energy leak overlay
+Evening Shutdown  | maturityView.js      | ✅ 60%            | Add telemetry log form
+Weekly Review     | riskView.js (NEW)    | ❌ 0%             | Create risk matrix view
+Monthly Scan      | calendarView.js      | ✅ 65%            | Add milestone countdowns
+
+PART VII: THIRD-PARTY LIBRARY ADDITIONS REQUIRED
+
+1. jQuery + DataTables (jqTable) - Structured data tables
+2. Kanban Board Library (e.g., react-kanban or custom vanilla JS)
+3. Gantt Chart Library (e.g., Frappe Gantt or custom)
+4. Heatmap.js - Contribution-style consistency grid
+5. SignalR Client (real connection, not mock)
+6. PDF Export Library (jsPDF or html2canvas)
+
+PART VIII: RISK ASSESSMENT
+
+Technical Risks:
+- Device sensor API compatibility across browsers
+- SignalR real-time connection stability
+- Performance impact of real-time panel updates
+- localStorage size limits with expanded data model
+
+Mitigation Strategies:
+- Feature detection + graceful degradation for sensor APIs
+- WebSocket fallback to polling if SignalR fails
+- Debounced panel updates, virtual scrolling for large datasets
+- IndexedDB migration plan for storage overflow
+
+
