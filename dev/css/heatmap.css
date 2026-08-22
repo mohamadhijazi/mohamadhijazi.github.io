@@ -1,0 +1,340 @@
+/* Impact360 Command Center - Regional Strategic Heatmap & OpenStreetMap Styles */
+
+.heatmap-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.heatmap-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.heatmap-left-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.heatmap-view-toggle {
+  display: inline-flex;
+  background: #F1F5F9;
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  border: 1px solid var(--border-color);
+}
+
+.view-toggle-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.view-toggle-btn.active {
+  background: #FFFFFF;
+  color: var(--primary-navy);
+  box-shadow: var(--shadow-sm);
+}
+
+.map-filter-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.legend-box {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.legend-green { background-color: #2E7D32; }
+.legend-amber { background-color: #F9A825; }
+.legend-red { background-color: #C62828; }
+.legend-blue { background-color: #0078D4; }
+
+/* OpenStreetMap Wrapper */
+.osm-map-wrapper {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.osm-map-container {
+  width: 100%;
+  height: 540px;
+  background-color: #E5E7EB;
+  z-index: 10;
+}
+
+.osm-map-overlay-card {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-lg);
+  z-index: 500;
+  max-width: 260px;
+  font-size: 12px;
+}
+
+.osm-map-overlay-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--primary-navy-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.osm-map-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Custom Marker Pins */
+.custom-map-pin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid #FFFFFF;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.custom-map-pin:hover {
+  transform: scale(1.2);
+}
+
+.pin-project-green { background: #2E7D32; }
+.pin-project-amber { background: #F9A825; color: #1E293B; }
+.pin-project-red { 
+  background: #C62828; 
+  animation: mapPulseRed 2s infinite;
+}
+
+.pin-event {
+  background: #0078D4;
+  border-color: #93C5FD;
+}
+
+@keyframes mapPulseRed {
+  0% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.7); }
+  70% { box-shadow: 0 0 0 14px rgba(198, 40, 40, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0); }
+}
+
+/* Leaflet Custom Popups */
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 4px !important;
+}
+
+.map-popup-card {
+  min-width: 220px;
+  max-width: 280px;
+  padding: 8px 6px;
+  font-family: 'Inter', sans-serif;
+}
+
+.map-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.map-popup-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--primary-navy-dark);
+  line-height: 1.2;
+}
+
+.map-popup-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.map-popup-stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 4px 0;
+  border-top: 1px solid #F1F5F9;
+}
+
+.map-popup-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #E2E8F0;
+}
+
+/* Mini picker map inside modal */
+.mini-map-container {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  margin-top: 6px;
+  background-color: #F1F5F9;
+}
+
+/* Regional Matrix Grid (Existing) */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.region-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-color);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.region-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.region-card.healthy {
+  border-color: #2E7D32;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%);
+}
+
+.region-card.attention {
+  border-color: #F9A825;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FEFCE8 100%);
+}
+
+.region-card.critical {
+  border-color: #C62828;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FEF2F2 100%);
+}
+
+.region-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.region-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.region-status-tag {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.region-card.healthy .region-status-tag { background-color: #2E7D32; color: white; }
+.region-card.attention .region-status-tag { background-color: #F9A825; color: #0F172A; }
+.region-card.critical .region-status-tag { background-color: #C62828; color: white; }
+
+.region-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.region-stat-item {
+  background: rgba(255,255,255,0.7);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.region-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.region-stat-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-top: 2px;
+}
+
+.region-exposure-bar {
+  width: 100%;
+  height: 6px;
+  background-color: #E2E8F0;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.region-exposure-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+}

@@ -1,154 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1a1a2e">
-    <meta name="description" content="Multi-Mode PWA Application - Lite Mode & Power Mode">
-    <title>Multi-Mode PWA</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="styles.css">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- FullCalendar CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css">
-    <!-- Highcharts CSS -->
-    <script src="highcharts.js"></script>
-    <script src="highcharts-more.js"></script>
-    <script src="exporting.js"></script>
-    <script src="export-data.js"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- FullCalendar JS -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impact360 - Context-Aware Ownership Platform</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet OpenStreetMap CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/heatmap.css">
 </head>
 <body>
-    <header class="app-header">
-        <div class="header-left">
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
-            <h1 class="app-title">Multi-Mode PWA</h1>
-        </div>
-        <div class="header-center">
-            <div class="mode-switch">
-                <span class="mode-label lite-label">Lite</span>
-                <label class="switch">
-                    <input type="checkbox" id="modeToggle">
-                    <span class="slider"></span>
-                </label>
-                <span class="mode-label power-label">Power</span>
-            </div>
-        </div>
-        <div class="header-right">
-            <div class="stage-indicator" id="stageIndicator" style="display:none;">
-                <span class="stage-dot"></span>
-                <span class="stage-text">Sensing</span>
-            </div>
-            <button class="icon-btn" id="rightPanelToggle" title="Competence Detector" style="padding: 6px 10px;">🧠</button>
-            <button class="icon-btn" id="exportBtn" title="Export Workspace">⬇ Export</button>
-            <button class="icon-btn" id="importBtn" title="Import Workspace">⬆ Import</button>
-            <input type="file" id="importFile" accept=".json" style="display:none;">
-        </div>
-    </header>
 
-    <div class="app-body">
-        <nav class="side-nav" id="sideNav">
-            <div class="nav-section">
-                <h3 class="nav-title">Navigation</h3>
-                <ul class="nav-list">
-                    <li class="nav-item active" data-view="dashboard">
-                        <span class="nav-icon">📊</span>
-                        <span class="nav-text">Dashboard</span>
-                    </li>
-                    <li class="nav-item" data-view="calendar">
-                        <span class="nav-icon">📅</span>
-                        <span class="nav-text">Calendar</span>
-                    </li>
-                    <li class="nav-item" data-view="routines">
-                        <span class="nav-icon">📋</span>
-                        <span class="nav-text">Routines</span>
-                    </li>
-                    <li class="nav-item" data-view="floorplans">
-                        <span class="nav-icon">🏠</span>
-                        <span class="nav-text">Floor Plans</span>
-                    </li>
-                    <li class="nav-item" data-view="contacts">
-                        <span class="nav-icon">👥</span>
-                        <span class="nav-text">Contacts</span>
-                    </li>
-                    <li class="nav-item" data-view="map">
-                        <span class="nav-icon">📍</span>
-                        <span class="nav-text">Map</span>
-                    </li>
-                    <li class="nav-item" data-view="costs">
-                        <span class="nav-icon">💰</span>
-                        <span class="nav-text">Cost Planning</span>
-                    </li>
-                    <li class="nav-item" data-view="maturity">
-                        <span class="nav-icon">📈</span>
-                        <span class="nav-text">Maturity Radar</span>
-                    </li>
-                    <li class="nav-item" data-view="alerts">
-                        <span class="nav-icon">🔔</span>
-                        <span class="nav-text">Alerts</span>
-                        <span class="alert-count" id="alertCount">0</span>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <main class="main-content">
-            <div id="workspace-container">
-                <!-- Dynamic content loaded here -->
-            </div>
-        </main>
-    </div>
-
-    <!-- Modal Container -->
-    <div class="modal-overlay" id="modalOverlay" style="display:none;">
-        <div class="modal-container" id="modalContainer">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Modal</h2>
-                <button class="modal-close" id="modalClose">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Modal content -->
-            </div>
+  <div id="app-container">
+    <!-- Left Navigation Sidebar -->
+    <aside id="sidebar">
+      <div class="brand-header">
+        <div class="brand-logo">360</div>
+        <div>
+          <div class="brand-title">Impact360</div>
+          <div class="brand-subtitle">Ownership Platform</div>
         </div>
-    </div>
+        <button class="sidebar-toggle" type="button" aria-label="Toggle sidebar">
+          <span class="toggle-icon">‹</span>
+        </button>
+      </div>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <!-- Application Modules -->
-    <script src="storage.js"></script>
-    <script src="templates.js"></script>
-    <script src="eventEngine.js"></script>
-    <script src="portability.js"></script>
-    <script src="routineWizard.js"></script>
-    <script src="contactWizard.js"></script>
-    <script src="routineView.js"></script>
-    <script src="buildingWizard.js"></script>
-    <script src="spatialView.js"></script>
-    <script src="mapView.js"></script>
-    <script src="calendarView.js"></script>
-    <script src="costView.js"></script>
-    <script src="maturityView.js"></script>
-    <script src="rightPanel.js"></script>
-    <script src="app.js"></script>
-    
-    <script>
-        // Register Service Worker for PWA offline support
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
-                        console.log('Service Worker registered:', registration.scope);
-                    })
-                    .catch((error) => {
-                        console.log('Service Worker registration failed:', error);
-                    });
-            });
-        }
-    </script>
+      <ul class="nav-list">
+        <li class="nav-item active" data-view="executive">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Dashboard</span>
+        </li>
+        <li class="nav-item" data-view="employees">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Employees</span>
+        </li>
+        <li class="nav-item" data-view="objectives">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-label">Objectives</span>
+        </li>
+        <li class="nav-item" data-view="projects">
+          <span class="nav-icon">📁</span>
+          <span class="nav-label">Projects</span>
+        </li>
+        <li class="nav-item" data-view="innovation">
+          <span class="nav-icon">💡</span>
+          <span class="nav-label">Innovation</span>
+        </li>
+        <li class="nav-item" data-view="events">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-label">Events Center</span>
+        </li>
+        <li class="nav-item" data-view="risk">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-label">Risk Center</span>
+        </li>
+        <li class="nav-item" data-view="citizen">
+          <span class="nav-icon">🏛️</span>
+          <span class="nav-label">Citizen Impact</span>
+        </li>
+        <li class="nav-item" data-view="heatmap">
+          <span class="nav-icon">🗺️</span>
+          <span class="nav-label">Heatmap & OSM</span>
+        </li>
+        <li class="nav-item" data-view="facilities">
+          <span class="nav-icon">🏢</span>
+          <span class="nav-label">Facilities & Spatial</span>
+        </li>
+        <li class="nav-item" data-view="routines">
+          <span class="nav-icon">📋</span>
+          <span class="nav-label">Routines & Tasks</span>
+        </li>
+        <li class="nav-item" data-view="financials">
+          <span class="nav-icon">💰</span>
+          <span class="nav-label">Financial Command</span>
+        </li>
+      </ul>
+
+      <!-- Sidebar footer / Reset button -->
+      <div class="sidebar-footer">
+        <button class="btn-reset-demo" onclick="UI.resetDemoData()" title="Reset all data to default state">
+          <span>🔄</span> Reset Demo Data
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+      <!-- Top Bar -->
+      <header id="top-bar">
+        <div class="top-bar-left">
+          <div class="org-badge">
+            <div class="org-flag"></div>
+            <span>Impact360 Command Center</span>
+          </div>
+
+          <a href="about_us.html" class="about-link">About Us</a>
+
+          <div class="status-pills">
+            <div class="status-pill risk-high" id="top-risk-pill-container" title="Portfolio aggregate risk index">
+              <span class="pill-dot"></span>
+              <span id="top-risk-pill">Global Risk: --</span>
+            </div>
+            <div class="status-pill events-active" id="top-events-pill-container" title="Active external disruption events">
+              <span class="pill-dot"></span>
+              <span id="top-events-pill">Active Events: --</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="top-bar-right">
+          <!-- Quick CRUD Actions Dropdown -->
+          <div class="quick-add-container">
+            <button class="btn btn-primary btn-sm quick-add-btn" onclick="UI.toggleQuickAddMenu(event)">
+              <span>➕</span> New Entity ▾
+            </button>
+            <div id="quick-add-dropdown" class="quick-add-dropdown">
+              <div class="quick-add-item" onclick="UI.openProjectModal(); UI.hideQuickAddMenu();">
+                <span>📁</span> New Project
+              </div>
+              <div class="quick-add-item" onclick="UI.openFinancialModal(null, 'Income'); UI.hideQuickAddMenu();">
+                <span>💵</span> New Income Stream
+              </div>
+              <div class="quick-add-item" onclick="UI.openFinancialModal(null, 'Spending'); UI.hideQuickAddMenu();">
+                <span>💳</span> New Spending / CapEx
+              </div>
+              <div class="quick-add-item" onclick="UI.openFinancialModal(null, 'Asset'); UI.hideQuickAddMenu();">
+                <span>🏛️</span> New Capital Asset
+              </div>
+              <div class="quick-add-item" onclick="UI.openFinancialModal(null, 'Liability'); UI.hideQuickAddMenu();">
+                <span>⚖️</span> New Liability / Bond
+              </div>
+              <div class="quick-add-item" onclick="UI.openObjectiveModal(); UI.hideQuickAddMenu();">
+                <span>🎯</span> New Objective
+              </div>
+              <div class="quick-add-item" onclick="UI.openEventModal(); UI.hideQuickAddMenu();">
+                <span>⚡</span> New Event Alert
+              </div>
+              <div class="quick-add-item" onclick="UI.openRoutineModal(); UI.hideQuickAddMenu();">
+                <span>📋</span> New Routine / Shopping List
+              </div>
+              <div class="quick-add-item" onclick="UI.openIdeaModal(); UI.hideQuickAddMenu();">
+                <span>💡</span> New Innovation
+              </div>
+              <div class="quick-add-item" onclick="UI.openLocationModal(); UI.hideQuickAddMenu();">
+                <span>📍</span> New Geo Location
+              </div>
+              <div class="quick-add-item" onclick="UI.openBuildingModal(); UI.hideQuickAddMenu();">
+                <span>🏢</span> New Building
+              </div>
+              <div class="quick-add-item" onclick="UI.openRoomModal(); UI.hideQuickAddMenu();">
+                <span>🚪</span> New Room / Zone
+              </div>
+              <div class="quick-add-item" onclick="UI.openEmployeeModal(); UI.hideQuickAddMenu();">
+                <span>👥</span> New Employee
+              </div>
+              <div class="quick-add-item" onclick="UI.openRecognitionModal(); UI.hideQuickAddMenu();">
+                <span>🏅</span> Send Recognition
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Container -->
+          <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="global-search-input" class="search-input" placeholder="Search financials, income, assets, routines, facilities...">
+            <div id="search-dropdown" class="search-results-dropdown"></div>
+          </div>
+
+          <!-- User Profile -->
+          <div class="user-profile-badge">
+            <div class="user-avatar">EX</div>
+            <div class="user-info">
+              <span class="user-name">Executive Director</span>
+              <span class="user-role">Public Sector Command</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- View Viewport (Dynamic Mounts) -->
+      <section id="view-viewport">
+        <div id="view-executive" class="view-section active"></div>
+        <div id="view-employees" class="view-section"></div>
+        <div id="view-objectives" class="view-section"></div>
+        <div id="view-projects" class="view-section"></div>
+        <div id="view-innovation" class="view-section"></div>
+        <div id="view-events" class="view-section"></div>
+        <div id="view-risk" class="view-section"></div>
+        <div id="view-citizen" class="view-section"></div>
+        <div id="view-heatmap" class="view-section"></div>
+        <div id="view-facilities" class="view-section"></div>
+        <div id="view-routines" class="view-section"></div>
+        <div id="view-financials" class="view-section"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Global Modal Overlay -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div id="modal-box" class="modal-box"></div>
+  </div>
+
+  <!-- Global Slide-out Drawer Overlay -->
+  <div id="drawer-overlay" class="drawer-overlay" onclick="UI.closeDrawer()"></div>
+  <div id="drawer-panel" class="drawer-panel"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts: jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  
+  <!-- Leaflet OpenStreetMap JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Application Logic Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/risk-engine.js"></script>
+  <script src="js/event-engine.js"></script>
+  <script src="js/ownership-engine.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

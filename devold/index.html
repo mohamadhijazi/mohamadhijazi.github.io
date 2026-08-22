@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="Multi-Mode PWA Application - Lite Mode & Power Mode">
+    <title>Multi-Mode PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- FullCalendar CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css">
+    <!-- Highcharts CSS -->
+    <script src="highcharts.js"></script>
+    <script src="highcharts-more.js"></script>
+    <script src="exporting.js"></script>
+    <script src="export-data.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+            <h1 class="app-title">Multi-Mode PWA</h1>
+        </div>
+        <div class="header-center">
+            <div class="mode-switch">
+                <span class="mode-label lite-label">Lite</span>
+                <label class="switch">
+                    <input type="checkbox" id="modeToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="mode-label power-label">Power</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="stage-indicator" id="stageIndicator" style="display:none;">
+                <span class="stage-dot"></span>
+                <span class="stage-text">Sensing</span>
+            </div>
+            <button class="icon-btn" id="rightPanelToggle" title="Competence Detector" style="padding: 6px 10px;">🧠</button>
+            <button class="icon-btn" id="exportBtn" title="Export Workspace">⬇ Export</button>
+            <button class="icon-btn" id="importBtn" title="Import Workspace">⬆ Import</button>
+            <input type="file" id="importFile" accept=".json" style="display:none;">
+        </div>
+    </header>
+
+    <div class="app-body">
+        <nav class="side-nav" id="sideNav">
+            <div class="nav-section">
+                <h3 class="nav-title">Navigation</h3>
+                <ul class="nav-list">
+                    <li class="nav-item active" data-view="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-view="calendar">
+                        <span class="nav-icon">📅</span>
+                        <span class="nav-text">Calendar</span>
+                    </li>
+                    <li class="nav-item" data-view="routines">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">Routines</span>
+                    </li>
+                    <li class="nav-item" data-view="floorplans">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Floor Plans</span>
+                    </li>
+                    <li class="nav-item" data-view="contacts">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-text">Contacts</span>
+                    </li>
+                    <li class="nav-item" data-view="map">
+                        <span class="nav-icon">📍</span>
+                        <span class="nav-text">Map</span>
+                    </li>
+                    <li class="nav-item" data-view="costs">
+                        <span class="nav-icon">💰</span>
+                        <span class="nav-text">Cost Planning</span>
+                    </li>
+                    <li class="nav-item" data-view="maturity">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-text">Maturity Radar</span>
+                    </li>
+                    <li class="nav-item" data-view="alerts">
+                        <span class="nav-icon">🔔</span>
+                        <span class="nav-text">Alerts</span>
+                        <span class="alert-count" id="alertCount">0</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div id="workspace-container">
+                <!-- Dynamic content loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Container -->
+    <div class="modal-overlay" id="modalOverlay" style="display:none;">
+        <div class="modal-container" id="modalContainer">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Modal</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Application Modules -->
+    <script src="storage.js"></script>
+    <script src="templates.js"></script>
+    <script src="eventEngine.js"></script>
+    <script src="portability.js"></script>
+    <script src="routineWizard.js"></script>
+    <script src="contactWizard.js"></script>
+    <script src="routineView.js"></script>
+    <script src="buildingWizard.js"></script>
+    <script src="spatialView.js"></script>
+    <script src="mapView.js"></script>
+    <script src="calendarView.js"></script>
+    <script src="costView.js"></script>
+    <script src="maturityView.js"></script>
+    <script src="rightPanel.js"></script>
+    <script src="app.js"></script>
+    
+    <script>
+        // Register Service Worker for PWA offline support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

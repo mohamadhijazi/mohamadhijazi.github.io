@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Impact360</title>
+  <meta name="description" content="Learn how Impact360 helps teams make data-driven, secure, and accountable decisions with confidence.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-navy: #0f4c81;
+      --primary-navy-dark: #093358;
+      --primary-navy-light: #1a6bb5;
+      --success-green: #2e7d32;
+      --warning-amber: #f9a825;
+      --danger-crimson: #c62828;
+      --bg-main: #f5f7fa;
+      --bg-card: #ffffff;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 20px 40px rgba(15, 76, 129, 0.12);
+      --radius-md: 18px;
+      --radius-lg: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #f5f7fa 0%, #edf4fb 100%);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.82);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 76px;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--primary-navy-dark);
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary-navy) 0%, var(--success-green) 100%);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .nav a:hover { color: var(--primary-navy); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: var(--primary-navy);
+      color: white;
+      font-weight: 700;
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero {
+      padding: 64px 0 40px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(15, 76, 129, 0.08);
+      color: var(--primary-navy);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 18px 0 16px;
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.06em;
+    }
+
+    .lead {
+      max-width: 620px;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-navy-light) 100%);
+      color: #fff;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.8);
+      border-color: rgba(15, 76, 129, 0.12);
+      color: var(--primary-navy-dark);
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, #0f4c81 0%, #153d66 100%);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: auto -50px -50px auto;
+      width: 220px;
+      height: 220px;
+      background: rgba(46, 125, 50, 0.15);
+      border-radius: 50%;
+      filter: blur(8px);
+    }
+
+    .dashboard-preview {
+      position: relative;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .metric,
+    .mini-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 14px;
+      color: #fff;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+
+    .mini-card {
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mini-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      width: 84%;
+      background: linear-gradient(90deg, #4ade80 0%, #2dd4bf 100%);
+      border-radius: inherit;
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 30px;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .trust-row span {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+      background: rgba(255,255,255,0.6);
+    }
+
+    .section {
+      padding: 52px 0;
+    }
+
+    .section-header {
+      max-width: 700px;
+      margin-bottom: 28px;
+    }
+
+    .section-header h2 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.05em;
+    }
+
+    .section-header p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+    }
+
+    .features-grid,
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .feature-card,
+    .step-card {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+    }
+
+    .icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      background: rgba(15, 76, 129, 0.08);
+      margin-bottom: 18px;
+    }
+
+    .feature-card h3,
+    .step-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .feature-card p,
+    .step-card p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    .security-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: clamp(22px, 4vw, 36px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .security-panel ul {
+      list-style: none;
+      margin: 22px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .security-panel li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(46, 125, 50, 0.12);
+      color: var(--success-green);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .security-note {
+      background: linear-gradient(180deg, #0f4c81 0%, #153d66 100%);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      color: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow-md);
+    }
+
+    .security-note p {
+      margin: 12px 0 0;
+      color: rgba(255,255,255,0.75);
+    }
+
+    footer {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 40px 0 24px;
+    }
+
+    .footer-wrap {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .footer-brand h3 {
+      margin: 0 0 10px;
+      font-size: 1.8rem;
+      letter-spacing: -0.05em;
+    }
+
+    .footer-brand p {
+      margin: 0;
+      color: #cbd5e1;
+      max-width: 520px;
+    }
+
+    .contact-card {
+      border: 1px solid rgba(148, 163, 184, 0.26);
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .profile-pic {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.18);
+      box-shadow: 0 8px 20px rgba(15, 118, 110, 0.22);
+    }
+
+    .contact-card h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #f8fafc;
+    }
+
+    .contact-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .contact-links a {
+      color: #bfdbfe;
+      font-weight: 600;
+    }
+
+    .footer-bottom {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(148,163,184,0.2);
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: #cbd5e1;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .security-panel,
+      .footer-wrap,
+      .features-grid,
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .topbar-inner {
+        justify-content: space-between;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .cta-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .metric-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand" aria-label="Impact360 home">
+        <div class="brand-mark">360</div>
+        <span>Impact360</span>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#security">Security</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="index.html" class="nav-cta">Open App</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Built for responsible leadership</div>
+          <h1>Secure decisions start with trusted visibility.</h1>
+          <p class="lead">
+            Impact360 helps organizations manage ownership, risks, projects, routines, and strategic outcomes from one secure command center—so teams can act confidently and stay accountable.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="index.html">Access the application</a>
+            <a class="btn btn-secondary" href="#security">Learn how we protect your data</a>
+          </div>
+
+          <div class="trust-row" aria-label="Trust indicators">
+            <span>Secure access</span>
+            <span>Audit-ready</span>
+            <span>Public sector ready</span>
+          </div>
+        </div>
+
+        <div class="hero-panel" aria-label="Application overview preview">
+          <div class="dashboard-preview">
+            <div class="metric-strip">
+              <div class="metric">
+                <strong>94%</strong>
+                <span>Portfolio health</span>
+              </div>
+              <div class="metric">
+                <strong>18</strong>
+                <span>Active risks</span>
+              </div>
+              <div class="metric">
+                <strong>42</strong>
+                <span>Projects tracked</span>
+              </div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-card-header">
+                <span>Execution</span>
+                <span>84%</span>
+              </div>
+              <div>
+                <strong>Priority delivery rate</strong>
+                <div class="progress-bar"><span></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">Why teams choose Impact360</div>
+          <h2>Transparency, accountability, and control in one place.</h2>
+          <p>
+            We designed Impact360 to help leaders connect strategy to execution while reducing friction, improving visibility, and avoiding operational blind spots.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="icon-box">📊</div>
+            <h3>Operational clarity</h3>
+            <p>Track performance, ownership, events, and risk in a unified view that makes priorities easier to act on.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-box">🛡️</div>
+            <h3>Safer decisions</h3>
+            <p>Surface early warnings, identify vulnerable areas, and make informed choices with better context.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-box">🤝</div>
+            <h3>Stronger ownership</h3>
+            <p>Give teams clear ownership, centralized routines, and measurable outcomes that improve accountability.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="security">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">Security-first usage</div>
+          <h2>Use the application securely from day one.</h2>
+          <p>Impact360 is designed to support safe usage with a clear operational model and secure access habits.</p>
+        </div>
+
+        <div class="security-panel">
+          <div>
+            <h3>How to use it safely</h3>
+            <ul>
+              <li><span class="check">✓</span><span>Access the platform only from trusted devices and secure browser sessions.</span></li>
+              <li><span class="check">✓</span><span>Use role-based permissions so employees only see information relevant to their work.</span></li>
+              <li><span class="check">✓</span><span>Review updates, risks, and ownership changes regularly to maintain operational awareness.</span></li>
+              <li><span class="check">✓</span><span>Keep passwords strong, use multi-factor authentication where available, and log out after shared use.</span></li>
+              <li><span class="check">✓</span><span>Verify data before making strategic changes, especially around financial, project, and risk decisions.</span></li>
+            </ul>
+          </div>
+
+          <div class="security-note">
+            <div class="eyebrow" style="background: rgba(255,255,255,0.08); color: #fff;">Built for protection</div>
+            <h3>Security by design</h3>
+            <p>We emphasize visibility, controlled access, clear governance, and responsible operational habits so your team can move quickly without sacrificing trust.</p>
+            <p>Every data view is meant to support better decisions while preserving confidentiality and accountability across the organization.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">How it works</div>
+          <h2>From insight to action</h2>
+          <p>Use the dashboard to understand performance, define ownership, detect disruptions, and coordinate action.</p>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card">
+            <div class="icon-box">1</div>
+            <h3>Review</h3>
+            <p>Open the dashboard to review financial health, risk indicators, events, and operational priorities.</p>
+          </article>
+
+          <article class="step-card">
+            <div class="icon-box">2</div>
+            <h3>Assign</h3>
+            <p>Clarify ownership and align responsibilities across projects, employees, routines, and outcomes.</p>
+          </article>
+
+          <article class="step-card">
+            <div class="icon-box">3</div>
+            <h3>Act</h3>
+            <p>Move from intelligence to execution with measurable decisions, accountable follow-through, and secure updates.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-wrap">
+        <div class="footer-brand">
+          <h3>Impact360</h3>
+          <p>Helping teams build stronger operations through visibility, accountability, and secure decision-making.</p>
+        </div>
+
+        <div class="contact-card" aria-label="Contact information">
+          <img
+            class="profile-pic"
+            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80"
+            alt="Profile picture"
+          >
+          <div>
+            <h4>Your Name</h4>
+            <div class="contact-links">
+              <a href="mailto:hello@impact360.app">hello@impact360.app</a>
+              <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noreferrer">linkedin.com/in/yourprofile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Impact360</span>
+        <span>Ready to lead with clarity and confidence.</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
