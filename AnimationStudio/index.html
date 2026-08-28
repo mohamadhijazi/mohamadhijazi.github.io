@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Studio</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <header class="toolbar">
+            <div class="toolbar-group">
+                <h1 class="logo">Animation Studio</h1>
+            </div>
+            <div class="toolbar-group">
+                <button id="btn-new-project" class="toolbar-btn">New Project</button>
+                <button id="btn-clone-project" class="toolbar-btn">Clone Project</button>
+                <button id="btn-open-project" class="toolbar-btn">Open</button>
+                <button id="btn-save-project" class="toolbar-btn">Save</button>
+                <button id="btn-export-project" class="toolbar-btn">Export JSON</button>
+                <button id="btn-import-project" class="toolbar-btn">Import JSON</button>
+                <button id="btn-export-video" class="toolbar-btn">Export Video</button>
+                <button id="btn-movie-editor" class="toolbar-btn">Edit Movie</button>
+            </div>
+            <div class="toolbar-group">
+                <select id="project-select" class="project-select"></select>
+                <button id="btn-delete-project" class="toolbar-btn toolbar-btn-danger">Delete</button>
+            </div>
+        </header>
+
+        <main class="main-layout">
+            <aside class="left-panel">
+            <div class="panel-section">
+                <h2 class="panel-title">Asset Library</h2>
+                <div class="panel-tabs">
+                    <button class="tab active" data-tab="characters">Characters</button>
+                    <button class="tab" data-tab="backgrounds">Backgrounds</button>
+                    <button class="tab" data-tab="audio">Audio</button>
+                </div>
+                <div class="tab-content active" id="tab-characters">
+                    <div class="asset-grid" id="character-grid"></div>
+                    <button id="btn-svg-builder" class="panel-action">+ SVG Builder</button>
+                </div>
+                <div class="tab-content" id="tab-backgrounds">
+                    <div class="asset-grid" id="background-grid"></div>
+                    <button id="btn-add-background" class="panel-action">+ Add Background</button>
+                </div>
+                <div class="tab-content" id="tab-audio">
+                    <div class="asset-list" id="audio-list"></div>
+                    <button id="btn-add-audio" class="panel-action">+ Add MP3</button>
+                </div>
+            </div>
+            <div class="panel-section" id="actor-inspector" style="display:none;">
+                <h2 class="panel-title">Actor Inspector</h2>
+                <div class="inspector-content">
+                    <label>Name <input type="text" id="actor-name-input" class="text-input"></label>
+                    <label>Scale <input type="number" id="actor-scale-input" step="0.1" class="number-input"></label>
+                    <label>Rotation <input type="number" id="actor-rotation-input" step="1" class="number-input"></label>
+                    <div class="inspector-actions">
+                        <button id="btn-update-actor" class="btn btn-primary">Update</button>
+                        <button id="btn-delete-actor" class="btn btn-danger">Delete</button>
+                        <button id="btn-edit-svg" class="btn btn-secondary">Edit SVG</button>
+                        <button id="btn-toggle-visibility" class="btn btn-secondary">Hide</button>
+                        <button id="btn-move-up" class="btn btn-secondary">Bring Forward</button>
+                        <button id="btn-move-down" class="btn btn-secondary">Send Backward</button>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <section class="center-panel">
+                <div class="stage-container">
+                    <canvas id="stage"></canvas>
+                </div>
+                <div class="playback-controls">
+                    <button id="btn-stop" class="control-btn">Stop</button>
+                    <button id="btn-play" class="control-btn control-btn-primary">Play</button>
+                    <button id="btn-pause" class="control-btn">Pause</button>
+                    <span class="time-display"><span id="current-frame">0</span> / <span id="total-frames">0</span> frames</span>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bottom-panel">
+            <div class="timeline-header">
+                <h3 class="panel-title">Timeline</h3>
+                <div class="timeline-controls">
+                    <label>FPS: <input type="number" id="fps-input" value="30" min="1" max="60" class="fps-input"></label>
+                    <label>Duration: <input type="number" id="duration-input" value="60" min="1" max="180" class="duration-input">s</label>
+                </div>
+            </div>
+            <div class="timeline-container">
+                <div class="timeline-ruler" id="timeline-ruler"></div>
+                <div class="timeline-tracks" id="timeline-tracks">
+                    <div class="track track-background" data-track="background">
+                        <div class="track-label">Background</div>
+                        <div class="track-content" id="track-background"></div>
+                    </div>
+                    <div class="track track-characters" data-track="characters">
+                        <div class="track-label">Characters</div>
+                        <div class="track-content" id="track-characters"></div>
+                    </div>
+                    <div class="track track-audio" data-track="audio">
+                        <div class="track-label">Audio</div>
+                        <div class="track-content" id="track-audio"></div>
+                    </div>
+                </div>
+                <div class="playhead" id="playhead"></div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="svg-builder-overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <h2 class="overlay-title" id="svg-builder-title">SVG Character Builder</h2>
+            <div class="svg-tools">
+                <div class="tool-group">
+                    <label class="tool-label">Tools</label>
+                    <div class="tool-buttons">
+                        <button class="tool-btn active" data-tool="rectangle">Rectangle</button>
+                        <button class="tool-btn" data-tool="ellipse">Ellipse</button>
+                        <button class="tool-btn" data-tool="line">Line</button>
+                        <button class="tool-btn" data-tool="path">Freehand</button>
+                        <button class="tool-btn" data-tool="text">Text</button>
+                        <button class="tool-btn" data-tool="eraser">Eraser</button>
+                        <button class="tool-btn" data-tool="fill">Fill</button>
+                    </div>
+                </div>
+                <div class="tool-group">
+                    <label class="tool-label">Fill Color</label>
+                    <input type="color" id="svg-fill-color" value="#ffffff" class="color-input">
+                </div>
+                <div class="tool-group">
+                    <label class="tool-label">Stroke Color</label>
+                    <input type="color" id="svg-stroke-color" value="#000000" class="color-input">
+                </div>
+                <div class="tool-group">
+                    <label class="tool-label">Stroke Width</label>
+                    <input type="number" id="svg-stroke-width" value="2" min="0" max="20" class="number-input">
+                </div>
+                <div class="tool-group" id="text-tools-group" style="display:none;">
+                    <label class="tool-label">Font</label>
+                    <select id="svg-font-family" class="font-select">
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Impact">Impact</option>
+                    </select>
+                    <label class="tool-label" style="margin-top:4px;">Size</label>
+                    <input type="number" id="svg-font-size" value="24" min="8" max="120" class="number-input">
+                </div>
+            </div>
+            <div class="svg-canvas-container">
+                <svg id="svg-builder-canvas" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet" tabindex="0"></svg>
+            </div>
+            <div class="overlay-actions">
+                <input type="text" id="svg-name-input" placeholder="Character name" class="text-input">
+                <button id="btn-undo-svg" class="btn btn-secondary">Undo</button>
+                <button id="btn-save-svg" class="btn btn-primary">Save Character</button>
+                <button id="btn-cancel-svg" class="btn btn-secondary">Cancel</button>
+                <button id="btn-clear-svg" class="btn btn-secondary">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="movie-editor-overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <h2 class="overlay-title">Movie Editor</h2>
+            <div class="movie-editor-form">
+                <label>Project Name <input type="text" id="movie-name-input" class="text-input"></label>
+                <label>Duration (seconds) <input type="number" id="movie-duration-input" min="1" max="180" class="number-input"></label>
+                <label>Background Color <input type="color" id="movie-bg-color-input" value="#000000" class="color-input"></label>
+                <label>Or Background Image <input type="file" id="movie-bg-file-input" accept="image/*" class="file-input"></label>
+            </div>
+            <div class="overlay-actions">
+                <button id="btn-save-movie" class="btn btn-primary">Save Changes</button>
+                <button id="btn-cancel-movie" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="audio-file-input" accept="audio/*" class="hidden-file-input">
+    <input type="file" id="import-file-input" accept=".json" class="hidden-file-input">
+    <input type="file" id="background-file-input" accept="image/*" class="hidden-file-input">
+
+    <script src="js/My_Body__Head,_Nose,_Mouth,_Shoulders,_Knees_and_Toes (1).js"></script>
+    <script src="js/song1.js"></script>
+    <script src="js/song_mary.js"></script>
+    <script src="js/song_alphabet.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/stage.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/library.js"></script>
+    <script src="js/svgBuilder.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

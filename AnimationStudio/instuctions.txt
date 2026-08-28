@@ -1,0 +1,182 @@
+Context & Objective
+Build a browser-based 2D Animation Studio using pure Vanilla JavaScript, HTML, and CSS. The app allows users to create up to 3-minute animations, draw custom SVG characters, manage a keyframe timeline, upload MP3 audio, and export the final movie.
+Technical Constraints
+Core: Vanilla JS (ES6 modules), HTML5 Canvas API for rendering, Web Audio API for sound synchronization.
+No Heavy Frameworks: Do not use React, Vue, or Angular. Keep DOM manipulation native.
+Storage Engine: Use IndexedDB (via native API or localforage) for state management to bypass standard localStorage size limits.
+Media Export: Use the MediaRecorder API to capture the Canvas stream and Web Audio destination node into a downloadable .webm or .mp4 file.
+Import/Export: Support downloading and uploading the entire project state as a .json file.
+UI/UX Layout Rules
+Create a dark-mode, professional studio aesthetic with three main panels:
+Left Panel (Library & Tools): Asset Library showing saved SVGs, MP3s, and Backgrounds. Include an "SVG Builder" overlay for drawing basic vector shapes and saving them as inline  strings.
+Center Panel (Stage): The HTML5 Canvas Stage (16:9 ratio, scaling to fit the window). Allow users to drag, scale, and rotate actors directly on the canvas.
+Bottom Panel (Timeline): The Keyframe Timeline with multi-track support (Backgrounds, Characters, Audio). Include Play, Pause, and Stop buttons, and a visual playhead.
+Initial Seed Data (Nursery Rhymes)
+On the application's first load, if the IndexedDB database is empty, seed it with these three working samples so the user has immediate starting points. Use this exact JSON structure
+{
+  "metadata": { "version": "1.0", "resolution": [1920, 1080], "fps": 30 },
+  "projects": [
+    {
+      "id": "p1_twinkle",
+      "name": "Twinkle Twinkle Little Star",
+      "duration": 60,
+      "audioTrack": null,
+      "background": "#0b0b2a",
+      "actors": [
+        {
+          "id": "star_main",
+          "name": "Twinkle Star",
+          "svg": "",
+          "keyframes": [
+            { "frame": 0, "x": 100, "y": 200, "scale": 1, "rotation": 0 },
+            { "frame": 900, "x": 900, "y": 200, "scale": 1.5, "rotation": 360 },
+            { "frame": 1800, "x": 1800, "y": 200, "scale": 1, "rotation": 720 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p2_spider",
+      "name": "Itsy Bitsy Spider",
+      "duration": 60,
+      "audioTrack": null,
+      "background": "#87CEEB",
+      "actors": [
+        {
+          "id": "spider_main",
+          "name": "Itsy Spider",
+          "svg": "",
+          "keyframes": [
+            { "frame": 0, "x": 500, "y": 900, "scale": 1, "rotation": 0 },
+            { "frame": 900, "x": 500, "y": 300, "scale": 1, "rotation": 0 },
+            { "frame": 1200, "x": 500, "y": 900, "scale": 1, "rotation": 180 }
+          ]
+        },
+        {
+          "id": "spout_prop",
+          "name": "Water Spout",
+          "svg": "",
+          "keyframes": [
+            { "frame": 0, "x": 480, "y": 540, "scale": 5, "rotation": 0 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p3_mary",
+      "name": "Mary Had a Little Lamb",
+      "duration": 60,
+      "audioTrack": null,
+      "background": "#90EE90",
+      "actors": [
+        {
+          "id": "mary_main",
+          "name": "Mary",
+          "svg": "",
+          "keyframes": [
+            { "frame": 0, "x": 100, "y": 800, "scale": 1.5, "rotation": 0 },
+            { "frame": 1500, "x": 1500, "y": 800, "scale": 1.5, "rotation": 0 }
+          ]
+        },
+        {
+          "id": "lamb_main",
+          "name": "Little Lamb",
+          "svg": "",
+          "keyframes": [
+            { "frame": 15, "x": 50, "y": 850, "scale": 1, "rotation": 0 },
+            { "frame": 1515, "x": 1450, "y": 850, "scale": 1, "rotation": 0 }
+          ]
+        }
+      ]
+    }
+  ]
+}
+Implementation Phases
+Do not build everything at once. Build this systematically and wait for my approval before moving to the next phase.
+Phase 1: Scaffold the HTML/CSS layout (Stage, Timeline, Asset Library) and set up IndexedDB storage, ensuring the seed data populates on first load.
+Phase 2: Build the HTML5 Canvas rendering engine. Parse the seeded  strings into image objects and draw them at their exact x, y coordinates. Add canvas drag-and-drop logic.
+Phase 3: Implement the Keyframe Timeline interpolation logic. Create the playhead behavior that updates Canvas positions based on the current frame.
+Phase 4: Add the SVG Character Builder UI module and the file uploader for MP3 tracks.
+Phase 5: Integrate the Web Audio API for synchronized playback and implement the MediaRecorder video export logic
+    {
+      "id": "p4_alphabet",
+      "name": "ABCD... The Alphabet Adventure",
+      "duration": 180,
+      "audioTrack": null,
+      "background": "#1a1a2e",
+      "actors": [
+        {
+          "id": "board_prop",
+          "name": "Chalkboard",
+          "svg": "",
+          "keyframes": [
+            { "frame": 0, "x": 960, "y": 540, "scale": 10, "rotation": 0 }
+          ]
+        },
+        {
+          "id": "letter_A",
+          "name": "A is for Apple",
+          "svg": "A",
+          "keyframes": [
+            { "frame": 0, "x": -200, "y": 300, "scale": 0.1, "rotation": -90 },
+            { "frame": 90, "x": 400, "y": 300, "scale": 2.5, "rotation": 0 },
+            { "frame": 800, "x": 400, "y": 300, "scale": 2.5, "rotation": 10 },
+            { "frame": 900, "x": 200, "y": 150, "scale": 1, "rotation": 0 },
+            { "frame": 5400, "x": 200, "y": 150, "scale": 1, "rotation": 360 }
+          ]
+        },
+        {
+          "id": "letter_B",
+          "name": "B is for Bear",
+          "svg": "B",
+          "keyframes": [
+            { "frame": 0, "x": -200, "y": 500, "scale": 0.1, "rotation": 0 },
+            { "frame": 800, "x": -200, "y": 500, "scale": 0.1, "rotation": 0 },
+            { "frame": 890, "x": 900, "y": 500, "scale": 2.5, "rotation": 0 },
+            { "frame": 1600, "x": 900, "y": 500, "scale": 2.5, "rotation": -10 },
+            { "frame": 1700, "x": 400, "y": 150, "scale": 1, "rotation": 0 },
+            { "frame": 5400, "x": 400, "y": 150, "scale": 1, "rotation": -360 }
+          ]
+        },
+        {
+          "id": "letter_C",
+          "name": "C is for Cat",
+          "svg": "C",
+          "keyframes": [
+            { "frame": 0, "x": 1920, "y": 700, "scale": 0.1, "rotation": 0 },
+            { "frame": 1600, "x": 1920, "y": 700, "scale": 0.1, "rotation": 0 },
+            { "frame": 1690, "x": 1400, "y": 700, "scale": 2.5, "rotation": 0 },
+            { "frame": 2400, "x": 1400, "y": 700, "scale": 2.5, "rotation": 15 },
+            { "frame": 2500, "x": 600, "y": 150, "scale": 1, "rotation": 0 },
+            { "frame": 5400, "x": 600, "y": 150, "scale": 1, "rotation": 360 }
+          ]
+        },
+        {
+          "id": "letter_D",
+          "name": "D is for Dog",
+          "svg": "D",
+          "keyframes": [
+            { "frame": 0, "x": 1920, "y": 900, "scale": 0.1, "rotation": 0 },
+            { "frame": 2400, "x": 1920, "y": 900, "scale": 0.1, "rotation": 0 },
+            { "frame": 2490, "x": 960, "y": 900, "scale": 2.5, "rotation": 0 },
+            { "frame": 3200, "x": 960, "y": 900, "scale": 2.5, "rotation": -15 },
+            { "frame": 3300, "x": 800, "y": 150, "scale": 1, "rotation": 0 },
+            { "frame": 5400, "x": 800, "y": 150, "scale": 1, "rotation": -360 }
+          ]
+        },
+        {
+          "id": "letters_EZ",
+          "name": "E through Z Train",
+          "svg": "E F G H I J K L M N O P Q R S T U V W X Y Z",
+          "keyframes": [
+            { "frame": 0, "x": 2500, "y": 500, "scale": 1, "rotation": 0 },
+            { "frame": 3200, "x": 2500, "y": 500, "scale": 1, "rotation": 0 },
+            { "frame": 4800, "x": -1000, "y": 500, "scale": 1.5, "rotation": 0 },
+            { "frame": 4801, "x": 960, "y": 500, "scale": 0, "rotation": 0 },
+            { "frame": 4900, "x": 960, "y": 500, "scale": 2, "rotation": 0 },
+            { "frame": 5400, "x": 960, "y": 500, "scale": 2.2, "rotation": 5 }
+          ]
+        }
+      ]
+    }
+Create in multiple js files and CSS and html allow to download all files

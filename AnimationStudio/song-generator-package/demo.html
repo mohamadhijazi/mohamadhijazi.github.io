@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Song Generator Demo</title></head>
+<body style="font-family:system-ui;background:#171717;color:white;padding:32px">
+  <h1>Animation Studio Song Generator</h1>
+  <button id="generate">Generate MP3</button>
+  <p id="status"></p>
+  <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+  <script src="song-generator.js"></script>
+  <script>
+    const status = document.querySelector('#status');
+    document.querySelector('#generate').addEventListener('click', async () => {
+      try {
+        status.textContent = 'Rendering...';
+        const generator = new SongGenerator({ bitRate: 128 });
+        await generator.downloadMp3(demoSong, 'little-star-demo.mp3');
+        status.textContent = 'MP3 generated.';
+      } catch (error) {
+        status.textContent = error.message;
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
