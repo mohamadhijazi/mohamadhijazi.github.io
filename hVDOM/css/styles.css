@@ -1,0 +1,759 @@
+/* ========================================
+   cVDOM Engine — Neural CSS System
+   Biological Brain ↔ Frontend Architecture
+   ======================================== */
+
+:root {
+    --neural-bg: #0a0a1a;
+    --neural-surface: #13132d;
+    --neural-surface-alt: #1a1a3a;
+    --neural-border: #2a2a5a;
+    --neural-accent: #00d4ff;
+    --neural-accent-alt: #7d2ae2;
+    --neural-green: #00ff88;
+    --neural-red: #ff4466;
+    --neural-yellow: #ffaa00;
+    --neural-text: #e0e0ff;
+    --neural-text-dim: #8a8abc;
+    --neural-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
+    --neural-glow: 0 0 20px var(--neural-accent), 
+                    inset 0 0 20px rgba(0, 212, 255, 0.05);
+}
+
+.theme-light {
+    --neural-bg: #eef4fa;
+    --neural-surface: #ffffff;
+    --neural-surface-alt: #e4edf7;
+    --neural-border: #aebed2;
+    --neural-accent: #0077b6;
+    --neural-accent-alt: #6b35b1;
+    --neural-green: #087f4b;
+    --neural-red: #c92a45;
+    --neural-yellow: #9c5c00;
+    --neural-text: #16233a;
+    --neural-text-dim: #51627b;
+    --neural-shadow: 0 2px 20px rgba(18, 55, 90, 0.12);
+    --neural-glow: 0 2px 14px rgba(0, 119, 182, 0.12), inset 0 0 16px rgba(0, 119, 182, 0.03);
+    background: var(--neural-bg);
+    color: var(--neural-text);
+}
+
+.theme-light .results-display,
+.theme-light .diff-item,
+.theme-light .diff-chart,
+.theme-light .canvas-wrapper,
+.theme-light .bpmn-container,
+.theme-light .puzzle-bank,
+.theme-light .puzzle-targets,
+.theme-light .challenge-notes,
+.theme-light .parameter-inputs input {
+    background: rgba(255, 255, 255, 0.72);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    background: var(--neural-bg);
+    color: var(--neural-text);
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+/* ===== Boot Screen ===== */
+.boot-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: radial-gradient(circle at center, #0a0a1a 0%, #000010 100%);
+}
+
+.boot-logo {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    background: linear-gradient(45deg, var(--neural-accent), var(--neural-accent-alt));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+}
+
+.boot-status {
+    font-size: 1.2rem;
+    color: var(--neural-text-dim);
+    margin-bottom: 3rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.boot-progress {
+    display: flex;
+    gap: 1rem;
+}
+
+.boot-step {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--neural-border);
+    border-radius: 4px;
+    color: var(--neural-text-dim);
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.boot-step.active {
+    border-color: var(--neural-accent);
+    color: var(--neural-accent);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+/* ===== App Container ===== */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* ===== Neural Navigation ===== */
+.neural-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--neural-surface);
+    border-bottom: 2px solid var(--neural-border);
+    padding: 0.5rem 1.5rem;
+    box-shadow: var(--neural-shadow);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.brand-icon {
+    font-size: 1.5rem;
+}
+
+.brand-text {
+    background: linear-gradient(45deg, var(--neural-accent), var(--neural-accent-alt));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-tab {
+    background: var(--neural-surface-alt);
+    border: 1px solid var(--neural-border);
+    border-radius: 6px;
+    padding: 0.5rem 1.2rem;
+    color: var(--neural-text-dim);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.nav-tab:hover {
+    background: var(--neural-accent);
+    color: var(--neural-bg);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.nav-tab.active {
+    background: linear-gradient(45deg, var(--neural-accent), var(--neural-accent-alt));
+    color: var(--neural-bg);
+    border-color: var(--neural-accent);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.theme-toggle { white-space: nowrap; }
+
+.high-contrast {
+    --neural-border: #75dfff;
+    --neural-text: #ffffff;
+    --neural-text-dim: #d0e5ff;
+}
+
+.theme-light.high-contrast {
+    --neural-border: #005a8c;
+    --neural-text: #071a2b;
+    --neural-text-dim: #183c59;
+}
+
+.reduced-motion *, .reduced-motion *::before, .reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+.neural-content {
+    flex: 1;
+    overflow: auto;
+    padding: 1.5rem;
+}
+
+/* ===== Status Footer ===== */
+.neural-footer {
+    background: var(--neural-surface);
+    border-top: 2px solid var(--neural-border);
+    padding: 0.5rem 1.5rem;
+    box-shadow: var(--neural-shadow);
+}
+
+.status-indicators {
+    display: flex;
+    gap: 2rem;
+    font-size: 0.8rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.cerebellar-status,
+.gateway-status,
+.compiler-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cerebellar-status.healthy { color: var(--neural-green); }
+.cerebellar-status.warning { color: var(--neural-yellow); }
+.cerebellar-status.critical { color: var(--neural-red); }
+
+.gateway-status.online { color: var(--neural-green); }
+.gateway-status.offline { color: var(--neural-red); }
+
+.compiler-status.active { color: var(--neural-green); animation: pulse 1s infinite; }
+.compiler-status.idle { color: var(--neural-text-dim); }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ===== Dashboard ===== */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.neural-card {
+    background: var(--neural-surface);
+    border: 2px solid var(--neural-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: var(--neural-glow);
+    transition: all 0.3s ease;
+}
+
+.neural-card:hover {
+    border-color: var(--neural-accent);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+}
+
+.card-title {
+    font-size: 1.1rem;
+    color: var(--neural-accent);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--neural-border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-title .icon {
+    font-size: 1.4rem;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--neural-text);
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    color: var(--neural-text-dim);
+    margin-top: 0.25rem;
+}
+
+/* ===== Diagnostic Tests ===== */
+.diagnostic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.test-container {
+    background: var(--neural-surface);
+    border: 2px solid var(--neural-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: var(--neural-glow);
+}
+
+.test-container.active {
+    border-color: var(--neural-accent);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+}
+
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--neural-border);
+}
+
+.test-title {
+    font-size: 1.1rem;
+    color: var(--neural-accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.test-status {
+    font-size: 0.8rem;
+    font-family: 'Fira Code', monospace;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+}
+
+.status-idle { background: rgba(138, 138, 172, 0.2); color: var(--neural-text-dim); }
+.status-running { background: rgba(255, 170, 0, 0.2); color: var(--neural-yellow); }
+.status-complete { background: rgba(0, 255, 136, 0.2); color: var(--neural-green); }
+.status-error { background: rgba(255, 68, 102, 0.2); color: var(--neural-red); }
+
+.test-instructions {
+    color: var(--neural-text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.test-instructions ol {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.test-instructions li {
+    margin-bottom: 0.25rem;
+}
+
+.btn {
+    background: var(--neural-accent);
+    color: var(--neural-bg);
+    border: 1px solid var(--neural-accent);
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background: var(--neural-accent-alt);
+    border-color: var(--neural-accent-alt);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: var(--neural-surface-alt);
+    color: var(--neural-text);
+    border-color: var(--neural-border);
+}
+
+.btn-secondary:hover {
+    background: var(--neural-bgyellow);
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.3);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.results-display {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--neural-text);
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--neural-border);
+}
+
+.challenge-notes {
+    width: 100%;
+    min-height: 150px;
+    margin-top: 0.75rem;
+    padding: 0.9rem;
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--neural-text);
+    border: 1px solid var(--neural-border);
+    border-radius: 6px;
+    font: inherit;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.challenge-notes:focus {
+    outline: none;
+    border-color: var(--neural-accent);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.25);
+}
+
+.digital-challenge { margin-bottom: 1.5rem; }
+.challenge-clock { margin-left: 0.8rem; color: var(--neural-yellow); font-size: 0.85rem; }
+.puzzle-layout { display: grid; grid-template-columns: 0.8fr 1.4fr; gap: 1rem; margin: 1rem 0; }
+.puzzle-bank, .puzzle-targets { padding: 0.8rem; background: rgba(0,0,0,.22); border: 1px solid var(--neural-border); border-radius: 6px; }
+.puzzle-token { display: inline-block; margin: .3rem; padding: .45rem .7rem; cursor: grab; border: 1px solid var(--neural-accent-alt); border-radius: 4px; color: var(--neural-text); background: var(--neural-surface-alt); }
+.puzzle-slot { min-height: 42px; display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin:.35rem 0; padding:.5rem .7rem; border:1px dashed var(--neural-border); border-radius:4px; color:var(--neural-text-dim); font-size:.8rem; }
+.puzzle-slot strong { color: var(--neural-accent); }
+.parameter-inputs { display:grid; grid-template-columns:repeat(2,minmax(180px,1fr)); gap:.8rem; margin:1rem 0; }
+.parameter-inputs label { display:flex; flex-direction:column; gap:.35rem; color:var(--neural-text-dim); font-size:.8rem; }
+.parameter-inputs input { padding:.6rem; background:rgba(0,0,0,.25); color:var(--neural-text); border:1px solid var(--neural-border); border-radius:4px; font:inherit; }
+.care-form { display:grid; grid-template-columns:repeat(2,minmax(140px,1fr)); gap:.8rem; margin:1rem 0; }
+.care-form label { display:flex; flex-direction:column; gap:.35rem; color:var(--neural-text-dim); font-size:.8rem; }
+.care-form input, .care-form select { padding:.55rem; background:var(--neural-surface-alt); color:var(--neural-text); border:1px solid var(--neural-border); border-radius:4px; font:inherit; }
+.care-form .care-check { grid-column:1/-1; flex-direction:row; align-items:center; }
+.safety-grid { display:grid; grid-template-columns:repeat(2,minmax(220px,1fr)); gap:.65rem; margin:1rem 0; color:var(--neural-text-dim); font-size:.85rem; }
+.safety-alert { padding:1rem; border:1px solid var(--neural-red); border-radius:6px; color:var(--neural-red); background:rgba(255,68,102,.1); line-height:1.5; }
+.battery-stage { margin-top:1rem; padding:1.2rem; border:1px solid var(--neural-border); border-radius:6px; background:rgba(0,0,0,.2); text-align:center; line-height:1.6; }
+.battery-signal { width:100%; margin-top:1rem; min-height:100px; border:2px solid var(--neural-accent); border-radius:8px; background:rgba(0,212,255,.16); color:var(--neural-accent); font:700 1.4rem inherit; cursor:pointer; box-shadow:0 0 22px rgba(0,212,255,.25); }
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.result-row:last-child {
+    border-bottom: none;
+}
+
+.result-value {
+    color: var(--neural-green);
+}
+
+.result-label {
+    color: var(--neural-text-dim);
+}
+
+/* ===== Canvas Tests ===== */
+.canvas-wrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    border: 1px solid var(--neural-border);
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+#occlusion-canvas,
+#pendulum-canvas {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+.wall-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    background: rgba(42, 42, 90, 0.8);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+#matter-container {
+    width: 100%;
+    height: 100%;
+}
+
+.drag-zone {
+    border: 2px dashed var(--neural-border);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+    color: var(--neural-text-dim);
+    margin-top: 1rem;
+    transition: all 0.2s ease;
+}
+
+.drag-zone.drag-over {
+    border-color: var(--neural-accent);
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.drag-item {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--neural-surface-alt);
+    border: 1px solid var(--neural-border);
+    border-radius: 4px;
+    cursor: grab;
+    margin: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.drag-item:hover {
+    background: var(--neural-accent);
+    color: var(--neural-bg);
+}
+
+.drag-item:active {
+    transform: scale(0.95);
+}
+
+/* ===== Map Container ===== */
+.map-container {
+    height: 400px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--neural-border);
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.map-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(10, 10, 26, 0.8);
+    padding: 0.5rem;
+    border-radius: 4px;
+    z-index: 700;
+}
+
+/* ===== Roadmap ===== */
+.roadmap-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.epoch-card {
+    background: var(--neural-surface);
+    border: 2px solid var(--neural-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: var(--neural-glow);
+}
+
+.epoch-card.active {
+    border-color: var(--neural-accent);
+}
+
+.epoch-card.completed {
+    border-color: var(--neural-green);
+}
+
+.epoch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.epoch-title {
+    font-size: 1.2rem;
+    color: var(--neural-accent);
+}
+
+.epoch-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-family: 'Fira Code', monospace;
+}
+
+.badge-active { background: rgba(0, 212, 255, 0.2); color: var(--neural-accent); }
+.badge-completed { background: rgba(0, 255, 136, 0.2); color: var(--neural-green); }
+.badge-pending { background: rgba(138, 138, 172, 0.2); color: var(--neural-text-dim); }
+
+.epoch-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.epoch-content .metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.epoch-content .metric .metric-label {
+    font-size: 0.8rem;
+    color: var(--neural-text-dim);
+}
+
+.epoch-content .metric .metric-value {
+    font-size: 1.2rem;
+    color: var(--neural-text);
+}
+
+.epoch-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.bpmn-container {
+    height: 250px;
+    width: 100%;
+    margin-top: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--neural-border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.bpmn-placeholder {
+    padding: 1rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--neural-text-dim);
+    white-space: pre-wrap;
+}
+
+/* ===== Diff Analysis ===== */
+.diff-matrix {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.diff-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--neural-border);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.diff-item .diff-label {
+    font-size: 0.8rem;
+    color: var(--neural-text-dim);
+    margin-bottom: 0.5rem;
+}
+
+.diff-item .diff-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.diff-value.impact-low { color: var(--neural-green); }
+.diff-value.impact-medium { color: var(--neural-yellow); }
+.diff-value.impact-high { color: var(--neural-red); }
+
+.diff-chart {
+    height: 200px;
+    width: 100%;
+    margin-top: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--neural-border);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.diff-chart .bar-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 100%;
+    padding: 0.5rem;
+}
+
+.diff-chart .bar {
+    width: 60px;
+    background: linear-gradient(180deg, var(--neural-accent), var(--neural-accent-alt));
+    border-radius: 4px 4px 0 0;
+    transition: height 0.5s ease;
+    position: relative;
+    min-height: 2px;
+}
+
+.diff-chart .bar .bar-label {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    font-family: 'Fira Code', monospace;
+    color: var(--neural-text-dim);
+}
+
+/* ===== Neural Network Visualization ===== */
+.neural-network {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.neural-node {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--neural-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--neural-accent);
+    animation: pulse-node 2s infinite;
+}
+
+@keyframes pulse-node {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+.neural-link {
+    position: absolute;
+    background: rgba(0, 212, 255, 0.2);
+    transform-origin: 0 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .diagnostic-grid { grid-template-columns: 1fr; }
+    .epoch-content { grid-template-columns: 1fr; }
+    .neural-footer { display: none; }
+    .puzzle-layout, .parameter-inputs, .care-form, .safety-grid { grid-template-columns: 1fr; }
+}

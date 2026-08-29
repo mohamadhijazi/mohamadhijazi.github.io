@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cVDOM Engine — Cognitive Virtual DOM</title>
+    <!-- Vue.js 3 Composition API -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <!-- Math.js for evaluation engine -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjs/lib/browser/math.js"></script>
+    <!-- Matter.js for physics/reality engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <!-- Leaflet.js for spatial mapping -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Dexie.js for IndexedDB (Cerebellar Cache persistence) -->
+    <script src="https://cdn.jsdelivr.net/npm/dexie/dist/dexie.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- App JS -->
+    <script defer src="js/app.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="boot-screen" v-if="bootPhase < 3">
+            <div class="boot-logo">cVDOM</div>
+            <div class="boot-status">{{ bootMessages[bootPhase] }}</div>
+            <div class="boot-progress">
+                <div class="boot-step" :class="{ active: bootPhase >= 0 }">Cerebellar Cache</div>
+                <div class="boot-step" :class="{ active: bootPhase >= 1 }">Basal Ganglia Gateway</div>
+                <div class="boot-step" :class="{ active: bootPhase >= 2 }">Prefrontal Cortex</div>
+            </div>
+        </div>
+        <div v-else class="app-container" :class="['theme-' + theme, { 'high-contrast': accessibility.highContrast, 'reduced-motion': accessibility.reduceMotion }]" :style="{ fontSize: accessibility.scale + '%' }">
+            <nav class="neural-nav">
+                <div class="nav-brand">
+                    <span class="brand-icon">🧠</span>
+                    <span class="brand-text">cVDOM Engine</span>
+                </div>
+                <div class="nav-tabs">
+                    <button class="nav-tab" :class="{ active: activeTab === 'dashboard' }" @click="activeTab = 'dashboard'">Dashboard</button>
+                    <button class="nav-tab" :class="{ active: activeTab === 'diagnostics' }" @click="activeTab = 'diagnostics'">Diagnostics</button>
+                    <button class="nav-tab" :class="{ active: activeTab === 'care' }" @click="activeTab = 'care'">Care & Safety</button>
+                    <button class="nav-tab" :class="{ active: activeTab === 'math' }" @click="activeTab = 'math'">Math Lab</button>
+                    <button class="nav-tab" :class="{ active: activeTab === 'art' }" @click="activeTab = 'art'">Art Studio</button>
+                    <button class="nav-tab" :class="{ active: activeTab === 'roadmap' }" @click="activeTab = 'roadmap'">Neuroplasticity Roadmap</button>
+                    <button class="nav-tab" :class="{ active: activeTab === 'diff' }" @click="activeTab = 'diff'">Diff Analysis</button>
+                    <button class="nav-tab theme-toggle" @click="toggleTheme" :aria-label="'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' theme'">{{ theme === 'dark' ? '☀ Light' : '◐ Dark' }}</button>
+                </div>
+            </nav>
+
+            <main class="neural-content">
+                <component :is="currentComponent" :key="activeTab"></component>
+            </main>
+
+            <footer class="neural-footer">
+                <div class="status-indicators">
+                    <span class="cerebellar-status" :class="cacheHealthClass">● Cerebellar: {{ cacheSize }} entries</span>
+                    <span class="gateway-status" :class="gatewayStatusClass">● Gateway: {{ gatewayState }}</span>
+                    <span class="compiler-status" :class="compilerStatusClass">● Hebbian Compiler: {{ compilerCycle === 0 ? 'idle' : 'active (' + compilerCycle + ')' }}</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
