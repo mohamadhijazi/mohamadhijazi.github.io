@@ -341,7 +341,7 @@ const UI = (function () {
       </div>
     `;
 
-    $('#view-executive').html(html);
+    $('#view-dashboard').html(html);
   }
 
   // =========================================================================
