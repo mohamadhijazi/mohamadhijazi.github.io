@@ -1,0 +1,60 @@
+Create a NorthStar storyboard JSON for a 60-second educational infographic video using the facts provided below.
+
+Topic:
+The Human Circulatory System
+
+Audience:
+General audience, age 12 and above
+
+Language:
+English, en-US
+
+Video requirements:
+- Duration: exactly 60 seconds
+- Resolution: 1920 × 1080
+- Frame rate: 60 FPS
+- Use only scene types supported by the NorthStar app.js renderer
+- Include native font icons, emojis, and simple reusable SVG path assets where appropriate
+- Use concise on-screen text
+- Include browser-friendly narration for every scene
+- Use continuous scene timing with no gaps or overlaps
+- The final scene must end exactly at 60 seconds
+- Use only the facts below
+- Do not add, validate, correct, or infer any other facts
+- Return one valid JSON object only
+- Do not use Markdown code fences
+- Do not include explanations before or after the JSON
+
+Approved facts:
+
+1. The circulatory system transports blood throughout the body.
+
+2. The main components of the circulatory system are the heart, blood, and blood vessels.
+
+3. The heart acts as a pump that keeps blood moving.
+
+4. Arteries carry blood away from the heart.
+
+5. Veins carry blood toward the heart.
+
+6. Capillaries are very small blood vessels that connect arteries and veins.
+
+7. Blood delivers oxygen and nutrients to body cells.
+
+8. Blood carries carbon dioxide and other waste products away from body cells.
+
+9. The pulmonary circuit moves blood between the heart and the lungs.
+
+10. The systemic circuit moves blood between the heart and the rest of the body.
+
+Suggested visual direction:
+
+- Begin with a title scene introducing the circulatory system.
+- Use a simple heart SVG symbol to represent the pump.
+- Use arrows or a number-line-style scene to show the direction of blood flow.
+- Use red and blue colors only as visual identifiers for different pathways, without introducing additional medical claims.
+- Use circles, arrows, Unicode symbols, or simple SVG paths to represent blood vessels and circulation.
+- Use a summary scene with no more than three bullets.
+- Prefer subtle animations such as pulse, slideLoop, pop, draw, and fadeZoom.
+
+Generate the complete renderer-compatible storyboard JSON now.

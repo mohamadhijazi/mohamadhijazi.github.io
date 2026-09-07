@@ -1,0 +1,267 @@
+{
+  "video": {
+    "title": "Multiplication: Visual Ways to Understand",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 60,
+    "background": "#061426",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#38BDF8",
+    "secondary": "#FBBF24",
+    "accent": "#A78BFA",
+    "text": "#F8FAFC",
+    "muted": "#A7B4C7",
+    "panel": "#10243F",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {
+    "multiplySvg": {
+      "viewBox": "0 0 100 100",
+      "paths": [
+        {
+          "d": "M25 20 L80 75",
+          "stroke": "#38BDF8",
+          "strokeWidth": 12,
+          "lineCap": "round"
+        },
+        {
+          "d": "M80 20 L25 75",
+          "stroke": "#FBBF24",
+          "strokeWidth": 12,
+          "lineCap": "round"
+        }
+      ]
+    },
+    "gridSvg": {
+      "viewBox": "0 0 120 120",
+      "paths": [
+        {
+          "d": "M10 10 H110 V110 H10 Z M43 10 V110 M77 10 V110 M10 43 H110 M10 77 H110",
+          "stroke": "#A78BFA",
+          "strokeWidth": 7,
+          "fill": "none",
+          "lineJoin": "round"
+        }
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "intro",
+      "start": 0,
+      "duration": 7,
+      "type": "title",
+      "title": "Multiplication",
+      "subtitle": "Equal groups made visible",
+      "narration": "Multiplication is a quick way to combine equal groups.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "svg",
+          "asset": "multiplySvg",
+          "x": 960,
+          "y": 255,
+          "width": 170,
+          "height": 170,
+          "animation": "draw",
+          "spin": 0.08
+        },
+        {
+          "kind": "emoji",
+          "value": "✨",
+          "x": 530,
+          "y": 370,
+          "size": 78,
+          "animation": "float",
+          "delay": 0.2
+        },
+        {
+          "kind": "emoji",
+          "value": "✨",
+          "x": 1390,
+          "y": 370,
+          "size": 62,
+          "animation": "pulse",
+          "delay": 0.45
+        }
+      ]
+    },
+    {
+      "id": "addition",
+      "start": 7,
+      "duration": 10,
+      "type": "equation",
+      "title": "Repeated addition",
+      "equation": "4 + 4 + 4 = 12",
+      "caption": "Three equal groups, with four in each group",
+      "narration": "Four plus four plus four equals twelve. This is three equal groups of four.",
+      "transition": "slideUp",
+      "decorations": [
+        {
+          "kind": "fontIcon",
+          "value": "＋",
+          "x": 330,
+          "y": 500,
+          "size": 110,
+          "color": "#38BDF8",
+          "animation": "bounce"
+        },
+        {
+          "kind": "emoji",
+          "value": "🍎",
+          "x": 1570,
+          "y": 500,
+          "size": 100,
+          "animation": "pop"
+        }
+      ]
+    },
+    {
+      "id": "groups",
+      "start": 17,
+      "duration": 11,
+      "type": "groups",
+      "title": "3 groups of 4",
+      "groups": 3,
+      "itemsPerGroup": 4,
+      "item": {
+        "kind": "emoji",
+        "value": "⭐",
+        "size": 72
+      },
+      "label": "3 × 4 = 12",
+      "narration": "We write three groups of four as three times four. The total is twelve.",
+      "transition": "fade",
+      "decorations": [
+        {
+          "kind": "fontIcon",
+          "value": "×",
+          "x": 960,
+          "y": 225,
+          "size": 78,
+          "color": "#FBBF24",
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "array",
+      "start": 28,
+      "duration": 11,
+      "type": "array",
+      "title": "The array model",
+      "rows": 3,
+      "columns": 4,
+      "cell": {
+        "kind": "fontIcon",
+        "value": "●",
+        "size": 82,
+        "color": "#38BDF8",
+        "alternateColor": "#A78BFA",
+        "animation": "wave"
+      },
+      "label": "3 rows × 4 columns = 12",
+      "narration": "The same idea can be arranged as an array: three rows and four columns.",
+      "transition": "slideLeft",
+      "decorations": [
+        {
+          "kind": "svg",
+          "asset": "gridSvg",
+          "x": 1500,
+          "y": 235,
+          "width": 120,
+          "height": 120,
+          "animation": "spinIn"
+        }
+      ]
+    },
+    {
+      "id": "numberline",
+      "start": 39,
+      "duration": 10,
+      "type": "numberLine",
+      "title": "Three equal jumps of four",
+      "from": 0,
+      "step": 4,
+      "jumps": 3,
+      "jumper": {
+        "kind": "emoji",
+        "value": "🐇",
+        "size": 74,
+        "animation": "hop"
+      },
+      "label": "0 → 4 → 8 → 12",
+      "narration": "On a number line, make three equal jumps of four to reach twelve.",
+      "transition": "fade",
+      "decorations": [
+        {
+          "kind": "fontIcon",
+          "value": "→",
+          "x": 960,
+          "y": 260,
+          "size": 95,
+          "color": "#38BDF8",
+          "animation": "slideLoop"
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "start": 49,
+      "duration": 11,
+      "type": "summary",
+      "title": "One fact, three visual models",
+      "bullets": [
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "＋",
+            "color": "#38BDF8"
+          },
+          "text": "Repeated addition: 4 + 4 + 4"
+        },
+        {
+          "icon": {
+            "kind": "emoji",
+            "value": "⭐"
+          },
+          "text": "Equal groups: 3 groups of 4"
+        },
+        {
+          "icon": {
+            "kind": "svg",
+            "asset": "gridSvg"
+          },
+          "text": "Array: 3 rows by 4 columns"
+        }
+      ],
+      "highlight": "3 × 4 = 12",
+      "narration": "Repeated addition, equal groups, and arrays all represent the same multiplication fact: three times four equals twelve.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "emoji",
+          "value": "💡",
+          "x": 280,
+          "y": 180,
+          "size": 100,
+          "animation": "pulse"
+        },
+        {
+          "kind": "svg",
+          "asset": "multiplySvg",
+          "x": 1640,
+          "y": 180,
+          "width": 100,
+          "height": 100,
+          "animation": "spinIn"
+        }
+      ]
+    }
+  ]
+}

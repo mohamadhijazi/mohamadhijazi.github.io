@@ -1,0 +1,11 @@
+VOICE EXPORT IN MICROSOFT EDGE
+
+1. Run start-server.bat.
+2. Open http://localhost:8080.
+3. Choose a narrator voice.
+4. Click Export Video + Narrator.
+5. In the sharing window choose This tab.
+6. Turn on Share tab audio.
+7. Click Share and keep the tab active until export completes.
+
+The downloaded WEBM includes the Canvas animation and native browser narrator.
