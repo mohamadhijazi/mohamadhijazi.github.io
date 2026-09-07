@@ -1,11 +1,16 @@
-VOICE EXPORT IN MICROSOFT EDGE
+VOICE EXPORT IN MICROSOFT EDGE & GOOGLE CHROME (100% IN-BROWSER)
 
-1. Run start-server.bat.
-2. Open http://localhost:8080.
-3. Choose a narrator voice.
-4. Click Export Video + Narrator.
-5. In the sharing window choose This tab.
-6. Turn on Share tab audio.
-7. Click Share and keep the tab active until export completes.
+1. Run start-server.bat (or open index.html directly in Edge or Chrome).
+2. Choose a narrator voice from the dropdown.
+3. Select your desired export format:
+   - "MP4 Video (.mp4)" (Recommended, high-quality H.264 video + AAC audio)
+   - "WEBM Video (.webm)"
+4. Click "Export Video + Voice".
+5. In the sharing prompt:
+   - Select "Entire screen" (or Screen 1).
+   - IMPORTANT: Check the box "Also share system audio" at the bottom-left.
+     (This captures the browser's native narrator voice directly from system audio).
+   - Click "Share".
+6. Keep the browser tab visible until recording finishes.
 
-The downloaded WEBM includes the Canvas animation and native browser narrator.
+The downloaded MP4 or WEBM video will automatically contain the crisp 1080p Canvas animation and the synchronized narrator voice!

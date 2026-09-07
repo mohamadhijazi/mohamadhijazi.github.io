@@ -18,15 +18,16 @@ Supported scenes: `title`, `equation`, `groups`, `array`, `numberLine`, `summary
 ## Run
 Use `start-server.bat`, or open `index.html` and choose the JSON with **Load JSON**.
 
-## Export video with narrator audio
+## Export video with narrator audio (100% in-browser)
 
-1. Open the application in Microsoft Edge using `start-server.bat`.
-2. Select the desired system voice.
-3. Click **Export Video + Narrator**.
-4. In the Edge sharing dialog, select **This tab**.
-5. Enable **Share tab audio**, then click **Share**.
-6. Keep the renderer tab active until recording completes.
+1. Open the application in Microsoft Edge or Chrome using `start-server.bat`, or open `index.html` directly.
+2. Select the desired system narrator voice.
+3. Select your export format: **MP4 Video (.mp4)** or **WEBM Video (.webm)**.
+4. Click **Export Video + Voice**.
+5. In the sharing dialog, select **Entire screen** (or Screen 1).
+6. Enable the checkbox **Also share system audio** (at bottom-left), then click **Share**.
+7. Keep the renderer tab visible until recording completes.
 
-The exporter combines the original 1920x1080 Canvas video track with the current tab audio track. The WEBM output therefore includes the native `speechSynthesis` narrator. Video uses a 35 Mbps target bitrate and narrator audio uses a 192 kbps target bitrate.
+The exporter combines the original sharp 1920x1080 Canvas video track with the system audio track. The exported MP4 or WEBM output includes the native `speechSynthesis` narrator voice. Video uses a high-bitrate stream and narrator audio uses a 192 kbps target bitrate.
 
-If **Share tab audio** is not enabled, Edge does not provide an audio track and the application stops the export with an explanatory message. Native browser APIs normally export WEBM. Convert to MP4 later with FFmpeg if required.
+If **Also share system audio** is not enabled, the application stops the export with a clear explanatory prompt.

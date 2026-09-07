@@ -25,8 +25,8 @@ function renderNumberLine(s,p){heading(s);let from=+s.from||0,step=+s.step||1,ju
 function renderSummary(s,p){heading(s);let arr=Array.isArray(s.bullets)?s.bullets:[];arr.forEach((item,i)=>{let obj=typeof item==="string"?{text:item}:item,a=clamp((p-i*.12)/.25),y=312+i*145;rounded(350,y-52,1220,105,18,theme().panel,a);visual({kind:"fontIcon",value:"✓",color:theme().primary,size:48,...obj.icon,x:415,y,delay:i*.1},p);ctx.globalAlpha=a;text(obj.text||"",490,y,42,theme().text,"600","left")});ctx.globalAlpha=1;text(s.highlight||"",960,830,88,theme().secondary,"900");decorations(s,p)}
 function activeScene(t){return data.scenes.find(s=>t>=s.start&&t<s.start+s.duration)||data.scenes.at(-1)}
 function render(t){background();let s=activeScene(t);if(!s)return;let p=clamp((t-s.start)/s.duration);ctx.save();transition(s,p);(renderers[s.type]||renderTitle)(s,p);ctx.restore();ctx.globalAlpha=1}
-function narrate(t){if(!narrationOn||!data)return;for(const s of data.scenes)if(t>=s.start&&!spoken.has(s.id)&&s.narration){spoken.add(s.id);let u=new SpeechSynthesisUtterance(s.narration);u.lang=data.video.language||"en-US";let v=speechSynthesis.getVoices().find(v=>v.name===$("#voice").value);if(v)u.voice=v;u.rate=.95;speechSynthesis.speak(u)}}
-function tick(ts){if(!playing)return;let t=(ts-startStamp)/1000,d=+data.video.duration;if(t>=d){t=d;playing=false}pausedAt=t;render(t);narrate(t);clock(t);if(playing)raf=requestAnimationFrame(tick)}
+function narrate(t){if(!narrationOn||!data)return;if(speechSynthesis.paused)speechSynthesis.resume();for(const s of data.scenes)if(t>=s.start&&!spoken.has(s.id)&&s.narration){spoken.add(s.id);let u=new SpeechSynthesisUtterance(s.narration);u.lang=data.video.language||"en-US";let v=speechSynthesis.getVoices().find(v=>v.name===$("#voice").value);if(v)u.voice=v;u.rate=.95;speechSynthesis.speak(u)}}
+function tick(ts){if(!playing)return;let t=(ts-startStamp)/1000,d=+data.video.duration;if(t>=d){t=d;playing=false;if(recorder?.state==="recording")setTimeout(()=>{if(recorder?.state==="recording")recorder.stop()},800)}pausedAt=t;render(t);narrate(t);clock(t);if(playing)raf=requestAnimationFrame(tick)}
 function play(){if(!data)return;playing=true;startStamp=performance.now()-pausedAt*1000;cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
 function pause(){playing=false;cancelAnimationFrame(raf);speechSynthesis.pause()}
 function restart(auto=true){playing=false;cancelAnimationFrame(raf);speechSynthesis.cancel();spoken.clear();pausedAt=0;render(0);clock(0);if(auto)play()}
@@ -38,75 +38,118 @@ async function autoLoad(){try{let r=await fetch("storyboard.json",{cache:"no-sto
 $("#jsonFile").onchange=async e=>{try{await load(JSON.parse(await e.target.files[0].text()))}catch(x){alert(x.message)}};
 $("#play").onclick=()=>{speechSynthesis.resume();play()};$("#pause").onclick=pause;$("#restart").onclick=()=>restart(true);
 $("#narration").onclick=e=>{narrationOn=!narrationOn;e.target.textContent=`Narration: ${narrationOn?"On":"Off"}`;if(!narrationOn)speechSynthesis.cancel()};
+
+function getRecorderMimeType(format="mp4"){
+  if(format==="mp4"){
+    const mp4Types=["video/mp4;codecs=avc1,mp4a.40.2","video/mp4;codecs=avc1","video/mp4"];
+    for(const t of mp4Types){
+      if(window.MediaRecorder?.isTypeSupported?.(t))return t;
+    }
+  }
+  const webmTypes=["video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm"];
+  for(const t of webmTypes){
+    if(window.MediaRecorder?.isTypeSupported?.(t))return t;
+  }
+  return "";
+}
+
 async function exportWithNarrator(){
   if(!data||recorder?.state==="recording")return;
   if(!navigator.mediaDevices?.getDisplayMedia){
-    alert("This browser does not support tab-audio capture. Use the latest Microsoft Edge or Chrome.");
+    alert("This browser does not support audio capture. Please use Microsoft Edge or Google Chrome on Windows or Mac.");
     return;
   }
+  const chosenFormat=$("#exportFormat")?.value||"mp4";
+  let mime=getRecorderMimeType(chosenFormat);
+  if(!mime){
+    mime=getRecorderMimeType("webm");
+    if(!mime){
+      alert("No supported video recording MIME type was found in this browser.");
+      return;
+    }
+  }
+  const isMp4=mime.includes("mp4");
+  const ext=isMp4?"mp4":"webm";
+
   let sharedStream;
   try{
-    $("#status").textContent="Select This tab and enable Share tab audio...";
+    $("#status").textContent="Select 'Entire Screen' and enable 'Also share system audio'...";
     sharedStream=await navigator.mediaDevices.getDisplayMedia({
       video:true,
-      audio:true,
-      preferCurrentTab:true,
-      selfBrowserSurface:"include",
-      surfaceSwitching:"exclude",
-      systemAudio:"include"
+      audio:{
+        suppressLocalAudioPlayback:false
+      },
+      systemAudio:"include",
+      preferCurrentTab:false
     });
+
     const audioTrack=sharedStream.getAudioTracks()[0];
     if(!audioTrack){
       sharedStream.getTracks().forEach(t=>t.stop());
-      throw new Error("No shared audio track was received. Select This tab and enable Share tab audio.");
+      throw new Error(
+        "No audio track was received!\n\n" +
+        "To include the narrator voice in the video:\n" +
+        "1. In the sharing prompt, choose 'Entire screen' (or Screen 1).\n" +
+        "2. Check the box 'Also share system audio' at the bottom-left.\n" +
+        "3. Click Share."
+      );
     }
 
-    // Use the sharp 1920x1080 Canvas track for video and the selected tab for narrator audio.
+    // Stop the screen video track immediately so only the 1080p canvas track is recorded
+    sharedStream.getVideoTracks().forEach(t=>t.stop());
+
     const canvasStream=canvas.captureStream(data.video.fps||60);
     const mixedStream=new MediaStream([
       ...canvasStream.getVideoTracks(),
       audioTrack
     ]);
-    const mime=MediaRecorder.isTypeSupported("video/webm;codecs=vp9,opus")
-      ? "video/webm;codecs=vp9,opus"
-      : "video/webm";
+
     chunks=[];
     recorder=new MediaRecorder(mixedStream,{
       mimeType:mime,
       videoBitsPerSecond:35000000,
       audioBitsPerSecond:192000
     });
-    recorder.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+
+    recorder.ondataavailable=e=>{
+      if(e.data&&e.data.size>0)chunks.push(e.data);
+    };
     recorder.onerror=e=>console.error("Recorder error",e);
     recorder.onstop=()=>{
       sharedStream.getTracks().forEach(t=>t.stop());
       canvasStream.getTracks().forEach(t=>t.stop());
-      const blob=new Blob(chunks,{type:"video/webm"});
+      if(!chunks.length){
+        $("#status").textContent="Export finished with no data";
+        return;
+      }
+      const blob=new Blob(chunks,{type:mime});
       const url=URL.createObjectURL(blob);
       const a=document.createElement("a");
       a.href=url;
-      a.download=(data.video.title||"northstar-video").replace(/[^a-z0-9]+/gi,"-")+"-with-narration.webm";
+      const titleSlug=(data.video.title||"video").replace(/[^a-z0-9]+/gi,"-").toLowerCase();
+      a.download=`${titleSlug}-with-narration.${ext}`;
       a.click();
-      setTimeout(()=>URL.revokeObjectURL(url),1500);
-      $("#status").textContent=`Export complete: ${data.video.title}`;
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+      $("#status").textContent=`Export complete: ${titleSlug}.${ext}`;
     };
 
-    // Narration must remain enabled because audio is now captured from the shared tab.
     narrationOn=true;
     $("#narration").textContent="Narration: On";
     speechSynthesis.cancel();
     restart(false);
     recorder.start(1000);
-    $("#status").textContent="Recording 1080p video with narrator audio. Keep this tab active...";
+    $("#status").textContent=`Recording 1080p ${ext.toUpperCase()} with narrator voice. Keep tab visible...`;
     play();
+
     setTimeout(()=>{
       if(recorder?.state==="recording")recorder.stop();
-    },data.video.duration*1000+1200);
+    },data.video.duration*1000+1500);
   }catch(error){
     if(sharedStream)sharedStream.getTracks().forEach(t=>t.stop());
     $("#status").textContent="Voice export cancelled or unavailable";
-    alert(error.message||"Could not start voice export.");
+    if(error.message)alert(error.message);
   }
 }
 $("#export").onclick=exportWithNarrator;
 speechSynthesis.onvoiceschanged=voices;autoLoad();
+
