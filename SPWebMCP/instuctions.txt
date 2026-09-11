@@ -1,0 +1,362 @@
+## Production Blueprint: Agent-Ready SharePoint On-Premises via WebMCP
+
+A complete, self-contained architecture using vanilla HTML, CSS, and modern JavaScript hosted directly inside a SharePoint **Site Assets** library. This implementation exposes a multi-skill WebMCP toolset that interfaces with SharePoint REST endpoints (`/_api/...`) while maintaining an immutable, real-time audit ledger via `localStorage`.
+
+### 1. File Structure in SharePoint Site Assets
+
+Create a folder named `WebMCP-Agent` inside your Site Assets library containing three core files:
+
+* `loader.js` — Bootstraps the environment, injects UI, and registers WebMCP tools.
+* `styles.css` — Styles the floating audit log drawer and status indicators.
+* `panel.html` — The template for the live audit trail terminal.
+
+---
+
+### 2. Core Implementation Script (`loader.js`)
+
+```javascript
+/**
+ * SharePoint WebMCP Engine & Multi-Skill Toolset
+ * Runs entirely client-side via SharePoint Site Assets
+ */
+
+(function () {
+    'use strict';
+
+    // 1. Initialize LocalStorage Audit Log Buffer if missing
+    if (!localStorage.getItem('webmcp_audit_log')) {
+        localStorage.setItem('webmcp_audit_log', JSON.stringify([]));
+    }
+
+    function recordAudit(toolName, payload, status, responseData) {
+        const logs = JSON.parse(localStorage.getItem('webmcp_audit_log') || '[]');
+        logs.unshift({
+            timestamp: new Date().toISOString(),
+            subsite: _spPageContextInfo.webServerRelativeUrl || '',
+            tool: toolName,
+            payload: payload || {},
+            status: status,
+            response: responseData
+        });
+        if (logs.length > 50) logs.pop(); // Ring buffer limit
+        localStorage.setItem('webmcp_audit_log', JSON.stringify(logs));
+        window.dispatchEvent(new Event('webmcp_logged'));
+    }
+
+    // 2. Helper: Fetch SharePoint Form Digest for Write Operations
+    async function getFormDigest(baseUrl) {
+        const res = await fetch(`${baseUrl}/_api/contextinfo`, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json;odata=verbose' }
+        });
+        if (!res.ok) throw new Error('Failed to acquire SharePoint Form Digest.');
+        const data = await res.json();
+        return data.d.GetContextWebInformation.FormDigestValue;
+    }
+
+    // 3. Register WebMCP Multi-Skill Toolset
+    async function registerSharePointTools() {
+        if (!document.modelContext) {
+            console.warn("WebMCP (document.modelContext) is not available. Enable '#enable-webmcp-for-testing' in chrome://flags.");
+            return;
+        }
+
+        document.modelContext.provideContext({
+            tools: [
+                {
+                    name: "get_site_context",
+                    description: "Retrieves current SharePoint subsite metadata, URL, and active user details.",
+                    inputSchema: { type: "object", properties: {} },
+                    handler: async () => {
+                        try {
+                            const contextInfo = {
+                                webTitle: _spPageContextInfo.webTitle,
+                                webAbsoluteUrl: _spPageContextInfo.webAbsoluteUrl,
+                                userDisplayName: _spPageContextInfo.userDisplayName,
+                                userId: _spPageContextInfo.userId,
+                                isModern: _spPageContextInfo.isAppWeb
+                            };
+                            recordAudit("get_site_context", {}, "SUCCESS", contextInfo);
+                            return { content: [{ type: "text", text: JSON.stringify(contextInfo, null, 2) }] };
+                        } catch (err) {
+                            recordAudit("get_site_context", {}, "ERROR", err.message);
+                            throw err;
+                        }
+                    }
+                },
+                {
+                    name: "query_list_items",
+                    description: "Queries items from a specified SharePoint list using OData filters within the current subsite.",
+                    inputSchema: {
+                        type: "object",
+                        properties: {
+                            listTitle: { type: "string", description: "The display name of the SharePoint list" },
+                            filterQuery: { type: "string", description: "Optional OData filter string, e.g., Status eq 'Open'" }
+                        },
+                        required: ["listTitle"]
+                    },
+                    handler: async (args) => {
+                        const baseUrl = _spPageContextInfo.webAbsoluteUrl;
+                        let endpoint = `${baseUrl}/_api/web/lists/getbytitle('${encodeURIComponent(args.listTitle)}')/items`;
+                        if (args.filterQuery) {
+                            endpoint += `?$filter=${encodeURIComponent(args.filterQuery)}`;
+                        }
+
+                        try {
+                            const res = await fetch(endpoint, {
+                                method: 'GET',
+                                headers: { 'Accept': 'application/json;odata=verbose' }
+                            });
+                            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                            const data = await res.json();
+                            const results = data.d.results;
+
+                            recordAudit("query_list_items", args, "SUCCESS", { count: results.length });
+                            return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
+                        } catch (err) {
+                            recordAudit("query_list_items", args, "ERROR", err.message);
+                            throw err;
+                        }
+                    }
+                },
+                {
+                    name: "create_list_item",
+                    description: "Creates a new item inside a target SharePoint list with automatic form digest security.",
+                    inputSchema: {
+                        type: "object",
+                        properties: {
+                            listTitle: { type: "string", description: "The display name of the SharePoint list" },
+                            itemFields: { type: "object", description: "Key-value pair object representing column data (e.g., {Title: 'New Task', Priority: 'High'})" }
+                        },
+                        required: ["listTitle", "itemFields"]
+                    },
+                    handler: async (args) => {
+                        const baseUrl = _spPageContextInfo.webAbsoluteUrl;
+                        try {
+                            // 1. Get List Entity Type Full Name for REST payload binding
+                            const listMetaRes = await fetch(`${baseUrl}/_api/web/lists/getbytitle('${encodeURIComponent(args.listTitle)}')?$select=ListItemEntityTypeFullName`, {
+                                method: 'GET',
+                                headers: { 'Accept': 'application/json;odata=verbose' }
+                            });
+                            const metaData = await listMetaRes.json();
+                            const entityType = metaData.d.ListItemEntityTypeFullName;
+
+                            // 2. Fetch fresh form digest
+                            const digest = await getFormDigest(baseUrl);
+
+                            // 3. Prepare payload
+                            const payload = {
+                                '__metadata': { 'type': entityType },
+                                ...args.itemFields
+                            };
+
+                            // 4. Execute POST creation
+                            const createRes = await fetch(`${baseUrl}/_api/web/lists/getbytitle('${encodeURIComponent(args.listTitle)}')/items`, {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json;odata=verbose',
+                                    'Content-Type': 'application/json;odata=verbose',
+                                    'X-RequestDigest': digest
+                                },
+                                body: JSON.stringify(payload)
+                            });
+
+                            if (!createRes.ok) throw new Error(`Creation failed: ${createRes.statusText}`);
+                            const resultData = await createRes.json();
+
+                            recordAudit("create_list_item", args, "SUCCESS", resultData.d);
+                            return { content: [{ type: "text", text: `Successfully created item ID: ${resultData.d.Id}` }] };
+                        } catch (err) {
+                            recordAudit("create_list_item", args, "ERROR", err.message);
+                            throw err;
+                        }
+                    }
+                }
+            ]
+        });
+        console.log("WebMCP SharePoint toolkit successfully registered.");
+    }
+
+    // 4. Inject Audit UI Drawer into DOM
+    async function initUI() {
+        const siteAssets = `${_spPageContextInfo.webAbsoluteUrl}/SiteAssets/WebMCP-Agent`;
+        
+        // Inject Stylesheet
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `${siteAssets}/styles.css`;
+        document.head.appendChild(link);
+
+        // Fetch & Inject HTML Panel
+        const res = await fetch(`${siteAssets}/panel.html`);
+        const html = await res.text();
+        const container = document.createElement('div');
+        container.innerHTML = html;
+        document.body.appendChild(container);
+
+        // UI Event Listeners & Initial Render
+        const drawer = document.getElementById('webmcp-audit-drawer');
+        document.getElementById('webmcp-toggle-btn').onclick = () => drawer.classList.toggle('open');
+        document.getElementById('webmcp-clear-btn').onclick = () => {
+            localStorage.setItem('webmcp_audit_log', JSON.stringify([]));
+            renderLogs();
+        };
+
+        window.addEventListener('webmcp_logged', renderLogs);
+        renderLogs();
+    }
+
+    function renderLogs() {
+        const listEl = document.getElementById('webmcp-log-list');
+        if (!listEl) return;
+        const logs = JSON.parse(localStorage.getItem('webmcp_audit_log') || '[]');
+        
+        listEl.innerHTML = logs.map(l => `
+            <div class="webmcp-log-item ${l.status.toLowerCase()}">
+                <span class="time">${l.timestamp.split('T')[1].substring(0,8)}</span>
+                <span class="tool">${l.tool}</span>
+                <span class="status">${l.status}</span>
+                <pre>${JSON.stringify(l.payload, null, 2)}</pre>
+            </div>
+        `).join('');
+    }
+
+    // Bootstrap Execution
+    window.addEventListener('DOMContentLoaded', () => {
+        registerSharePointTools();
+        initUI();
+    });
+})();
+
+```
+
+---
+
+### 3. Interface Markup (`panel.html`)
+
+```html
+<div id="webmcp-audit-drawer" class="webmcp-drawer">
+    <button id="webmcp-toggle-btn">WebMCP Agent Audit</button>
+    <div class="webmcp-content">
+        <div class="webmcp-header">
+            <h3>Live Agent Activity Ledger</h3>
+            <button id="webmcp-clear-btn">Clear Logs</button>
+        </div>
+        <div id="webmcp-log-list" class="webmcp-logs">
+            <!-- Dynamically populated entries -->
+        </div>
+    </div>
+</div>
+
+```
+
+---
+
+### 4. Stylesheet (`styles.css`)
+
+```css
+#webmcp-audit-drawer {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    z-index: 999999;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#webmcp-toggle-btn {
+    background: #0078d4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.15);
+}
+
+#webmcp-audit-drawer.open .webmcp-content {
+    display: flex;
+}
+
+.webmcp-content {
+    display: none;
+    flex-direction: column;
+    width: 420px;
+    height: 350px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border-radius: 4px 0 0 0;
+}
+
+.webmcp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #f3f2f1;
+    border-bottom: 1px solid #edebe9;
+}
+
+.webmcp-header h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.webmcp-logs {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #faf9f8;
+}
+
+.webmcp-log-item {
+    background: #fff;
+    border-left: 4px solid #ccc;
+    padding: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.webmcp-log-item.success { border-left-color: #107c10; }
+.webmcp-log-item.error { border-left-color: #a80000; }
+
+.webmcp-log-item .tool {
+    font-weight: bold;
+    color: #0078d4;
+    margin-left: 6px;
+}
+
+.webmcp-log-item .status {
+    float: right;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.webmcp-log-item pre {
+    margin: 4px 0 0 0;
+    background: #f4f4f4;
+    padding: 4px;
+    max-height: 80px;
+    overflow-x: auto;
+    font-size: 11px;
+}
+
+```
+
+---
+
+### 5. Deployment and Verification Steps
+
+1. **Upload Files:** Upload `loader.js`, `styles.css`, and `panel.html` into your target SharePoint subsite's **Site Assets** library under a subfolder named `WebMCP-Agent`.
+2. **Enable Flag:** Open Chromium (Chrome 146+ or Edge 147+), navigate to `chrome://flags`, locate **"WebMCP for testing"**, change it to **Enabled**, and relaunch the browser.
+3. **Reference Script:** Add a **Script Editor Web Part** or **Content Editor Web Part** to any SharePoint modern/classic page pointing to your loader:
+```html
+<script src="/sites/your-subsite/SiteAssets/WebMCP-Agent/loader.js"></script>
+
+```
+
+
+4. **Inspect & Test:** Open the browser's developer console or a WebMCP inspector tool extension. Verify that `document.modelContext` registers the tools successfully, and use the floating audit drawer in the bottom-right corner to monitor real-time AI tool calls against SharePoint's REST API execution layer.

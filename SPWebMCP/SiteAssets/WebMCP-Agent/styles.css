@@ -1,0 +1,97 @@
+#webmcp-audit-drawer {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    z-index: 999999;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#webmcp-toggle-btn {
+    background: #0078d4;
+    color: #fff;
+    border: 0;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    box-shadow: 0 -2px 6px rgb(0 0 0 / 15%);
+}
+
+#webmcp-toggle-btn:focus-visible,
+#webmcp-clear-btn:focus-visible {
+    outline: 2px solid #005a9e;
+    outline-offset: 2px;
+}
+
+#webmcp-audit-drawer.open .webmcp-content {
+    display: flex;
+}
+
+.webmcp-content {
+    display: none;
+    flex-direction: column;
+    width: min(420px, calc(100vw - 20px));
+    height: 350px;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+    border-radius: 4px 0 0;
+}
+
+.webmcp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: #f3f2f1;
+    border-bottom: 1px solid #edebe9;
+}
+
+.webmcp-header h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.webmcp-logs {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #faf9f8;
+}
+
+.webmcp-log-item {
+    background: #fff;
+    border-left: 4px solid #ccc;
+    padding: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
+}
+
+.webmcp-log-item.success { border-left-color: #107c10; }
+.webmcp-log-item.error { border-left-color: #a80000; }
+
+.webmcp-log-item .tool {
+    font-weight: 700;
+    color: #0078d4;
+    margin-left: 6px;
+}
+
+.webmcp-log-item .status {
+    float: right;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.webmcp-log-item pre {
+    margin: 4px 0 0;
+    background: #f4f4f4;
+    padding: 4px;
+    max-height: 80px;
+    overflow-x: auto;
+    font-size: 11px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
