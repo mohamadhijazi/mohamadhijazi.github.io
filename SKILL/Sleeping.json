@@ -1,0 +1,264 @@
+{
+  "video": {
+    "title": "Why Sleep Matters",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 60,
+    "background": "#061426",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#60A5FA",
+    "secondary": "#A78BFA",
+    "accent": "#FBBF24",
+    "text": "#F8FAFC",
+    "muted": "#A7B4C7",
+    "panel": "#10243F",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {
+    "moonSvg": {
+      "viewBox": "0 0 120 120",
+      "paths": [
+        {
+          "d": "M75 15 C45 20 25 45 25 75 C25 95 35 108 48 115 C28 112 10 92 10 68 C10 33 38 5 73 5 C84 5 95 8 104 14 C95 14 85 14 75 15",
+          "fill": "#FBBF24",
+          "stroke": "#FCD34D",
+          "strokeWidth": 2,
+          "opacity": 1
+        }
+      ]
+    },
+    "brainSvg": {
+      "viewBox": "0 0 120 120",
+      "paths": [
+        {
+          "d": "M40 30 C25 20 15 35 20 50 C10 60 15 80 30 85 C35 100 55 105 65 95 C75 105 95 100 100 85 C115 80 120 60 110 50 C115 35 105 20 90 30 C80 15 55 15 40 30",
+          "stroke": "#A78BFA",
+          "strokeWidth": 6,
+          "fill": "none",
+          "lineJoin": "round",
+          "lineCap": "round",
+          "opacity": 1
+        }
+      ]
+    },
+    "shieldSvg": {
+      "viewBox": "0 0 120 120",
+      "paths": [
+        {
+          "d": "M60 10 L100 25 V55 C100 85 82 105 60 112 C38 105 20 85 20 55 V25 Z",
+          "stroke": "#60A5FA",
+          "strokeWidth": 6,
+          "fill": "none",
+          "lineJoin": "round",
+          "opacity": 1
+        }
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "sleep-introduction",
+      "start": 0,
+      "duration": 8,
+      "type": "title",
+      "title": "Why Sleep Matters",
+      "subtitle": "A basic biological need",
+      "narration": "Sleep is a basic biological need for humans.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "svg",
+          "asset": "moonSvg",
+          "x": 960,
+          "y": 260,
+          "width": 180,
+          "height": 180,
+          "animation": "draw"
+        },
+        {
+          "kind": "emoji",
+          "value": "💤",
+          "x": 720,
+          "y": 330,
+          "size": 70,
+          "animation": "float"
+        },
+        {
+          "kind": "emoji",
+          "value": "✨",
+          "x": 1220,
+          "y": 330,
+          "size": 60,
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "body-repair",
+      "start": 8,
+      "duration": 10,
+      "type": "groups",
+      "title": "Recovery During Sleep",
+      "groups": 3,
+      "itemsPerGroup": 1,
+      "item": {
+        "kind": "emoji",
+        "value": "💪",
+        "size": 78,
+        "animation": "pop"
+      },
+      "label": "Repair • Recovery • Growth",
+      "narration": "During sleep, the body repairs tissues and muscles.",
+      "transition": "slideUp",
+      "decorations": [
+        {
+          "kind": "emoji",
+          "value": "🛌",
+          "x": 960,
+          "y": 220,
+          "size": 80,
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "brain-memory",
+      "start": 18,
+      "duration": 10,
+      "type": "equation",
+      "title": "Brain and Memory",
+      "equation": "Sleep → Learning + Memory",
+      "caption": "Supports healthy brain function",
+      "narration": "Sleep supports healthy brain function and memory consolidation.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "svg",
+          "asset": "brainSvg",
+          "x": 1480,
+          "y": 470,
+          "width": 150,
+          "height": 150,
+          "animation": "spinIn"
+        }
+      ]
+    },
+    {
+      "id": "mood-and-immunity",
+      "start": 28,
+      "duration": 10,
+      "type": "equation",
+      "title": "Mood and Immunity",
+      "equation": "Sleep → Stability + Protection",
+      "caption": "Supports emotional stability and immune health",
+      "narration": "Adequate sleep helps regulate mood and emotional stability. Sleep is also important for maintaining a strong immune system.",
+      "transition": "slideLeft",
+      "decorations": [
+        {
+          "kind": "svg",
+          "asset": "shieldSvg",
+          "x": 1500,
+          "y": 470,
+          "width": 140,
+          "height": 140,
+          "animation": "draw"
+        },
+        {
+          "kind": "emoji",
+          "value": "🛡️",
+          "x": 360,
+          "y": 470,
+          "size": 90,
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "focus-energy-hormones",
+      "start": 38,
+      "duration": 10,
+      "type": "numberLine",
+      "title": "Focus, Energy, and Hormones",
+      "from": 0,
+      "step": 1,
+      "jumps": 3,
+      "jumper": {
+        "kind": "emoji",
+        "value": "⚡",
+        "size": 72,
+        "animation": "hop"
+      },
+      "label": "Sleep supports daily performance",
+      "narration": "Lack of sleep can reduce concentration and reaction time. Sleep also helps regulate hormones related to growth, stress, and appetite. Consistent sleep supports physical health and energy levels.",
+      "transition": "fade",
+      "decorations": [
+        {
+          "kind": "fontIcon",
+          "value": "→",
+          "x": 960,
+          "y": 240,
+          "size": 90,
+          "color": "#60A5FA",
+          "animation": "slideLoop"
+        }
+      ]
+    },
+    {
+      "id": "sleep-summary",
+      "start": 48,
+      "duration": 12,
+      "type": "summary",
+      "title": "The Benefits of Sleep",
+      "bullets": [
+        {
+          "icon": {
+            "kind": "svg",
+            "asset": "brainSvg"
+          },
+          "text": "Supports learning and problem-solving"
+        },
+        {
+          "icon": {
+            "kind": "svg",
+            "asset": "shieldSvg"
+          },
+          "text": "Supports health and immunity"
+        },
+        {
+          "icon": {
+            "kind": "emoji",
+            "value": "⚠️"
+          },
+          "text": "Chronic sleep deprivation is associated with increased health risks"
+        }
+      ],
+      "highlight": "Sleep Supports Mind and Body",
+      "narration": "Quality sleep contributes to better learning and problem-solving. Chronic sleep deprivation is associated with increased health risks.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "svg",
+          "asset": "moonSvg",
+          "x": 1650,
+          "y": 180,
+          "width": 120,
+          "height": 120,
+          "animation": "spinIn"
+        },
+        {
+          "kind": "emoji",
+          "value": "💤",
+          "x": 260,
+          "y": 180,
+          "size": 90,
+          "animation": "float"
+        }
+      ]
+    }
+  ]
+}
