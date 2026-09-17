@@ -23,30 +23,14 @@
     "multiplySvg": {
       "viewBox": "0 0 100 100",
       "paths": [
-        {
-          "d": "M25 20 L80 75",
-          "stroke": "#38BDF8",
-          "strokeWidth": 12,
-          "lineCap": "round"
-        },
-        {
-          "d": "M80 20 L25 75",
-          "stroke": "#FBBF24",
-          "strokeWidth": 12,
-          "lineCap": "round"
-        }
+        {"d": "M25 20 L80 75", "stroke": "#38BDF8", "strokeWidth": 12, "lineCap": "round"},
+        {"d": "M80 20 L25 75", "stroke": "#FBBF24", "strokeWidth": 12, "lineCap": "round"}
       ]
     },
     "gridSvg": {
       "viewBox": "0 0 120 120",
       "paths": [
-        {
-          "d": "M10 10 H110 V110 H10 Z M43 10 V110 M77 10 V110 M10 43 H110 M10 77 H110",
-          "stroke": "#A78BFA",
-          "strokeWidth": 7,
-          "fill": "none",
-          "lineJoin": "round"
-        }
+        {"d": "M10 10 H110 V110 H10 Z M43 10 V110 M77 10 V110 M10 43 H110 M10 77 H110", "stroke": "#A78BFA", "strokeWidth": 7, "fill": "none", "lineJoin": "round"}
       ]
     }
   },
@@ -61,34 +45,9 @@
       "narration": "Multiplication is a quick way to combine equal groups.",
       "transition": "fadeZoom",
       "decorations": [
-        {
-          "kind": "svg",
-          "asset": "multiplySvg",
-          "x": 960,
-          "y": 255,
-          "width": 170,
-          "height": 170,
-          "animation": "draw",
-          "spin": 0.08
-        },
-        {
-          "kind": "emoji",
-          "value": "✨",
-          "x": 530,
-          "y": 370,
-          "size": 78,
-          "animation": "float",
-          "delay": 0.2
-        },
-        {
-          "kind": "emoji",
-          "value": "✨",
-          "x": 1390,
-          "y": 370,
-          "size": 62,
-          "animation": "pulse",
-          "delay": 0.45
-        }
+        {"kind": "svg", "asset": "multiplySvg", "x": 960, "y": 255, "width": 170, "height": 170, "animation": "draw", "spin": 0.08},
+        {"kind": "emoji", "value": "✨", "x": 530, "y": 370, "size": 78, "animation": "float", "delay": 0.2},
+        {"kind": "emoji", "value": "✨", "x": 1390, "y": 370, "size": 62, "animation": "pulse", "delay": 0.45}
       ]
     },
     {
@@ -102,165 +61,79 @@
       "narration": "Four plus four plus four equals twelve. This is three equal groups of four.",
       "transition": "slideUp",
       "decorations": [
-        {
-          "kind": "fontIcon",
-          "value": "＋",
-          "x": 330,
-          "y": 500,
-          "size": 110,
-          "color": "#38BDF8",
-          "animation": "bounce"
-        },
-        {
-          "kind": "emoji",
-          "value": "🍎",
-          "x": 1570,
-          "y": 500,
-          "size": 100,
-          "animation": "pop"
-        }
+        {"kind": "fontIcon", "value": "＋", "x": 330, "y": 500, "size": 110, "color": "#38BDF8", "animation": "bounce"},
+        {"kind": "emoji", "value": "🍎", "x": 1570, "y": 500, "size": 100, "animation": "pop"}
       ]
     },
     {
-      "id": "groups",
+      "id": "equal-groups-composition",
       "start": 17,
       "duration": 11,
-      "type": "groups",
-      "title": "3 groups of 4",
-      "groups": 3,
-      "itemsPerGroup": 4,
-      "item": {
-        "kind": "emoji",
-        "value": "⭐",
-        "size": 72
-      },
-      "label": "3 × 4 = 12",
-      "narration": "We write three groups of four as three times four. The total is twelve.",
-      "transition": "fade",
-      "decorations": [
-        {
-          "kind": "fontIcon",
-          "value": "×",
-          "x": 960,
-          "y": 225,
-          "size": 78,
-          "color": "#FBBF24",
-          "animation": "pulse"
-        }
+      "type": "composition",
+      "title": "Equal groups",
+      "narration": "Three groups of four make twelve. The same arrangement can be expressed as three times four.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "x": 960, "y": 540, "width": 1460, "height": 650, "radius": 34},
+        {"type": "text", "x": 960, "y": 210, "content": "3 groups of 4", "size": 66, "weight": "800", "animation": "pop"},
+        {"type": "groups", "x": 960, "y": 505, "groups": 3, "itemsPerGroup": 4, "width": 1280, "item": {"kind": "emoji", "value": "⭐", "size": 62, "animation": "pop"}, "delay": 0.08},
+        {"type": "equation", "x": 960, "y": 850, "content": "3 × 4 = 12", "size": 82, "animation": "pop", "delay": 0.45},
+        {"type": "visual", "kind": "svg", "asset": "multiplySvg", "x": 1610, "y": 210, "width": 90, "height": 90, "animation": "spinIn", "delay": 0.25}
       ]
     },
     {
-      "id": "array",
+      "id": "array-composition",
       "start": 28,
       "duration": 11,
-      "type": "array",
+      "type": "composition",
       "title": "The array model",
-      "rows": 3,
-      "columns": 4,
-      "cell": {
-        "kind": "fontIcon",
-        "value": "●",
-        "size": 82,
-        "color": "#38BDF8",
-        "alternateColor": "#A78BFA",
-        "animation": "wave"
-      },
-      "label": "3 rows × 4 columns = 12",
       "narration": "The same idea can be arranged as an array: three rows and four columns.",
       "transition": "slideLeft",
-      "decorations": [
-        {
-          "kind": "svg",
-          "asset": "gridSvg",
-          "x": 1500,
-          "y": 235,
-          "width": 120,
-          "height": 120,
-          "animation": "spinIn"
-        }
+      "elements": [
+        {"type": "panel", "x": 960, "y": 530, "width": 1460, "height": 640, "radius": 34},
+        {"type": "text", "x": 960, "y": 220, "content": "3 rows × 4 columns", "size": 62, "weight": "800", "animation": "pop"},
+        {"type": "grid", "x": 660, "y": 535, "rows": 3, "columns": 4, "cellSize": 130, "size": 82, "itemAnimation": "wave", "delay": 0.08},
+        {"type": "equation", "x": 1280, "y": 500, "content": "3 × 4", "size": 90, "animation": "pop", "delay": 0.25},
+        {"type": "text", "x": 1280, "y": 610, "content": "Twelve dots\nin one array", "size": 38, "color": "#A7B4C7", "maxWidth": 430, "delay": 0.38},
+        {"type": "visual", "kind": "svg", "asset": "gridSvg", "x": 1510, "y": 780, "width": 120, "height": 120, "animation": "spinIn", "delay": 0.4}
       ]
     },
     {
-      "id": "numberline",
+      "id": "number-line-composition",
       "start": 39,
       "duration": 10,
-      "type": "numberLine",
+      "type": "composition",
       "title": "Three equal jumps of four",
-      "from": 0,
-      "step": 4,
-      "jumps": 3,
-      "jumper": {
-        "kind": "emoji",
-        "value": "🐇",
-        "size": 74,
-        "animation": "hop"
-      },
-      "label": "0 → 4 → 8 → 12",
       "narration": "On a number line, make three equal jumps of four to reach twelve.",
       "transition": "fade",
-      "decorations": [
-        {
-          "kind": "fontIcon",
-          "value": "→",
-          "x": 960,
-          "y": 260,
-          "size": 95,
-          "color": "#38BDF8",
-          "animation": "slideLoop"
-        }
+      "elements": [
+        {"type": "panel", "x": 960, "y": 545, "width": 1500, "height": 560, "radius": 34},
+        {"type": "text", "x": 960, "y": 250, "content": "Jump by 4", "size": 62, "weight": "800", "animation": "pop"},
+        {"type": "numberLine", "x": 960, "y": 565, "from": 0, "step": 4, "jumps": 3, "width": 1220, "jumper": {"kind": "emoji", "value": "🐇", "size": 72, "animation": "hop"}, "delay": 0.12},
+        {"type": "text", "x": 960, "y": 850, "content": "0 → 4 → 8 → 12", "size": 54, "color": "#FBBF24", "weight": "800", "delay": 0.42}
       ]
     },
     {
-      "id": "summary",
+      "id": "summary-composition",
       "start": 49,
       "duration": 11,
-      "type": "summary",
+      "type": "composition",
       "title": "One fact, three visual models",
-      "bullets": [
-        {
-          "icon": {
-            "kind": "fontIcon",
-            "value": "＋",
-            "color": "#38BDF8"
-          },
-          "text": "Repeated addition: 4 + 4 + 4"
-        },
-        {
-          "icon": {
-            "kind": "emoji",
-            "value": "⭐"
-          },
-          "text": "Equal groups: 3 groups of 4"
-        },
-        {
-          "icon": {
-            "kind": "svg",
-            "asset": "gridSvg"
-          },
-          "text": "Array: 3 rows by 4 columns"
-        }
-      ],
-      "highlight": "3 × 4 = 12",
       "narration": "Repeated addition, equal groups, and arrays all represent the same multiplication fact: three times four equals twelve.",
       "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "x": 960, "y": 535, "width": 1460, "height": 680, "radius": 34},
+        {"type": "text", "x": 960, "y": 185, "content": "One fact, three visual models", "size": 58, "weight": "800", "animation": "pop"},
+        {"type": "list", "x": 960, "y": 495, "width": 1140, "gap": 125, "size": 40, "delay": 0.12, "items": [
+          {"text": "Repeated addition: 4 + 4 + 4", "icon": {"kind": "fontIcon", "value": "＋", "color": "#38BDF8"}},
+          {"text": "Equal groups: 3 groups of 4", "icon": {"kind": "emoji", "value": "⭐"}},
+          {"text": "Array: 3 rows by 4 columns", "icon": {"kind": "svg", "asset": "gridSvg", "width": 44, "height": 44}}
+        ]},
+        {"type": "equation", "x": 960, "y": 860, "content": "3 × 4 = 12", "size": 82, "animation": "pop", "delay": 0.5}
+      ],
       "decorations": [
-        {
-          "kind": "emoji",
-          "value": "💡",
-          "x": 280,
-          "y": 180,
-          "size": 100,
-          "animation": "pulse"
-        },
-        {
-          "kind": "svg",
-          "asset": "multiplySvg",
-          "x": 1640,
-          "y": 180,
-          "width": 100,
-          "height": 100,
-          "animation": "spinIn"
-        }
+        {"kind": "emoji", "value": "💡", "x": 250, "y": 180, "size": 90, "animation": "pulse"},
+        {"kind": "svg", "asset": "multiplySvg", "x": 1660, "y": 185, "width": 96, "height": 96, "animation": "spinIn"}
       ]
     }
   ]

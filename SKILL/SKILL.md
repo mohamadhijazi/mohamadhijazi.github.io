@@ -71,7 +71,7 @@ The root object must contain exactly these main sections:
   "height": 1080,
   "fps": 60,
   "duration": 60,
-  "background": "#061426",
+  "background": "#061426",//ask user for background color
   "language": "en-US"
 }
 ```
@@ -84,7 +84,7 @@ Rules:
 
 ### Theme object
 
-Use this compatible default unless the user requests another palette:
+Use this compatible default unless the user requests another palette:// user can provide a palette of 5 to 7 colors, plus //font and emoji preferences. All colors must be valid CSS color strings. Prefer hexadecimal colors.
 
 ```json
 {
@@ -112,8 +112,27 @@ Use only these scene `type` values:
 - `array`
 - `numberLine`
 - `summary`
+- `composition`
 
 Do not create unsupported scene types.
+
+### Composition scene
+
+Use `composition` when a scene needs a custom mix of reusable parts. It requires an `elements` array. Each element can set `x`, `y`, `delay`, `animation`, and `z` independently.
+
+```json
+{
+  "type": "composition",
+  "elements": [
+    {"type":"panel","x":960,"y":510,"width":1300,"height":560},
+    {"type":"text","x":960,"y":260,"content":"A custom explanation","size":60},
+    {"type":"grid","x":650,"y":540,"rows":3,"columns":4},
+    {"type":"equation","x":1260,"y":540,"content":"3 × 4 = 12"}
+  ]
+}
+```
+
+Supported element types are `text`, `panel`, `visual`, `equation`, `grid`, `groups`, `numberLine`, and `list`. `visual` uses the same `kind`, `value`, or `asset` properties as a visual object.
 
 ### Common scene properties
 
@@ -377,6 +396,7 @@ Use only these exact animation names:
 - `spinIn`
 - `slideLoop`
 - `draw`
+- `wave`
 
 Notes:
 
@@ -391,7 +411,7 @@ Notes:
 - `draw`: supported as an animated entry for SVG decorations.
 - `delay` should normally be between `0` and `0.75`.
 
-Do not use `wave` as an animation name because the current generic visual transform does not implement a separate `wave` branch.
+`wave` adds a subtle vertical motion and works well for repeated grid cells.
 
 ## Timeline construction
 

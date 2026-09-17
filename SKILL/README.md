@@ -13,7 +13,26 @@ SVG assets are declared in `assets` with a `viewBox` and reusable `paths`. This 
 
 Supported object animations: `fade`, `pulse`, `bounce`, `hop`, `float`, `pop`, `spinIn`, `slideLoop`, `draw`.
 
-Supported scenes: `title`, `equation`, `groups`, `array`, `numberLine`, `summary`.
+Supported scenes: `title`, `equation`, `groups`, `array`, `numberLine`, `summary`, and `composition`.
+
+## Composable scenes
+
+`composition` lets a scene be assembled from independent, reusable elements. Every element has its own `x`, `y`, `delay`, `animation`, and optional `z` layer, so content can be mixed without creating a new renderer.
+
+```json
+{
+  "id":"custom-model", "start":0, "duration":8, "type":"composition", "transition":"fadeZoom",
+  "elements":[
+    {"type":"panel","x":960,"y":510,"width":1420,"height":620},
+    {"type":"text","x":960,"y":230,"content":"Build the idea","size":64,"weight":"800","animation":"pop"},
+    {"type":"grid","x":650,"y":535,"rows":3,"columns":4,"itemAnimation":"pop","delay":0.08},
+    {"type":"equation","x":1270,"y":490,"content":"3 × 4 = 12","size":74,"animation":"pop","delay":0.2},
+    {"type":"text","x":1270,"y":585,"content":"Three rows of four","size":36,"color":"#A7B4C7","delay":0.32}
+  ]
+}
+```
+
+Available element types: `text`, `panel`, `visual`, `equation`, `grid`, `groups`, `numberLine`, and `list`.
 
 ## Run
 Use `start-server.bat`, or open `index.html` and choose the JSON with **Load JSON**.
