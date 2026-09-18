@@ -1,0 +1,195 @@
+{
+  "video": {
+    "title": "Importance of Pensions",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 60,
+    "background": "#061426",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#38BDF8",
+    "secondary": "#FBBF24",
+    "accent": "#A78BFA",
+    "text": "#F8FAFC",
+    "muted": "#A7B4C7",
+    "panel": "#10243F",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {},
+  "scenes": [
+    {
+      "id": "pension-title",
+      "start": 0,
+      "duration": 8,
+      "type": "title",
+      "title": "Why Pensions Matter",
+      "subtitle": "Supporting people and society",
+      "narration": "Pensions help provide financial security after retirement and support society as a whole.",
+      "transition": "fade",
+      "decorations": [
+        {
+          "kind": "emoji",
+          "value": "💰",
+          "x": 960,
+          "y": 450,
+          "size": 120,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "financial-security",
+      "start": 8,
+      "duration": 10,
+      "type": "composition",
+      "title": "Financial Security",
+      "narration": "Pensions provide income after retirement and help retirees meet daily living expenses.",
+      "transition": "slideUp",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "Income after retirement",
+          "size": 60
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🏦",
+          "x": 960,
+          "y": 620,
+          "size": 140,
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "reduce-poverty",
+      "start": 18,
+      "duration": 10,
+      "type": "composition",
+      "title": "Reducing Poverty",
+      "narration": "Pensions reduce the risk of poverty among older adults and support dignity in old age.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "Lower poverty risk",
+          "size": 58
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🛡️",
+          "x": 960,
+          "y": 620,
+          "size": 130,
+          "animation": "bounce"
+        }
+      ]
+    },
+    {
+      "id": "economic-stability",
+      "start": 28,
+      "duration": 10,
+      "type": "composition",
+      "title": "Economic Stability",
+      "narration": "Regular pension income supports economic stability through predictable spending.",
+      "transition": "slideLeft",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "Predictable income flow",
+          "size": 56
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "▲",
+          "x": 960,
+          "y": 620,
+          "size": 120,
+          "color": "#38BDF8",
+          "animation": "pop"
+        }
+      ]
+    },
+    {
+      "id": "community-benefits",
+      "start": 38,
+      "duration": 10,
+      "type": "composition",
+      "title": "Benefits to Communities",
+      "narration": "Retirees spend pension income on goods and services, supporting local economies and reducing financial dependence on families.",
+      "transition": "fade",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "Supports local economies",
+          "size": 58
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🏘️",
+          "x": 960,
+          "y": 620,
+          "size": 130,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "pension-summary",
+      "start": 48,
+      "duration": 12,
+      "type": "summary",
+      "title": "Key Benefits",
+      "narration": "Pensions enhance financial security, promote social protection, and contribute to economic and social stability.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "bullets": [
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#38BDF8"
+          },
+          "text": "Provides retirement income"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#FBBF24"
+          },
+          "text": "Reduces poverty and dependence"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#A78BFA"
+          },
+          "text": "Supports economic and social stability"
+        }
+      ],
+      "highlight": "Pensions strengthen society across generations"
+    }
+  ]
+}

@@ -1,0 +1,622 @@
+{
+  "video": {
+    "title": "Exercise, Lifespan and Living Costs",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 80,
+    "background": "#071018",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#D4AF37",
+    "secondary": "#F7E7A9",
+    "accent": "#FFF4C7",
+    "text": "#FFFFFF",
+    "muted": "#D9D9D9",
+    "panel": "#14202B",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {
+    "goldenOrbit": {
+      "viewBox": "0 0 160 160",
+      "paths": [
+        {
+          "d": "M80 14 A66 66 0 1 1 79.9 14",
+          "stroke": "#D4AF37",
+          "strokeWidth": 7,
+          "fill": "none",
+          "lineJoin": "round",
+          "lineCap": "round",
+          "opacity": 1
+        },
+        {
+          "d": "M80 30 A50 50 0 1 1 79.9 30",
+          "stroke": "#F7E7A9",
+          "strokeWidth": 3,
+          "fill": "none",
+          "lineJoin": "round",
+          "lineCap": "round",
+          "opacity": 0.65
+        }
+      ]
+    },
+    "lifePath": {
+      "viewBox": "0 0 400 120",
+      "paths": [
+        {
+          "d": "M15 92 C75 92 72 32 132 32 C192 32 188 92 248 92 C308 92 310 32 385 32",
+          "stroke": "#D4AF37",
+          "strokeWidth": 9,
+          "fill": "none",
+          "lineJoin": "round",
+          "lineCap": "round",
+          "opacity": 1
+        }
+      ]
+    },
+    "balanceScale": {
+      "viewBox": "0 0 220 180",
+      "paths": [
+        {
+          "d": "M110 22 V142 M55 60 H165 M110 42 L55 60 M110 42 L165 60 M35 60 H75 M145 60 H185 M55 60 L38 108 M55 60 L72 108 M165 60 L148 108 M165 60 L182 108 M28 108 Q55 142 82 108 M138 108 Q165 142 192 108 M65 142 H155 M45 158 H175",
+          "stroke": "#D4AF37",
+          "strokeWidth": 7,
+          "fill": "none",
+          "lineJoin": "round",
+          "lineCap": "round",
+          "opacity": 1
+        }
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "golden-opening",
+      "start": 0,
+      "duration": 6,
+      "type": "title",
+      "title": "The Longevity Equation",
+      "subtitle": "Exercise, lifespan and lifetime costs",
+      "narration": "Exercise can support a healthier, potentially longer life. But longer lives also require longer financial plans.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "svg",
+          "asset": "goldenOrbit",
+          "x": 960,
+          "y": 500,
+          "width": 240,
+          "height": 240,
+          "animation": "spinIn",
+          "delay": 0.1
+        },
+        {
+          "kind": "fontIcon",
+          "value": "★",
+          "x": 680,
+          "y": 280,
+          "size": 34,
+          "color": "#FFF4C7",
+          "animation": "pulse",
+          "delay": 0.35
+        },
+        {
+          "kind": "fontIcon",
+          "value": "★",
+          "x": 1260,
+          "y": 310,
+          "size": 28,
+          "color": "#D4AF37",
+          "animation": "float",
+          "delay": 0.6
+        }
+      ]
+    },
+    {
+      "id": "exercise-foundation",
+      "start": 6,
+      "duration": 7,
+      "type": "composition",
+      "title": "Movement Is An Investment",
+      "narration": "Regular physical activity supports physical and mental health and helps reduce the risk of major chronic diseases.",
+      "transition": "slideUp",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "panel",
+          "x": 960,
+          "y": 540,
+          "width": 1320,
+          "height": 530,
+          "animation": "fade",
+          "delay": 0
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🏃",
+          "x": 590,
+          "y": 520,
+          "size": 145,
+          "animation": "bounce",
+          "delay": 0.15
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "→",
+          "x": 850,
+          "y": 520,
+          "size": 110,
+          "color": "#D4AF37",
+          "animation": "slideLoop",
+          "delay": 0.3
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "❤️",
+          "x": 1080,
+          "y": 450,
+          "size": 105,
+          "animation": "pulse",
+          "delay": 0.4
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🧠",
+          "x": 1290,
+          "y": 450,
+          "size": 110,
+          "animation": "float",
+          "delay": 0.55
+        },
+        {
+          "type": "text",
+          "x": 1180,
+          "y": 660,
+          "content": "Body • Mind • Prevention",
+          "size": 42,
+          "animation": "fade",
+          "delay": 0.7
+        }
+      ]
+    },
+    {
+      "id": "activity-longevity",
+      "start": 13,
+      "duration": 7,
+      "type": "composition",
+      "title": "Activity And Longevity",
+      "narration": "Higher physical activity is associated with lower mortality and longer life expectancy across populations.",
+      "transition": "fade",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 260,
+          "content": "More movement",
+          "size": 58,
+          "animation": "fade",
+          "delay": 0
+        },
+        {
+          "type": "visual",
+          "kind": "svg",
+          "asset": "lifePath",
+          "x": 960,
+          "y": 530,
+          "width": 850,
+          "height": 260,
+          "animation": "draw",
+          "delay": 0.15
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "▲",
+          "x": 1350,
+          "y": 450,
+          "size": 110,
+          "color": "#D4AF37",
+          "animation": "pulse",
+          "delay": 0.45
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 790,
+          "content": "Associated with healthier longevity",
+          "size": 46,
+          "animation": "fade",
+          "delay": 0.65
+        }
+      ]
+    },
+    {
+      "id": "life-expectancy-estimate",
+      "start": 20,
+      "duration": 7,
+      "type": "composition",
+      "title": "A Population Estimate",
+      "narration": "One life-table study estimated a five-point-three-year average gain if adults over forty matched the most active quarter.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "panel",
+          "x": 960,
+          "y": 530,
+          "width": 1080,
+          "height": 520,
+          "animation": "fade",
+          "delay": 0
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 365,
+          "content": "+5.3 years",
+          "size": 105,
+          "animation": "pulse",
+          "delay": 0.15
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 530,
+          "content": "Estimated population average",
+          "size": 46,
+          "animation": "fade",
+          "delay": 0.35
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 655,
+          "content": "An association, not an individual guarantee",
+          "size": 34,
+          "animation": "fade",
+          "delay": 0.6
+        }
+      ]
+    },
+    {
+      "id": "healthspan-value",
+      "start": 27,
+      "duration": 7,
+      "type": "composition",
+      "title": "Healthspan Matters",
+      "narration": "The goal is not only more years of life. It is more years with health, mobility, and independence.",
+      "transition": "slideLeft",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "panel",
+          "x": 660,
+          "y": 540,
+          "width": 480,
+          "height": 510,
+          "animation": "fade",
+          "delay": 0
+        },
+        {
+          "type": "panel",
+          "x": 1260,
+          "y": 540,
+          "width": 480,
+          "height": 510,
+          "animation": "fade",
+          "delay": 0.1
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "＋",
+          "x": 660,
+          "y": 490,
+          "size": 135,
+          "color": "#D4AF37",
+          "animation": "pulse",
+          "delay": 0.2
+        },
+        {
+          "type": "text",
+          "x": 660,
+          "y": 665,
+          "content": "More years",
+          "size": 44,
+          "animation": "fade",
+          "delay": 0.4
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🚶",
+          "x": 1260,
+          "y": 490,
+          "size": 135,
+          "animation": "float",
+          "delay": 0.35
+        },
+        {
+          "type": "text",
+          "x": 1260,
+          "y": 665,
+          "content": "Better function",
+          "size": 44,
+          "animation": "fade",
+          "delay": 0.55
+        }
+      ]
+    },
+    {
+      "id": "longer-life-costs",
+      "start": 34,
+      "duration": 7,
+      "type": "composition",
+      "title": "More Years To Finance",
+      "narration": "A longer life may include more years of housing, food, transportation, healthcare, and everyday spending.",
+      "transition": "slideUp",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🏠",
+          "x": 480,
+          "y": 510,
+          "size": 115,
+          "animation": "pop",
+          "delay": 0.1
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🍽️",
+          "x": 800,
+          "y": 510,
+          "size": 115,
+          "animation": "pop",
+          "delay": 0.25
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🚗",
+          "x": 1120,
+          "y": 510,
+          "size": 115,
+          "animation": "pop",
+          "delay": 0.4
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🏥",
+          "x": 1440,
+          "y": 510,
+          "size": 115,
+          "animation": "pop",
+          "delay": 0.55
+        },
+        {
+          "type": "text",
+          "x": 480,
+          "y": 680,
+          "content": "Housing",
+          "size": 34,
+          "animation": "fade",
+          "delay": 0.3
+        },
+        {
+          "type": "text",
+          "x": 800,
+          "y": 680,
+          "content": "Food",
+          "size": 34,
+          "animation": "fade",
+          "delay": 0.4
+        },
+        {
+          "type": "text",
+          "x": 1120,
+          "y": 680,
+          "content": "Transport",
+          "size": 34,
+          "animation": "fade",
+          "delay": 0.55
+        },
+        {
+          "type": "text",
+          "x": 1440,
+          "y": 680,
+          "content": "Healthcare",
+          "size": 34,
+          "animation": "fade",
+          "delay": 0.7
+        }
+      ]
+    },
+    {
+      "id": "inactivity-cost",
+      "start": 41,
+      "duration": 7,
+      "type": "composition",
+      "title": "Inactivity Is Expensive",
+      "narration": "Continued physical inactivity could contribute to nearly five hundred million new disease cases by twenty thirty.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "panel",
+          "x": 700,
+          "y": 540,
+          "width": 500,
+          "height": 500,
+          "animation": "fade",
+          "delay": 0
+        },
+        {
+          "type": "panel",
+          "x": 1220,
+          "y": 540,
+          "width": 500,
+          "height": 500,
+          "animation": "fade",
+          "delay": 0.1
+        },
+        {
+          "type": "text",
+          "x": 700,
+          "y": 470,
+          "content": "Nearly 500 million",
+          "size": 58,
+          "animation": "pulse",
+          "delay": 0.2
+        },
+        {
+          "type": "text",
+          "x": 700,
+          "y": 630,
+          "content": "Potential new cases",
+          "size": 38,
+          "animation": "fade",
+          "delay": 0.4
+        },
+        {
+          "type": "text",
+          "x": 1220,
+          "y": 470,
+          "content": "About $300 billion",
+          "size": 58,
+          "animation": "pulse",
+          "delay": 0.35
+        },
+        {
+          "type": "text",
+          "x": 1220,
+          "y": 630,
+          "content": "Projected health-system cost",
+          "size": 36,
+          "animation": "fade",
+          "delay": 0.55
+        }
+      ]
+    },
+    {
+      "id": "balance-longevity-plan",
+      "start": 48,
+      "duration": 6,
+      "type": "composition",
+      "title": "Plan For Both",
+      "narration": "Exercise can support healthy longevity, while savings and lifetime income can support financial longevity.",
+      "transition": "fade",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "svg",
+          "asset": "balanceScale",
+          "x": 960,
+          "y": 510,
+          "width": 380,
+          "height": 320,
+          "animation": "draw",
+          "delay": 0.1
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "❤️",
+          "x": 650,
+          "y": 500,
+          "size": 120,
+          "animation": "pulse",
+          "delay": 0.3
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "💰",
+          "x": 1270,
+          "y": 500,
+          "size": 120,
+          "animation": "float",
+          "delay": 0.45
+        },
+        {
+          "type": "text",
+          "x": 650,
+          "y": 690,
+          "content": "Health plan",
+          "size": 40,
+          "animation": "fade",
+          "delay": 0.55
+        },
+        {
+          "type": "text",
+          "x": 1270,
+          "y": 690,
+          "content": "Financial plan",
+          "size": 40,
+          "animation": "fade",
+          "delay": 0.7
+        }
+      ]
+    },
+    {
+      "id": "golden-summary",
+      "start": 54,
+      "duration": 6,
+      "type": "summary",
+      "title": "Invest In The Full Journey",
+      "narration": "Move for health, prepare for longevity, and plan for the real cost of a longer life.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "svg",
+          "asset": "goldenOrbit",
+          "x": 1490,
+          "y": 250,
+          "width": 130,
+          "height": 130,
+          "animation": "float",
+          "delay": 0.25
+        }
+      ],
+      "bullets": [
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#D4AF37"
+          },
+          "text": "Exercise supports healthier longevity"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#F7E7A9"
+          },
+          "text": "Longer lives require longer financial plans"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#FFFFFF"
+          },
+          "text": "Healthspan and financial security work together"
+        }
+      ],
+      "highlight": "Build health and wealth for every year ahead"
+    }
+  ]
+}

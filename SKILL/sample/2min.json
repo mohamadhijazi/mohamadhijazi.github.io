@@ -1,0 +1,331 @@
+{
+  "video": {
+    "title": "Relaxing Facts Before Sleep",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 120,
+    "background": "#061A2B",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#8ED1C6",
+    "secondary": "#CDEAE4",
+    "accent": "#84A59D",
+    "text": "#F4F8F7",
+    "muted": "#B7CAC7",
+    "panel": "#102B40",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {},
+  "scenes": [
+    {
+      "id": "sleep-opening",
+      "start": 0,
+      "duration": 10,
+      "type": "title",
+      "title": "Relax Before Sleep",
+      "subtitle": "A few calming facts for tonight",
+      "narration": "Take a slow breath and relax. Here are a few calming facts about rest and sleep.",
+      "transition": "fade",
+      "decorations": [
+        {
+          "kind": "emoji",
+          "value": "🌙",
+          "x": 960,
+          "y": 450,
+          "size": 160,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "slow-breathing",
+      "start": 10,
+      "duration": 11,
+      "type": "composition",
+      "title": "Breathe Slowly",
+      "narration": "Slow breathing can help the body relax and prepare for rest.",
+      "transition": "fade",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 300,
+          "content": "Slow breathing helps relaxation",
+          "size": 58
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🍃",
+          "x": 960,
+          "y": 600,
+          "size": 140,
+          "animation": "wave"
+        }
+      ]
+    },
+    {
+      "id": "calm-space",
+      "start": 21,
+      "duration": 11,
+      "type": "composition",
+      "title": "Create A Calm Space",
+      "narration": "A peaceful environment can support restful sleep.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🛏️",
+          "x": 760,
+          "y": 580,
+          "size": 130,
+          "animation": "float"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "✨",
+          "x": 1160,
+          "y": 580,
+          "size": 120,
+          "animation": "wave"
+        }
+      ]
+    },
+    {
+      "id": "energy-recovery",
+      "start": 32,
+      "duration": 11,
+      "type": "composition",
+      "title": "Restore Energy",
+      "narration": "Sleep helps the body recover and restore energy for the next day.",
+      "transition": "slideUp",
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 300,
+          "content": "Recovery happens during sleep",
+          "size": 58
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🔋",
+          "x": 960,
+          "y": 620,
+          "size": 140,
+          "animation": "pulse"
+        }
+      ],
+      "decorations": []
+    },
+    {
+      "id": "memory-organization",
+      "start": 43,
+      "duration": 11,
+      "type": "composition",
+      "title": "Organizing Memories",
+      "narration": "The brain organizes memories while you sleep.",
+      "transition": "fade",
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🧠",
+          "x": 760,
+          "y": 580,
+          "size": 130,
+          "animation": "float"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🧩",
+          "x": 1160,
+          "y": 580,
+          "size": 130,
+          "animation": "pop"
+        }
+      ],
+      "decorations": []
+    },
+    {
+      "id": "muscle-recovery",
+      "start": 54,
+      "duration": 11,
+      "type": "composition",
+      "title": "Physical Recovery",
+      "narration": "Muscles relax and recover during periods of rest.",
+      "transition": "fadeZoom",
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "💪",
+          "x": 960,
+          "y": 560,
+          "size": 140,
+          "animation": "pulse"
+        }
+      ],
+      "decorations": []
+    },
+    {
+      "id": "sleep-routine",
+      "start": 65,
+      "duration": 11,
+      "type": "composition",
+      "title": "Consistent Habits",
+      "narration": "Consistent sleep habits support overall well-being.",
+      "transition": "slideLeft",
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "⏰",
+          "x": 760,
+          "y": 580,
+          "size": 130,
+          "animation": "bounce"
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "✓",
+          "x": 1160,
+          "y": 580,
+          "size": 150,
+          "color": "#8ED1C6",
+          "animation": "pulse"
+        }
+      ],
+      "decorations": []
+    },
+    {
+      "id": "reduce-distractions",
+      "start": 76,
+      "duration": 11,
+      "type": "composition",
+      "title": "Reduce Distractions",
+      "narration": "Reducing distractions before bed can promote relaxation.",
+      "transition": "fade",
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "📵",
+          "x": 960,
+          "y": 580,
+          "size": 140,
+          "animation": "float"
+        }
+      ],
+      "decorations": []
+    },
+    {
+      "id": "quiet-mind",
+      "start": 87,
+      "duration": 11,
+      "type": "composition",
+      "title": "Quiet Moments",
+      "narration": "Quiet moments can help calm the mind before sleep.",
+      "transition": "fadeZoom",
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "☁️",
+          "x": 760,
+          "y": 580,
+          "size": 130,
+          "animation": "wave"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🌙",
+          "x": 1160,
+          "y": 580,
+          "size": 130,
+          "animation": "float"
+        }
+      ],
+      "decorations": []
+    },
+    {
+      "id": "tomorrow-focus",
+      "start": 98,
+      "duration": 11,
+      "type": "composition",
+      "title": "Prepare For Tomorrow",
+      "narration": "Rest supports attention, learning, and focus for the next day.",
+      "transition": "slideUp",
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🌅",
+          "x": 760,
+          "y": 580,
+          "size": 130,
+          "animation": "float"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🎯",
+          "x": 1160,
+          "y": 580,
+          "size": 130,
+          "animation": "pulse"
+        }
+      ],
+      "decorations": []
+    },
+    {
+      "id": "sleep-summary",
+      "start": 109,
+      "duration": 11,
+      "type": "summary",
+      "title": "Good Night",
+      "narration": "Sleep supports recovery, learning, and well-being. Take a deep breath and enjoy a peaceful night.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "bullets": [
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#8ED1C6"
+          },
+          "text": "Sleep restores body and mind"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#CDEAE4"
+          },
+          "text": "Calm routines support rest"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#84A59D"
+          },
+          "text": "A peaceful night supports tomorrow"
+        }
+      ],
+      "highlight": "Rest well and wake refreshed"
+    }
+  ]
+}

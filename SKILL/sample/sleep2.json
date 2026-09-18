@@ -1,0 +1,214 @@
+{
+  "video": {
+    "title": "Why Sleep Matters",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 60,
+    "background": "#061426",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#38BDF8",
+    "secondary": "#FBBF24",
+    "accent": "#A78BFA",
+    "text": "#F8FAFC",
+    "muted": "#A7B4C7",
+    "panel": "#10243F",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {},
+  "scenes": [
+    {
+      "id": "sleep-title",
+      "start": 0,
+      "duration": 8,
+      "type": "title",
+      "title": "Why Sleep Matters",
+      "subtitle": "An essential need for health",
+      "narration": "Sleep is a basic biological need for humans and plays a vital role in everyday health.",
+      "transition": "fade",
+      "decorations": [
+        {
+          "kind": "emoji",
+          "value": "😴",
+          "x": 960,
+          "y": 420,
+          "size": 120,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "body-repair",
+      "start": 8,
+      "duration": 10,
+      "type": "composition",
+      "title": "Body Recovery",
+      "narration": "During sleep, the body repairs tissues and muscles, supporting physical recovery.",
+      "transition": "slideUp",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "panel",
+          "x": 960,
+          "y": 540,
+          "width": 1300,
+          "height": 500
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 340,
+          "content": "Repairs tissues and muscles",
+          "size": 58
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "💪",
+          "x": 960,
+          "y": 600,
+          "size": 120,
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "brain-function",
+      "start": 18,
+      "duration": 10,
+      "type": "composition",
+      "title": "Brain Support",
+      "narration": "Sleep supports healthy brain function and memory consolidation.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 300,
+          "content": "Healthy brain function",
+          "size": 60
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 420,
+          "content": "Memory consolidation",
+          "size": 50
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🧠",
+          "x": 960,
+          "y": 640,
+          "size": 130,
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "daily-performance",
+      "start": 28,
+      "duration": 10,
+      "type": "composition",
+      "title": "Daily Performance",
+      "narration": "Adequate sleep helps maintain attention, learning, and decision-making.",
+      "transition": "slideLeft",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "list",
+          "x": 960,
+          "y": 520
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "Attention • Learning • Decisions",
+          "size": 52
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "✓",
+          "x": 960,
+          "y": 700,
+          "size": 120,
+          "color": "#38BDF8",
+          "animation": "pop"
+        }
+      ]
+    },
+    {
+      "id": "immune-health",
+      "start": 38,
+      "duration": 10,
+      "type": "composition",
+      "title": "Health Support",
+      "narration": "Sleep contributes to a healthy immune system and overall well-being.",
+      "transition": "fade",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "Supports immune health",
+          "size": 58
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🛡️",
+          "x": 960,
+          "y": 620,
+          "size": 130,
+          "animation": "bounce"
+        }
+      ]
+    },
+    {
+      "id": "sleep-summary",
+      "start": 48,
+      "duration": 12,
+      "type": "summary",
+      "title": "Key Sleep Facts",
+      "narration": "Sleep helps the body recover, supports the brain, strengthens health, and improves daily performance.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "bullets": [
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#38BDF8"
+          },
+          "text": "Repairs tissues and muscles"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#FBBF24"
+          },
+          "text": "Supports brain function and memory"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#A78BFA"
+          },
+          "text": "Supports health and daily performance"
+        }
+      ],
+      "highlight": "Sleep is essential for overall well-being"
+    }
+  ]
+}

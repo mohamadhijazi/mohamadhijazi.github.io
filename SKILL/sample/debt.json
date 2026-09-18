@@ -1,0 +1,187 @@
+{
+  "video": {
+    "title": "Debt Has a Cost",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 60,
+    "background": "#0B1020",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#00E5FF",
+    "secondary": "#FFB703",
+    "accent": "#FF006E",
+    "text": "#FFFFFF",
+    "muted": "#B8C1D1",
+    "panel": "#141C35",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {},
+  "scenes": [
+    {
+      "id": "debt-title",
+      "start": 0,
+      "duration": 8,
+      "type": "title",
+      "title": "Debt Has A Cost",
+      "subtitle": "Borrowing today, paying more tomorrow",
+      "narration": "Debt means borrowing money that must be repaid in the future.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "emoji",
+          "value": "💳",
+          "x": 760,
+          "y": 450,
+          "size": 140,
+          "animation": "float"
+        },
+        {
+          "kind": "emoji",
+          "value": "💰",
+          "x": 1160,
+          "y": 450,
+          "size": 140,
+          "animation": "bounce"
+        }
+      ]
+    },
+    {
+      "id": "interest-definition",
+      "start": 8,
+      "duration": 10,
+      "type": "equation",
+      "title": "Interest Adds Cost",
+      "equation": "Borrowed Money + Interest = Total Repayment",
+      "caption": "Interest increases the amount paid back",
+      "narration": "Most debt includes interest, which increases the total amount that must be repaid.",
+      "transition": "slideUp",
+      "decorations": [
+        {
+          "kind": "fontIcon",
+          "value": "＋",
+          "x": 960,
+          "y": 760,
+          "size": 110,
+          "color": "#FF006E",
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "growing-cost",
+      "start": 18,
+      "duration": 10,
+      "type": "numberLine",
+      "title": "Cost Grows Over Time",
+      "from": 0,
+      "step": 1,
+      "jumps": 5,
+      "jumper": {
+        "kind": "emoji",
+        "value": "💸",
+        "size": 90,
+        "animation": "hop"
+      },
+      "label": "More time can mean more cost",
+      "narration": "The longer debt remains unpaid, the more borrowing costs can accumulate.",
+      "transition": "slideLeft",
+      "decorations": []
+    },
+    {
+      "id": "large-debt-large-cost",
+      "start": 28,
+      "duration": 10,
+      "type": "groups",
+      "title": "More Debt, More Cost",
+      "groups": 4,
+      "itemsPerGroup": 3,
+      "item": {
+        "kind": "emoji",
+        "value": "🪙",
+        "size": 70,
+        "animation": "pop"
+      },
+      "label": "Larger debt can create larger interest costs",
+      "narration": "Larger amounts of debt can result in larger interest costs over time.",
+      "transition": "fade",
+      "decorations": []
+    },
+    {
+      "id": "smart-payments",
+      "start": 38,
+      "duration": 10,
+      "type": "composition",
+      "title": "Pay On Time",
+      "narration": "Making payments on time helps avoid additional fees and supports financial stability.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "panel",
+          "x": 960,
+          "y": 540,
+          "width": 1200,
+          "height": 500
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "Avoid extra fees",
+          "size": 62
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "✓",
+          "x": 960,
+          "y": 610,
+          "size": 160,
+          "color": "#00E5FF",
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "debt-summary",
+      "start": 48,
+      "duration": 12,
+      "type": "summary",
+      "title": "Key Lessons",
+      "narration": "Debt can be useful, but interest, time, and repayment habits affect its total cost.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "bullets": [
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "●",
+            "color": "#00E5FF"
+          },
+          "text": "Interest increases repayment costs"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "●",
+            "color": "#FFB703"
+          },
+          "text": "Longer repayment can cost more"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "●",
+            "color": "#FF006E"
+          },
+          "text": "Responsible borrowing supports stability"
+        }
+      ],
+      "highlight": "Debt has a cost. Understand it before borrowing."
+    }
+  ]
+}

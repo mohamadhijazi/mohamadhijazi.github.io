@@ -1,0 +1,212 @@
+{
+  "video": {
+    "title": "Humans Have Cognitive Biases",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 60,
+    "background": "#F4FFF7",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#7ED957",
+    "secondary": "#B7E4C7",
+    "accent": "#52B788",
+    "text": "#1B4332",
+    "muted": "#5C7A6B",
+    "panel": "#D8F3DC",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {},
+  "scenes": [
+    {
+      "id": "cognitive-bias-title",
+      "start": 0,
+      "duration": 8,
+      "type": "title",
+      "title": "Cognitive Biases",
+      "subtitle": "How our minds simplify decisions",
+      "narration": "Humans use mental shortcuts to process information quickly. These shortcuts can influence how we think and decide.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "emoji",
+          "value": "🧠",
+          "x": 960,
+          "y": 500,
+          "size": 140,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "mental-shortcuts",
+      "start": 8,
+      "duration": 10,
+      "type": "composition",
+      "title": "Mental Shortcuts",
+      "narration": "Mental shortcuts help people make fast decisions when processing large amounts of information.",
+      "transition": "slideUp",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "panel",
+          "x": 960,
+          "y": 540,
+          "width": 1300,
+          "height": 500
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "Fast thinking saves effort",
+          "size": 58
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "→",
+          "x": 960,
+          "y": 620,
+          "size": 140,
+          "color": "#52B788",
+          "animation": "slideLoop"
+        }
+      ]
+    },
+    {
+      "id": "confirmation-bias",
+      "start": 18,
+      "duration": 10,
+      "type": "composition",
+      "title": "Seeking Supporting Evidence",
+      "narration": "People often pay more attention to information that supports existing beliefs.",
+      "transition": "fade",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 320,
+          "content": "We notice what matches our views",
+          "size": 54
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "✓",
+          "x": 960,
+          "y": 620,
+          "size": 150,
+          "color": "#7ED957",
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "first-impressions",
+      "start": 28,
+      "duration": 10,
+      "type": "composition",
+      "title": "First Impressions Matter",
+      "narration": "Initial impressions can influence later evaluations and judgments.",
+      "transition": "slideLeft",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 300,
+          "content": "First impressions can stick",
+          "size": 58
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "💡",
+          "x": 960,
+          "y": 620,
+          "size": 130,
+          "animation": "bounce"
+        }
+      ]
+    },
+    {
+      "id": "emotion-and-memory",
+      "start": 38,
+      "duration": 10,
+      "type": "composition",
+      "title": "Emotion And Memory",
+      "narration": "Emotions and recent experiences can influence how information is remembered and interpreted.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 280,
+          "content": "Feelings affect perception",
+          "size": 56
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🌿",
+          "x": 760,
+          "y": 620,
+          "size": 120,
+          "animation": "wave"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🧩",
+          "x": 1160,
+          "y": 620,
+          "size": 120,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "cognitive-bias-summary",
+      "start": 48,
+      "duration": 12,
+      "type": "summary",
+      "title": "Think More Critically",
+      "narration": "Awareness of cognitive biases can help people evaluate information more carefully and consider alternative perspectives.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "bullets": [
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#7ED957"
+          },
+          "text": "Mental shortcuts influence decisions"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#52B788"
+          },
+          "text": "Beliefs and emotions affect judgment"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#40916C"
+          },
+          "text": "Awareness supports better thinking"
+        }
+      ],
+      "highlight": "Recognizing bias helps improve decisions"
+    }
+  ]
+}

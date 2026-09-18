@@ -1,0 +1,310 @@
+{
+  "video": {
+    "title": "Emotions Affect Decisions",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 60,
+    "background": "#F8F5EF",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#7BAE7F",
+    "secondary": "#D9E6D5",
+    "accent": "#C67B5C",
+    "text": "#2F3E34",
+    "muted": "#6B7A70",
+    "panel": "#F2EEE7",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {},
+  "scenes": [
+    {
+      "id": "opening-emotion",
+      "start": 0,
+      "duration": 6,
+      "type": "title",
+      "title": "Emotions Decide Too",
+      "subtitle": "Every choice contains feeling",
+      "narration": "Every day, emotions help shape the decisions we make.",
+      "transition": "fadeZoom",
+      "decorations": [
+        {
+          "kind": "emoji",
+          "value": "🌿",
+          "x": 700,
+          "y": 450,
+          "size": 110,
+          "animation": "float"
+        },
+        {
+          "kind": "emoji",
+          "value": "🧠",
+          "x": 1220,
+          "y": 450,
+          "size": 120,
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "heart-and-brain",
+      "start": 6,
+      "duration": 7,
+      "type": "composition",
+      "title": "Feeling Before Thinking",
+      "narration": "Emotions often influence attention before deliberate analysis begins.",
+      "transition": "slideUp",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "panel",
+          "x": 700,
+          "y": 540,
+          "width": 500,
+          "height": 520
+        },
+        {
+          "type": "panel",
+          "x": 1220,
+          "y": 540,
+          "width": 500,
+          "height": 520
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "❤️",
+          "x": 700,
+          "y": 520,
+          "size": 140,
+          "animation": "pulse"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🧠",
+          "x": 1220,
+          "y": 520,
+          "size": 140,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "attention-filter",
+      "start": 13,
+      "duration": 7,
+      "type": "composition",
+      "title": "Attention Is Filtered",
+      "narration": "Feelings can influence which information stands out most.",
+      "transition": "fade",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "text",
+          "x": 960,
+          "y": 260,
+          "content": "What we notice changes",
+          "size": 60
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🔍",
+          "x": 780,
+          "y": 620,
+          "size": 120,
+          "animation": "wave"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "⭐",
+          "x": 1140,
+          "y": 620,
+          "size": 120,
+          "animation": "bounce"
+        }
+      ]
+    },
+    {
+      "id": "confidence-effect",
+      "start": 20,
+      "duration": 7,
+      "type": "composition",
+      "title": "Confidence Grows",
+      "narration": "Positive emotions can increase confidence when making choices.",
+      "transition": "slideLeft",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "☀️",
+          "x": 760,
+          "y": 560,
+          "size": 140,
+          "animation": "float"
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "▲",
+          "x": 1160,
+          "y": 560,
+          "size": 160,
+          "color": "#7BAE7F",
+          "animation": "pulse"
+        }
+      ]
+    },
+    {
+      "id": "caution-effect",
+      "start": 27,
+      "duration": 7,
+      "type": "composition",
+      "title": "Caution Appears",
+      "narration": "Negative emotions can encourage people to think more carefully.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "⚠️",
+          "x": 960,
+          "y": 580,
+          "size": 150,
+          "animation": "bounce"
+        },
+        {
+          "type": "text",
+          "x": 960,
+          "y": 300,
+          "content": "Pause and evaluate",
+          "size": 56
+        }
+      ]
+    },
+    {
+      "id": "stress-crossroads",
+      "start": 34,
+      "duration": 7,
+      "type": "composition",
+      "title": "Stress Changes Choices",
+      "narration": "Stress can affect how options are evaluated.",
+      "transition": "slideUp",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🌪️",
+          "x": 760,
+          "y": 580,
+          "size": 130,
+          "animation": "wave"
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "→",
+          "x": 960,
+          "y": 580,
+          "size": 150,
+          "color": "#C67B5C",
+          "animation": "slideLoop"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🛤️",
+          "x": 1160,
+          "y": 580,
+          "size": 130,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "balance-emotion-logic",
+      "start": 41,
+      "duration": 8,
+      "type": "composition",
+      "title": "Emotion And Logic",
+      "narration": "Decision making often combines both feelings and reasoning.",
+      "transition": "fade",
+      "decorations": [],
+      "elements": [
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "❤️",
+          "x": 760,
+          "y": 560,
+          "size": 130,
+          "animation": "pulse"
+        },
+        {
+          "type": "visual",
+          "kind": "fontIcon",
+          "value": "＋",
+          "x": 960,
+          "y": 560,
+          "size": 120,
+          "color": "#7BAE7F",
+          "animation": "pulse"
+        },
+        {
+          "type": "visual",
+          "kind": "emoji",
+          "value": "🧠",
+          "x": 1160,
+          "y": 560,
+          "size": 130,
+          "animation": "float"
+        }
+      ]
+    },
+    {
+      "id": "reflection-summary",
+      "start": 49,
+      "duration": 11,
+      "type": "summary",
+      "title": "Better Decisions",
+      "narration": "Recognizing emotions and taking time to reflect can improve judgment and decision quality.",
+      "transition": "fadeZoom",
+      "decorations": [],
+      "bullets": [
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#7BAE7F"
+          },
+          "text": "Emotions influence perception"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#52A36A"
+          },
+          "text": "Emotion and logic work together"
+        },
+        {
+          "icon": {
+            "kind": "fontIcon",
+            "value": "✓",
+            "color": "#C67B5C"
+          },
+          "text": "Reflection improves decisions"
+        }
+      ],
+      "highlight": "Understanding emotions supports better judgment"
+    }
+  ]
+}
