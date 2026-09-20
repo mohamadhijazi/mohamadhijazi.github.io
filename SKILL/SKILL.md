@@ -1,506 +1,341 @@
 ---
 name: northstar-storyboard-json-generator
-description: Generate renderer-compatible storyboard JSON from user-provided factual content for the NorthStar HTML Canvas video application. Use when a user supplies facts and asks for a video storyboard, animated infographic plan, narration timeline, multiplication-style explainer, or JSON that must work with the NorthStar app.js renderer.
+description: Generate renderer-compatible storyboard JSON from user-provided factual content for the NorthStar HTML Canvas video application. Use when a user supplies facts and asks for a video storyboard, animated infographic plan, narration timeline, technical explainer, industrial process visualization, or JSON that must work with the NorthStar app.js renderer.
 ---
 
-# NorthStar Storyboard JSON Generator
+# NorthStar Storyboard JSON Generator: Composable UI Design System
 
 ## Purpose
 
-Transform facts supplied by the user into one valid `storyboard.json` document that is directly compatible with the NorthStar generic `app.js` Canvas renderer.
+Transform facts supplied by the user into a valid `storyboard.json` document directly compatible with the NorthStar generic `app.js` Canvas video engine.
 
-The user is the source of factual content. The model acts only as a storyboard director, narration editor, and visual planner.
+The user is the source of factual content. The model acts as a **video director, UI/visual designer, technical animator, and narration writer**.
 
-## Non-negotiable rules
+---
 
-1. Use only facts supplied by the user.
-2. Do not invent, extend, correct, validate, or supplement facts unless the user explicitly asks for that work and supplies an approved source.
-3. Preserve all quantities, units, formulas, qualifications, and causal statements exactly in meaning.
-4. Rewrite only for concise narration and on-screen readability.
-5. Output valid JSON only when the user asks for storyboard JSON. Do not wrap JSON in Markdown fences.
-6. Never output JavaScript, HTML, CSS, SVG markup, comments, trailing commas, `NaN`, or `undefined` inside the JSON.
-7. Use only supported scene types, transitions, visual kinds, animations, and properties documented below.
-8. Ensure the final scene timeline exactly fills `video.duration` without gaps or overlaps.
-9. Give every scene a unique, stable `id` using lowercase letters, digits, and hyphens.
-10. Keep all critical text inside the safe visual area. Prefer x coordinates from 280 to 1640 and y coordinates from 150 to 900 for a 1920 by 1080 video.
+## The Composable UI Mental Model: Atomic Visual Assembly
 
-## Input interpretation
+Do not view the NorthStar renderer as a static list of fixed templates. Instead, treat the 1920×1080 canvas as a **modular design canvas** where basic primitives combine, stack, and choreograph to produce **any conceivable user interface, scientific apparatus, industrial machine, process diagram, or data dashboard**.
 
-Extract these values from the request when available:
+```text
+                     ┌──────────────────────────────────────────────┐
+                     │           COMPOSITION SCENE (1920x1080)      │
+                     │                                              │
+                     │   ┌──────────────────────────────────────┐   │
+                     │   │   Atmospheric Layer (z: 0)           │   │
+                     │   │   - Backdrop panels, ambient glow    │   │
+                     │   │   - Procedural particle fields       │   │
+                     │   └──────────────────┬───────────────────┘   │
+                     │                      ▼                       │
+                     │   ┌──────────────────────────────────────┐   │
+                     │   │   Conduit & Topology Layer (z: 10)   │   │
+                     │   │   - Industrial pipelines & fluid     │   │
+                     │   │   - Connectors & flow vectors        │   │
+                     │   └──────────────────┬───────────────────┘   │
+                     │                      ▼                       │
+                     │   ┌──────────────────────────────────────┐   │
+                     │   │   Physical / Focal Apparatus (z: 20) │   │
+                     │   │   - Custom vector shapes & columns   │   │
+                     │   │   - Machine hulls, SVG assets        │   │
+                     │   └──────────────────┬───────────────────┘   │
+                     │                      ▼                       │
+                     │   ┌──────────────────────────────────────┐   │
+                     │   │   Telemetry & Interface (z: 30)      │   │
+                     │   │   - Radial gauges & live counters    │   │
+                     │   │   - KPI cards, badges, pill tags     │   │
+                     │   │   - Comparative yield charts         │   │
+                     │   └──────────────────┬───────────────────┘   │
+                     │                      ▼                       │
+                     │   ┌──────────────────────────────────────┐   │
+                     │   │   Annotation & Guidance (z: 40)      │   │
+                     │   │   - Elbow callouts, leader lines     │   │
+                     │   │   - Target anchor dots & formulas    │   │
+                     │   └──────────────────────────────────────┘   │
+                     │                                              │
+                     │   CHOREOGRAPHED VIA ANIME.JS REACTIVE BUS   │
+                     └──────────────────────────────────────────────┘
+```
 
-- Topic
-- Facts
-- Audience
-- Desired duration
-- Language
-- Preferred style or theme
-- Required dimensions and frame rate
+By layering and combining primitives, you can construct:
+- **Industrial Process Plants**: (Pipelines + Furnaces + Distillation Columns + Flow Pulses + Pressure Dials)
+- **Sci-Fi & Engineering HUDs**: (Glassmorphic Panels + Circular Radar/Gauges + Telemetry Counters + Warning Pills)
+- **Multi-Stage Stepper Pipelines**: (Horizontal Conduits + Numbered Step Nodes + Animated Fluid + Detail Cards)
+- **Chemical & Molecular Reactions**: (Custom Vector Molecules + Catalyst Particle Beds + Chemical Equations + Energy Callouts)
+- **Comparative Tradeoff Matrices**: (Split Panels + Diverging Bar Charts + Opposing KPI Cards + Status Badges)
 
-Use these defaults when values are absent:
+---
 
-- Audience: general audience age 12 and above
-- Duration: 60 seconds
-- Language: `en-US`
-- Width: `1920`
-- Height: `1080`
-- Frame rate: `60`
-- Background: `#061426`
-- Style: clear educational infographic
+## Non-negotiable Rules
 
-If facts are not provided, do not fabricate a storyboard. Return a concise request for factual content instead of JSON.
+1. **Facts First**: Use only facts supplied by the user. Do not invent facts or alter quantities, units, formulas, or causal relationships.
+2. **Contiguous Timeline**: The timeline must be 100% gap-free and overlap-free. `sum(scene.duration) === video.duration`, and `next.start = prev.start + prev.duration`.
+3. **Valid JSON Only**: Return strictly valid JSON. Never output JavaScript, HTML, CSS, comments, trailing commas, or Markdown fences inside JSON.
+4. **Stable IDs**: Every scene, element, decoration, and animated target must have a unique lowercase alphanumeric ID (e.g. `"feed-pipe"`, `"temp-gauge"`).
+5. **Safe Visual Coordinates**: All critical text and focal objects must sit within the 1920×1080 safe area:
+   - X: `280` to `1640`
+   - Y: `150` to `900`
+6. **Single Master Clock**: Never write custom playback loops. Anime.js seeks deterministically from `scene-local milliseconds`:
+   `render(t) -> animeState(ms) -> Canvas Draw -> MediaRecorder Stream`
 
-## Required root structure
+---
 
-The root object must contain exactly these main sections:
+## Root Structure
 
 ```json
 {
-  "video": {},
-  "theme": {},
+  "video": {
+    "title": "Descriptive Video Title",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 72,
+    "background": "#070e1b",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#38BDF8",
+    "secondary": "#F59E0B",
+    "accent": "#10B981",
+    "text": "#F8FAFC",
+    "muted": "#94A3B8",
+    "panel": "#0f1c2e",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
   "assets": {},
   "scenes": []
 }
 ```
 
-### Video object
+---
 
-```json
-{
-  "title": "Clear video title",
-  "width": 1920,
-  "height": 1080,
-  "fps": 60,
-  "duration": 60,
-  "background": "#061426",//ask user for background color
-  "language": "en-US"
-}
-```
+## Composable Primitives Palette
 
-Rules:
+Every element inside a `composition` scene's `elements` array is positioned with `x`, `y`, layered with `z`, given entrance timing with `delay`, and linked to Anime.js via `id`.
 
-- `duration` is measured in seconds.
-- All scene timing must fit within this duration.
-- Use `ar-SA` for Arabic and `en-US` for English unless the user specifies another locale.
+### 1. Vector Geometry & Bespoke Apparatus
+- **`shape` / `path`**: Draw **any vector geometry directly** using SVG `d` path syntax without declaring global assets:
+  ```json
+  {"type": "shape", "id": "valve", "x": 600, "y": 500, "d": "M-20 -20 L20 20 L20 -20 L-20 20 Z", "fill": "#F59E0B", "stroke": "#FFFFFF", "strokeWidth": 3}
+  ```
+- **`visual`**: Render declared SVG assets from `assets`, Unicode font symbols (`Segoe UI Symbol`), or standard emojis:
+  ```json
+  {"type": "visual", "id": "atom", "kind": "svg", "asset": "moleculeChain", "x": 960, "y": 540, "width": 240, "height": 140}
+  ```
+- **`column` / `vessel`**: Industrial distillation columns, cylindrical reactors, or fluid tanks with thermal gradient coloring, liquid pool waves, bubble-cap trays, and rising vapor:
+  ```json
+  {"type": "column", "id": "tower", "x": 680, "y": 560, "width": 280, "height": 680, "trays": 6, "activeTray": 1, "level": 0.3, "trayLabels": ["Gas (<20°C)", "Petrol (20-70°C)", "Naphtha (70-120°C)", "Kerosene (120-170°C)", "Diesel (170-270°C)", "Residue (>350°C)"]}
+  ```
 
-### Theme object
+### 2. Conduits, Flows & Topology
+- **`pipeline`**: Multi-point industrial pipes with outer casings, inner fluid cores, animated traveling flow pulses, joint flanges, and directional arrowheads:
+  ```json
+  {"type": "pipeline", "id": "crude-feed", "x": 500, "y": 650, "width": 24, "fluidColor": "#F59E0B", "pulseColor": "#FDE047", "points": [[-200, 0], [0, 0], [0, -120], [200, -120]], "arrow": true, "speed": 1.5, "label": "Feedstock (370°C)"}
+  ```
+- **`connector` / `arrow`**: 2-point straight or curved Bezier flow lines with traveling signal pulses and arrowheads:
+  ```json
+  {"type": "connector", "id": "flow-link", "x": 960, "y": 500, "from": [-150, 0], "to": [150, 0], "curve": -40, "color": "#38BDF8", "arrow": true}
+  ```
 
-Use this compatible default unless the user requests another palette:// user can provide a palette of 5 to 7 colors, plus //font and emoji preferences. All colors must be valid CSS color strings. Prefer hexadecimal colors.
+### 3. Telemetry, Gauges & Data Displays
+- **`gauge`**: Radial dials or vertical linear meters with needle pointers, colored arcs, tick marks, and animated digital counter readouts:
+  ```json
+  {"type": "gauge", "id": "pressure-gauge", "x": 1420, "y": 540, "style": "radial", "title": "SYSTEM PRESSURE", "min": 0, "max": 100, "value": 0, "unit": " bar", "color": "#10B981", "radius": 95}
+  ```
+- **`card` / `stat`**: Glassmorphic KPI cards with animated numeric counters, titles, units, subtitles, and status pill badges:
+  ```json
+  {"type": "card", "id": "yield-kpi", "x": 1400, "y": 420, "width": 420, "height": 210, "title": "BARREL REFINING YIELD", "value": 88, "unit": "%", "badge": "High Octane", "subtitle": "Optimal secondary conversion output.", "color": "#F59E0B"}
+  ```
+- **`chart` / `barChart`**: Comparative bar charts with animated progress growth, category labels, values, and custom colors:
+  ```json
+  {"type": "chart", "id": "fraction-chart", "x": 720, "y": 560, "width": 780, "height": 420, "title": "PRODUCT BREAKDOWN", "unit": "%", "data": [{"label": "Gasoline", "value": 44, "color": "#FBBF24"}, {"label": "Diesel", "value": 26, "color": "#10B981"}]}
+  ```
+- **`badge` / `pill`**: Standalone status pill tags with glowing borders:
+  ```json
+  {"type": "badge", "id": "status-tag", "x": 960, "y": 280, "text": "OPTIMAL REACTION", "color": "#10B981", "size": 20}
+  ```
 
-```json
-{
-  "primary": "#38BDF8",
-  "secondary": "#FBBF24",
-  "accent": "#A78BFA",
-  "text": "#F8FAFC",
-  "muted": "#A7B4C7",
-  "panel": "#10243F",
-  "font": "Segoe UI",
-  "iconFont": "Segoe UI Symbol",
-  "emojiFont": "Segoe UI Emoji"
-}
-```
+### 4. Typography, Formulas & Enclosures
+- **`text`**: Headings, metadata, or standalone dynamic numeric counters with prefix/suffix/precision formatting:
+  ```json
+  {"type": "text", "id": "temp-counter", "x": 960, "y": 300, "value": 20, "suffix": " °C", "size": 72, "weight": "800", "color": "#EF4444"}
+  ```
+- **`equation`**: Chemical formulas or mathematical equations with glowing emphasis:
+  ```json
+  {"type": "equation", "id": "cracking-formula", "x": 1280, "y": 340, "content": "C₁₆H₃₄  →  C₈H₁₈  +  C₈H₁₆", "size": 52, "color": "#FBBF24"}
+  ```
+- **`panel`**: Glassmorphic backdrops, framed enclosures, cards, and sub-windows with rounded borders:
+  ```json
+  {"type": "panel", "id": "main-frame", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36, "color": "#0f1c2e", "border": "#38BDF844"}
+  ```
 
-All colors must be valid CSS color strings. Prefer hexadecimal colors.
+### 5. Atmospheric Particles & Precision Annotations
+- **`particles`**: Procedural animated particle emitters (flame, steam/vapor, reaction bubbles, sparks):
+  ```json
+  {"type": "particles", "id": "reactor-bubbles", "x": 640, "y": 580, "particleType": "bubbles", "count": 32, "color": "#FBBF24", "speed": 1.6}
+  ```
+- **`callout`**: Technical leader lines with anchor points, elbow joints, titles, and detail cards:
+  ```json
+  {"type": "callout", "id": "tray-callout", "x": 1360, "y": 420, "from": [-240, 0], "to": [80, -30], "title": "Condensation Zone", "detail": "Vapors condense as temperature drops below boiling threshold.", "color": "#38BDF8"}
+  ```
 
-## Supported scene types
+---
 
-Use only these scene `type` values:
+## 5 Composable UI Archetypes (Layout Blueprints)
 
-- `title`
-- `equation`
-- `groups`
-- `array`
-- `numberLine`
-- `summary`
-- `composition`
+Use these 5 proven layout archetypes to compose any video scene:
 
-Do not create unsupported scene types.
+### Archetype 1: Hero Centerpiece + Flanking KPI Wings
+Ideal for machinery, chemical reactors, anatomical organs, or central engines:
+- **Left Wing (X: ~450)**: Input cards, inflow feedstock pipelines (`[[-200, 0], [150, 0]]`), supply stats.
+- **Center Hero (X: 960)**: Core vessel, custom SVG machine, or column (`column`, `shape`, `visual`, `particles`).
+- **Right Wing (X: ~1450)**: Telemetry instrumentation, output pipelines, temperature/pressure gauges, yield cards.
 
-### Composition scene
+### Archetype 2: Multi-Stage Horizontal Stepper / Flow Pipeline
+Ideal for multi-step workflows, supply chains, refinery cuts, or sequential transformations:
+- **Spine**: Long continuous pipeline across the lower third (`points: [[-650, 0], [650, 0]]`).
+- **Nodes**: 3 to 4 sequential stage panels at `X: 450, 800, 1150, 1500`.
+- **Badges**: Numbered pill tags (`"STEP 01"`, `"STEP 02"`, ...) atop each node.
+- **Choreography**: Anime.js staggered flow pulses illuminating each node as the signal passes.
 
-Use `composition` when a scene needs a custom mix of reusable parts. It requires an `elements` array. Each element can set `x`, `y`, `delay`, `animation`, and `z` independently.
+### Archetype 3: Sci-Fi / Technical Command HUD & Telemetry Console
+Ideal for aerospace, medical diagnostics, energy grids, and high-tech instrumentation:
+- **Top Header**: Title + status pill (`badge: "SYSTEM NOMINAL"`).
+- **Upper Center**: Central radar sweep or circular gauge (`gauge` dial, `r: 120`).
+- **Lower Split**: Left live multi-bar chart (`chart`), right digital counter readout (`text` with live `value: [0, 1000]`).
+- **Overlay**: Subtle ambient particle field (`particles: "dots"`).
+
+### Archetype 4: Chemical & Molecular Reaction Chamber
+Ideal for chemistry, materials science, pharmacology, and physics:
+- **Top Center**: Balanced chemical transformation equation (`equation`).
+- **Center Left**: Reaction vessel with catalyst fluidized bed (`column` + `particles: "bubbles"`).
+- **Center Right**: Molecular bond cleavage visual (`visual: "moleculeChain"` + `callout`).
+- **Bottom Right**: Reaction conversion efficiency gauge (`gauge: "%"`).
+
+### Archetype 5: Split-Screen Comparative Tradeoff Matrix
+Ideal for Before/After, Baseline vs Upgraded, Conventional vs Renewable, or A/B benchmarks:
+- **Left Column (X: 580)**: Enclosure panel, baseline metrics card, red/muted accents.
+- **Right Column (X: 1340)**: Enclosure panel, optimized metrics card, green/gold accents.
+- **Center Divider (X: 960)**: `connector` vertical division or `equation` ratio comparison.
+- **Bottom**: Comparative bar chart or delta gauge.
+
+---
+
+## Composable Component Recipes
+
+Combine multiple primitives into cohesive assemblies using these production recipes:
+
+### Recipe A: Industrial Reaction Vessel with Inflow, Outflow, Burner & Gauge
 
 ```json
 {
   "type": "composition",
+  "id": "scene-reactor",
   "elements": [
-    {"type":"panel","x":960,"y":510,"width":1300,"height":560},
-    {"type":"text","x":960,"y":260,"content":"A custom explanation","size":60},
-    {"type":"grid","x":650,"y":540,"rows":3,"columns":4},
-    {"type":"equation","x":1260,"y":540,"content":"3 × 4 = 12"}
-  ]
-}
-```
-
-Supported element types are `text`, `panel`, `visual`, `equation`, `grid`, `groups`, `numberLine`, and `list`. `visual` uses the same `kind`, `value`, or `asset` properties as a visual object.
-
-### Common scene properties
-
-Every scene must contain:
-
-```json
-{
-  "id": "unique-scene-id",
-  "start": 0,
-  "duration": 7,
-  "type": "title",
-  "title": "Scene heading",
-  "narration": "Narration spoken when the scene starts.",
-  "transition": "fade",
-  "decorations": []
-}
-```
-
-Supported transitions:
-
-- `fade`
-- `slideUp`
-- `slideLeft`
-- `fadeZoom`
-
-### Title scene
-
-Required or useful fields:
-
-```json
-{
-  "type": "title",
-  "title": "Main concept",
-  "subtitle": "Short explanatory promise"
-}
-```
-
-Use one title scene at the beginning. Keep the title under 7 words and subtitle under 14 words.
-
-### Equation scene
-
-```json
-{
-  "type": "equation",
-  "title": "Repeated addition",
-  "equation": "4 + 4 + 4 = 12",
-  "caption": "Three equal groups, with four in each group"
-}
-```
-
-Use for formulas, symbolic relationships, concise definitions, or numeric examples. Do not alter the user's numbers or operators.
-
-### Groups scene
-
-```json
-{
-  "type": "groups",
-  "title": "3 groups of 4",
-  "groups": 3,
-  "itemsPerGroup": 4,
-  "item": {
-    "kind": "emoji",
-    "value": "⭐",
-    "size": 72,
-    "animation": "pop"
-  },
-  "label": "3 × 4 = 12"
-}
-```
-
-Use only for equal-group concepts. Keep `groups` and `itemsPerGroup` as positive integers. For the current renderer layout, prefer 2 to 4 groups and 1 to 6 items per group.
-
-### Array scene
-
-```json
-{
-  "type": "array",
-  "title": "The array model",
-  "rows": 3,
-  "columns": 4,
-  "cell": {
-    "kind": "fontIcon",
-    "value": "●",
-    "size": 82,
-    "color": "#38BDF8",
-    "alternateColor": "#A78BFA",
-    "animation": "pop"
-  },
-  "label": "3 rows × 4 columns = 12"
-}
-```
-
-Use positive integer rows and columns. Prefer values from 2 to 8 for visual clarity.
-
-### Number-line scene
-
-The exact supported type value is case-sensitive: `numberLine`.
-
-```json
-{
-  "type": "numberLine",
-  "title": "Three equal jumps of four",
-  "from": 0,
-  "step": 4,
-  "jumps": 3,
-  "jumper": {
-    "kind": "emoji",
-    "value": "🐇",
-    "size": 74,
-    "animation": "hop"
-  },
-  "label": "0 → 4 → 8 → 12"
-}
-```
-
-Use for increments, sequences, repeated steps, progress, or movement along a scale.
-
-### Summary scene
-
-```json
-{
-  "type": "summary",
-  "title": "One fact, three visual models",
-  "bullets": [
-    {
-      "icon": {
-        "kind": "fontIcon",
-        "value": "＋",
-        "color": "#38BDF8"
-      },
-      "text": "Repeated addition: 4 + 4 + 4"
-    }
+    {"type": "panel", "id": "bg-frame", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36},
+    {"type": "text", "id": "heading", "x": 960, "y": 190, "content": "Thermal Hydrocracking Chamber", "size": 64, "weight": "800"},
+    {"type": "pipeline", "id": "pipe-in", "x": 420, "y": 680, "width": 24, "fluidColor": "#F59E0B", "points": [[-150, 0], [140, 0]], "arrow": true, "label": "Feed: 370°C"},
+    {"type": "column", "id": "reactor-tank", "x": 800, "y": 570, "width": 260, "height": 640, "trays": 4, "activeTray": 1, "level": 0.3},
+    {"type": "particles", "id": "reactor-fire", "x": 800, "y": 740, "particleType": "flame", "count": 30, "width": 200, "height": 140, "speed": 1.5},
+    {"type": "pipeline", "id": "pipe-out", "x": 1100, "y": 420, "width": 20, "fluidColor": "#38BDF8", "points": [[0, 0], [180, 0]], "arrow": true, "label": "Light Gas Cut"},
+    {"type": "gauge", "id": "temp-dial", "x": 1450, "y": 550, "title": "CORE TEMPERATURE", "min": 20, "max": 500, "value": 20, "unit": "°C", "color": "#EF4444"},
+    {"type": "callout", "id": "catalyst-note", "x": 1360, "y": 750, "from": [-320, 0], "to": [60, 20], "title": "Zeolite Catalyst Bed", "detail": "Porous aluminosilicate structures split heavy carbon bonds.", "color": "#A78BFA"}
   ],
-  "highlight": "3 × 4 = 12"
-}
-```
-
-Use one summary scene at the end. Use no more than 3 bullets because the current renderer is optimized for three summary rows.
-
-## Visual objects
-
-Visual objects may be used in `decorations`, `item`, `cell`, `jumper`, and summary bullet `icon` fields.
-
-Supported visual kinds:
-
-- `emoji`
-- `fontIcon`
-- `svg`
-
-### Emoji object
-
-```json
-{
-  "kind": "emoji",
-  "value": "⭐",
-  "x": 960,
-  "y": 400,
-  "size": 90,
-  "animation": "bounce",
-  "delay": 0.1
-}
-```
-
-Use standard Unicode emoji. Choose simple, widely supported emoji. Emoji appearance can vary by operating system.
-
-### Font icon object
-
-`fontIcon` means a Unicode symbol rendered through `Segoe UI Symbol`. It does not use Font Awesome or an external library.
-
-```json
-{
-  "kind": "fontIcon",
-  "value": "＋",
-  "x": 960,
-  "y": 400,
-  "size": 90,
-  "color": "#38BDF8",
-  "animation": "pulse"
-}
-```
-
-Prefer reliable symbols such as:
-
-- `＋`
-- `−`
-- `×`
-- `÷`
-- `=`
-- `→`
-- `✓`
-- `●`
-- `▲`
-- `■`
-- `★`
-
-### SVG object
-
-An SVG visual references an asset declared in the root `assets` object.
-
-```json
-{
-  "kind": "svg",
-  "asset": "gridSvg",
-  "x": 960,
-  "y": 400,
-  "width": 160,
-  "height": 160,
-  "animation": "spinIn"
-}
-```
-
-Do not place raw `<svg>` markup in JSON. Define Canvas-compatible SVG path information in `assets`.
-
-## SVG asset format
-
-```json
-{
-  "assets": {
-    "gridSvg": {
-      "viewBox": "0 0 120 120",
-      "paths": [
-        {
-          "d": "M10 10 H110 V110 H10 Z",
-          "stroke": "#A78BFA",
-          "strokeWidth": 7,
-          "fill": "none",
-          "lineJoin": "round",
-          "lineCap": "round",
-          "opacity": 1
-        }
-      ]
-    }
+  "animation": {
+    "tracks": [
+      {"target": "reactor-tank", "properties": {"scale": [0.8, 1], "level": [0, 0.3], "opacity": [0, 1]}, "duration": 1200, "ease": "out(4)"},
+      {"target": "pipe-in", "properties": {"flow": [0, 400], "opacity": [0, 1]}, "delay": 300, "duration": 8000, "ease": "linear"},
+      {"target": "temp-dial", "properties": {"value": [20, 480], "scale": [0.6, 1], "opacity": [0, 1]}, "delay": 600, "duration": 4000, "ease": "out(3)"},
+      {"target": "pipe-out", "properties": {"flow": [0, 400], "opacity": [0, 1]}, "delay": 2000, "duration": 8000, "ease": "linear"},
+      {"target": "catalyst-note", "properties": {"x": [1500, 1360], "opacity": [0, 1]}, "delay": 2500, "duration": 1000, "ease": "out(3)"}
+    ]
   }
 }
 ```
 
-Each path may use:
+### Recipe B: Multi-Stage Process Stepper
 
-- `d`
-- `stroke`
-- `strokeWidth`
-- `fill`
-- `lineJoin`
-- `lineCap`
-- `opacity`
+```json
+{
+  "type": "composition",
+  "id": "scene-stepper",
+  "elements": [
+    {"type": "panel", "id": "stage-bg", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36},
+    {"type": "text", "id": "stage-title", "x": 960, "y": 200, "content": "The Refining Journey: 3 Critical Phases", "size": 60, "weight": "800"},
+    {"type": "pipeline", "id": "main-spine", "x": 960, "y": 540, "width": 20, "fluidColor": "#38BDF8", "points": [[-550, 0], [550, 0]], "joints": true},
+    {"type": "card", "id": "step-1", "x": 520, "y": 660, "width": 360, "height": 180, "title": "PHASE 01: SEPARATION", "value": "Atmospheric Distillation", "badge": "Primary", "subtitle": "Physical separation by boiling points.", "color": "#F59E0B"},
+    {"type": "card", "id": "step-2", "x": 960, "y": 420, "width": 360, "height": 180, "title": "PHASE 02: CONVERSION", "value": "Catalytic Cracking", "badge": "Upgrade", "subtitle": "Splitting heavy molecules into gasoline.", "color": "#10B981"},
+    {"type": "card", "id": "step-3", "x": 1400, "y": 660, "width": 360, "height": 180, "title": "PHASE 03: PURIFICATION", "value": "Hydrotreating", "badge": "Clean Fuel", "subtitle": "Sulfur removal to meet emissions standards.", "color": "#38BDF8"}
+  ],
+  "animation": {
+    "tracks": [
+      {"target": "main-spine", "properties": {"flow": [0, 600], "opacity": [0, 1]}, "duration": 8000, "ease": "linear"},
+      {"targets": ["step-1", "step-2", "step-3"], "properties": {"scale": [0.75, 1], "opacity": [0, 1]}, "stagger": 400, "delay": 400, "duration": 1000, "ease": "out(4)"}
+    ]
+  }
+}
+```
 
-Only provide path syntax supported by browser `Path2D`. Keep SVG assets simple and self-contained. Do not use external files, URLs, CSS classes, masks, filters, scripts, text elements, or embedded raster images.
+---
 
-Remove unused assets from the final JSON.
+## Anime.js v4 Universal Reactive Bus
 
-## Supported animations
+In the NorthStar engine, **Anime.js is not just for moving boxes—it is the reactive state engine for the entire canvas**:
 
-Use only these exact animation names:
+| Animated Property | Effect on Canvas | Used By |
+| :--- | :--- | :--- |
+| `value` | Dynamically counts numbers from start to target | `gauge`, `card`, `text` |
+| `progress` | Expands bar lengths or circular fill ratios (0 to 1) | `chart`, `particles`, `connector` |
+| `flow` | Offsets dashed fluid traveling pulses along pipes | `pipeline` |
+| `level` | Raises liquid volumes with animated waves (0 to 1) | `column`, `vessel` |
+| `intensity` | Modulates particle density and speed | `particles` |
+| `scaleX`, `scaleY` | Stretches or squashes objects along a single axis | `shape`, `visual`, `panel` |
+| `width`, `height` | Smoothly reshapes containers and bounding boxes | `panel`, `card` |
+| `x`, `y` | Repositions elements across the canvas | All elements |
+| `rotate` | Spins needles, gears, or molecular models in degrees | All elements |
+| `opacity` | Fades elements in and out cleanly | All elements |
 
-- `fade`
-- `pulse`
-- `bounce`
-- `hop`
-- `float`
-- `pop`
-- `spinIn`
-- `slideLoop`
-- `draw`
-- `wave`
+### Multi-Target Staggering
 
-Notes:
+Coordinate multiple elements with cascading timings in a single track block:
 
-- `fade`: safe default.
-- `pulse`: ideal for emphasis.
-- `bounce`: ideal for countable objects.
-- `hop`: ideal for a number-line jumper.
-- `float`: subtle decoration.
-- `pop`: useful for sequential items.
-- `spinIn`: useful for SVG or symbol entry.
-- `slideLoop`: useful for arrows.
-- `draw`: supported as an animated entry for SVG decorations.
-- `delay` should normally be between `0` and `0.75`.
+```json
+{
+  "targets": ["pipe-gas", "pipe-petrol", "pipe-naphtha", "pipe-kero", "pipe-diesel"],
+  "properties": {
+    "flow": [0, 500],
+    "opacity": [0, 1]
+  },
+  "stagger": 150,
+  "delay": 400,
+  "duration": 8000,
+  "ease": "linear"
+}
+```
 
-`wave` adds a subtle vertical motion and works well for repeated grid cells.
+---
 
-## Timeline construction
+## Narration & Speech Synthesis Rules
 
-1. Set the first scene `start` to `0`.
-2. For each next scene, calculate:
+- Target 2 to 2.5 spoken words per second.
+- Narration must comfortably finish before the scene duration expires.
+- Spell technical terms and formulas phonetically for clear Web Speech Synthesis:
+  - Say `"three hundred and seventy degrees Celsius"` instead of `"370°C"`.
+  - Say `"carbon sixteen hydrogen thirty-four"` instead of `"C16H34"`.
+  - Say `"one hundred and two million barrels per day"` instead of `"102 M bpd"`.
+- Never include Markdown fences, asterisks, bullet points, or emojis inside `narration`.
 
-   `next.start = previous.start + previous.duration`
+---
 
-3. Set positive durations, normally 6 to 12 seconds per scene.
-4. Ensure the last scene ends exactly at `video.duration`.
-5. Never create overlapping scenes.
-6. Never leave blank timeline gaps.
-7. For a 60-second video, prefer 6 scenes with a structure similar to:
+## Compatibility Validation Checklist
 
-   - 0 to 7: title
-   - 7 to 17: first explanation
-   - 17 to 28: first visual model
-   - 28 to 39: second visual model
-   - 39 to 49: progression or comparison
-   - 49 to 60: summary
+Before finalizing storyboard JSON, verify:
 
-## Narration rules
-
-- Every scene should have one `narration` string.
-- Narration must describe only the fact visible in that scene.
-- Narration should sound natural when spoken by browser `speechSynthesis`.
-- Avoid Markdown, lists, abbreviations that a voice may pronounce incorrectly, and excessively long sentences.
-- Spell operators naturally in narration, for example, say “three times four” rather than “three x four.”
-- On-screen equations may continue to use mathematical symbols.
-- Target approximately 2 to 2.5 spoken words per second.
-- Keep narration comfortably shorter than scene duration to prevent overlap.
-- Do not repeat the complete fact in every scene.
-
-## Content planning process
-
-Follow this sequence internally before returning JSON:
-
-1. Extract atomic facts without changing meaning.
-2. Order facts from definition to demonstration to implication.
-3. Select the most appropriate supported scene type for each fact.
-4. Select only visuals that reinforce meaning.
-5. Write concise on-screen text.
-6. Write scene narration based on the same supplied fact.
-7. Assign exact contiguous timing.
-8. Add minimal decorations.
-9. Validate compatibility.
-10. Return the final JSON only.
-
-## Compatibility validation checklist
-
-Before output, verify all of the following:
-
-- JSON parses successfully.
-- Root contains `video`, `theme`, `assets`, and `scenes`.
-- `video.duration` is numeric and positive.
-- `scenes` is a non-empty array.
-- Every scene has `id`, `start`, `duration`, `type`, `title`, and `narration`.
-- Every scene type is supported and is case-correct.
-- Every transition is supported and is case-correct.
-- Every visual kind is supported and is case-correct.
-- Every animation is supported and is case-correct.
-- Every referenced SVG asset exists in `assets`.
-- All numeric fields are JSON numbers, not numeric strings.
-- No scene overlaps another scene.
-- No timeline gap exists.
-- Last scene end equals `video.duration`.
-- Summary has no more than 3 bullets.
-- All factual claims originate from the user's input.
-- No external asset URL or library dependency is present.
-
-## Failure behavior
-
-If the user provides contradictory facts, do not resolve the contradiction. Ask the user to identify the approved statement.
-
-If a requested visual cannot be represented by a supported scene type, select the closest compatible scene and represent the concept through title, equation, labels, decorations, or summary bullets. Never create a new scene type unless the renderer is updated first.
-
-If the user requests an unsupported visual asset, use a compatible emoji, Unicode symbol, or simple SVG path asset.
-
-## Output behavior
-
-When asked to generate the JSON:
-
-- Return exactly one JSON object.
-- Do not include an explanation before or after the JSON.
-- Do not include citations in the JSON.
-- Do not include comments.
-- Do not mention this skill.
-
-When asked to review an existing storyboard:
-
-- Identify compatibility errors.
-- Provide a corrected full JSON object unless the user asks only for a list of issues.
+1. **Root Fields**: Contains `video`, `theme`, `assets`, and `scenes`.
+2. **Contiguous Timeline**: No gaps, no overlaps, and `sum(scene.duration) === video.duration`.
+3. **All IDs Unique**: Every element and decoration has a lowercase ID (letters, numbers, hyphens).
+4. **Valid Target References**: Every `target` or `targets` ID exists in that scene.
+5. **Numeric Track Values**: Track properties are numbers or arrays of numbers (e.g. `[0, 100]`).
+6. **Safe Area**: All visual anchors sit within `x: 280-1640`, `y: 150-900`.
+7. **Zero Remote Dependencies**: No external URLs, images, or CDNs.

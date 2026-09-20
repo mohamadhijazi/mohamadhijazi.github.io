@@ -1,0 +1,260 @@
+{
+  "video": {
+    "title": "Crude Oil Refining: The Science of Fractional Distillation",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 72,
+    "background": "#070e1b",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#38BDF8",
+    "secondary": "#F59E0B",
+    "accent": "#10B981",
+    "text": "#F8FAFC",
+    "muted": "#94A3B8",
+    "panel": "#0f1c2e",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {
+    "crudeBarrel": {
+      "viewBox": "0 0 200 240",
+      "paths": [
+        {"d": "M40 30 C40 20 160 20 160 30 L160 210 C160 220 40 220 40 210 Z", "fill": "#1e293b", "stroke": "#F59E0B", "strokeWidth": 6, "lineJoin": "round"},
+        {"d": "M40 75 H160 M40 120 H160 M40 165 H160", "stroke": "#475569", "strokeWidth": 5},
+        {"d": "M100 95 C90 115 80 125 80 140 C80 152 90 160 100 160 C110 160 120 152 120 140 C120 125 110 115 100 95 Z", "fill": "#F59E0B", "opacity": 0.95}
+      ]
+    },
+    "furnaceBurner": {
+      "viewBox": "0 0 200 160",
+      "paths": [
+        {"d": "M20 130 H180 V150 H20 Z", "fill": "#334155", "stroke": "#64748B", "strokeWidth": 4},
+        {"d": "M50 130 V90 H70 V130 M90 130 V90 H110 V130 M130 130 V90 H150 V130", "fill": "#475569", "stroke": "#94A3B8", "strokeWidth": 3},
+        {"d": "M60 90 C50 60 70 30 60 15 C75 35 80 60 60 90 Z M100 90 C90 50 110 20 100 5 C120 30 125 60 100 90 Z M140 90 C130 60 150 30 140 15 C155 35 160 60 140 90 Z", "fill": "#EF4444", "opacity": 0.92}
+      ]
+    },
+    "moleculeChain": {
+      "viewBox": "0 0 260 140",
+      "paths": [
+        {"d": "M30 70 L75 35 L120 70 L165 35 L210 70", "stroke": "#38BDF8", "strokeWidth": 8, "fill": "none", "lineCap": "round", "lineJoin": "round"},
+        {"d": "M30 70 V110 M75 35 V10 M120 70 V110 M165 35 V10 M210 70 V110", "stroke": "#94A3B8", "strokeWidth": 4, "lineCap": "round"},
+        {"d": "M30 70 A6 6 0 1 1 30.1 70 M75 35 A6 6 0 1 1 75.1 35 M120 70 A6 6 0 1 1 120.1 70 M165 35 A6 6 0 1 1 165.1 35 M210 70 A6 6 0 1 1 210.1 70", "stroke": "#F59E0B", "strokeWidth": 16, "lineCap": "round"}
+      ]
+    },
+    "gasolinePump": {
+      "viewBox": "0 0 160 200",
+      "paths": [
+        {"d": "M30 40 H110 V180 H30 Z", "fill": "#1e293b", "stroke": "#FBBF24", "strokeWidth": 6, "lineJoin": "round"},
+        {"d": "M45 60 H95 V95 H45 Z", "fill": "#070e1b", "stroke": "#38BDF8", "strokeWidth": 3},
+        {"d": "M110 80 H130 V150 C130 165 145 165 145 150 V110 L135 100", "stroke": "#FBBF24", "strokeWidth": 5, "fill": "none", "lineCap": "round"}
+      ]
+    },
+    "jetPlane": {
+      "viewBox": "0 0 200 200",
+      "paths": [
+        {"d": "M100 20 L115 80 L185 125 L185 145 L115 125 L115 165 L135 185 L135 195 L100 185 L65 195 L65 185 L85 165 L85 125 L15 145 L15 125 L85 80 Z", "fill": "#38BDF8", "opacity": 0.95}
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene-crude-intro",
+      "start": 0,
+      "duration": 12,
+      "type": "composition",
+      "title": "Crude Oil: The Complex Mixture",
+      "narration": "Crude oil is a dense natural mixture of hundreds of hydrocarbons, ranging from light gases to heavy waxes, each with a unique boiling point.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "id": "intro-panel", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36, "opacity": 0.8},
+        {"type": "text", "id": "intro-title", "x": 960, "y": 230, "content": "Crude Oil: The Unrefined Mixture", "size": 68, "weight": "800"},
+        {"type": "text", "id": "intro-subtitle", "x": 960, "y": 305, "content": "Hundreds of distinct hydrocarbon molecules bound by carbon-hydrogen chains", "size": 32, "color": "#94A3B8"},
+        {"type": "card", "id": "card-comp", "x": 490, "y": 575, "width": 420, "height": 240, "title": "CHEMICAL MAKEUP", "value": 350, "unit": "+", "badge": "Organic Mixture", "subtitle": "Chain lengths ranging from C1 methane to over C70 heavy bitumen.", "color": "#F59E0B"},
+        {"type": "visual", "id": "barrel-vis", "kind": "svg", "asset": "crudeBarrel", "x": 960, "y": 570, "width": 260, "height": 300},
+        {"type": "card", "id": "card-boil", "x": 1430, "y": 575, "width": 420, "height": 240, "title": "PHYSICAL PRINCIPLE", "value": "Boiling Points", "badge": "Thermal Law", "subtitle": "Short chains boil at low temperatures, while long heavy chains require extreme heat.", "color": "#38BDF8"},
+        {"type": "pipeline", "id": "intro-pipe", "x": 960, "y": 820, "width": 22, "fluidColor": "#1e293b", "pulseColor": "#F59E0B", "points": [[-600, 0], [600, 0]], "label": "Raw Crude Feedstock", "speed": 1.2}
+      ],
+      "decorations": [
+        {"id": "mol-left", "kind": "svg", "asset": "moleculeChain", "x": 310, "y": 230, "width": 160, "height": 90},
+        {"id": "mol-right", "kind": "svg", "asset": "moleculeChain", "x": 1610, "y": 230, "width": 160, "height": 90}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "intro-panel", "properties": {"scale": [0.88, 1], "opacity": [0, 0.8]}, "duration": 800, "ease": "out(3)"},
+          {"target": "intro-title", "properties": {"y": [290, 230], "opacity": [0, 1]}, "delay": 150, "duration": 900, "ease": "out(4)"},
+          {"target": "intro-subtitle", "properties": {"y": [340, 305], "opacity": [0, 1]}, "delay": 300, "duration": 900, "ease": "out(3)"},
+          {"target": "barrel-vis", "properties": {"scale": [0.2, 1], "rotate": [-15, 0], "opacity": [0, 1]}, "delay": 350, "duration": 1200, "ease": "out(4)"},
+          {"target": "card-comp", "properties": {"x": [350, 490], "value": [0, 350], "opacity": [0, 1]}, "delay": 600, "duration": 1400, "ease": "out(3)"},
+          {"target": "card-boil", "properties": {"x": [1570, 1430], "opacity": [0, 1]}, "delay": 850, "duration": 1100, "ease": "out(3)"},
+          {"target": "intro-pipe", "properties": {"flow": [0, 400], "opacity": [0, 1]}, "delay": 400, "duration": 10000, "ease": "linear"},
+          {"target": "mol-left", "properties": {"scale": [0, 1], "rotate": [-25, 0], "opacity": [0, 0.85]}, "delay": 1100, "duration": 800, "ease": "out(4)"},
+          {"target": "mol-right", "properties": {"scale": [0, 1], "rotate": [25, 0], "opacity": [0, 0.85]}, "delay": 1300, "duration": 800, "ease": "out(4)"}
+        ]
+      }
+    },
+    {
+      "id": "scene-furnace-heating",
+      "start": 12,
+      "duration": 12,
+      "type": "composition",
+      "title": "The Pipestill Furnace",
+      "narration": "Before entering the fractionating tower, crude oil is pumped through an industrial furnace, heating it to three hundred and seventy degrees Celsius.",
+      "transition": "slideLeft",
+      "elements": [
+        {"type": "panel", "id": "furnace-panel", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36},
+        {"type": "text", "id": "furnace-title", "x": 960, "y": 200, "content": "The Industrial Furnace: Preheating & Vaporization", "size": 64, "weight": "800"},
+        {"type": "text", "id": "furnace-subtitle", "x": 960, "y": 265, "content": "Thermal energy converts the liquid stream into a superheated vapor and liquid blend", "size": 30, "color": "#94A3B8"},
+        {"type": "card", "id": "furnace-feed-card", "x": 420, "y": 560, "width": 380, "height": 250, "title": "INFLOW FEEDSTOCK", "value": "Cold Crude", "badge": "Pumping Unit", "subtitle": "Desalted crude enters furnace tubes at ambient temperature under high flow velocity.", "color": "#F59E0B"},
+        {"type": "pipeline", "id": "furnace-inpipe", "x": 640, "y": 660, "width": 24, "fluidColor": "#F59E0B", "points": [[-120, 0], [130, 0]], "arrow": true, "speed": 1.4},
+        {"type": "panel", "id": "furnace-box", "x": 960, "y": 565, "width": 360, "height": 340, "radius": 24, "color": "#181412", "border": "#EF4444"},
+        {"type": "visual", "id": "burner-asset", "kind": "svg", "asset": "furnaceBurner", "x": 960, "y": 645, "width": 240, "height": 160},
+        {"type": "particles", "id": "furnace-flame", "x": 960, "y": 530, "particleType": "flame", "count": 36, "width": 240, "height": 180, "speed": 1.5},
+        {"type": "gauge", "id": "temp-gauge", "x": 1450, "y": 550, "title": "STREAM TEMPERATURE", "min": 20, "max": 400, "value": 20, "unit": "°C", "color": "#EF4444", "radius": 105},
+        {"type": "pipeline", "id": "furnace-outpipe", "x": 1160, "y": 480, "width": 24, "fluidColor": "#EF4444", "pulseColor": "#FDE047", "points": [[-20, 0], [140, 0]], "arrow": true, "speed": 1.8, "label": "Superheated Vapor", "labelOffsetY": -10}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "furnace-panel", "properties": {"opacity": [0, 0.94]}, "duration": 800, "ease": "out(3)"},
+          {"target": "furnace-title", "properties": {"y": [250, 200], "opacity": [0, 1]}, "duration": 900, "ease": "out(3)"},
+          {"target": "furnace-feed-card", "properties": {"x": [280, 420], "opacity": [0, 1]}, "delay": 200, "duration": 1000, "ease": "out(4)"},
+          {"target": "furnace-box", "properties": {"scale": [0.75, 1], "opacity": [0, 1]}, "delay": 350, "duration": 900, "ease": "out(4)"},
+          {"target": "temp-gauge", "properties": {"value": [20, 370], "scale": [0.6, 1], "opacity": [0, 1]}, "delay": 500, "duration": 5000, "ease": "out(3)"},
+          {"target": "furnace-outpipe", "properties": {"flow": [0, 450], "opacity": [0, 1]}, "delay": 1200, "duration": 9000, "ease": "linear"}
+        ]
+      }
+    },
+    {
+      "id": "scene-tower-distillation",
+      "start": 24,
+      "duration": 14,
+      "type": "composition",
+      "title": "The Fractionating Tower",
+      "narration": "Hot vapor enters the base of the massive tower. As vapor rises, temperature drops from three hundred and seventy degrees at the bottom to twenty at the top.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "id": "tower-panel", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36},
+        {"type": "text", "id": "tower-title", "x": 960, "y": 190, "content": "The Fractionating Column: Thermal Separation", "size": 64, "weight": "800"},
+        {"type": "pipeline", "id": "feed-pipe", "x": 330, "y": 780, "width": 24, "fluidColor": "#EF4444", "pulseColor": "#FDE047", "points": [[-120, 0], [130, 0]], "label": "Feed: 370°C", "arrow": true, "speed": 1.6},
+        {"type": "column", "id": "dist-col", "x": 660, "y": 570, "width": 280, "height": 680, "trays": 6, "activeTray": 0, "level": 0.28, "trayLabels": ["Refinery Gas (<20°C)", "Gasoline (20-70°C)", "Naphtha (70-120°C)", "Kerosene (120-170°C)", "Diesel (170-270°C)", "Residue (>350°C)"]},
+        {"type": "callout", "id": "call-condense", "x": 1360, "y": 420, "from": [-260, 0], "to": [80, -30], "width": 380, "height": 110, "title": "Fractional Condensation", "detail": "Vapors ascend until ambient tray temperature drops below their specific condensation threshold.", "color": "#38BDF8"},
+        {"type": "callout", "id": "call-trays", "x": 1360, "y": 680, "from": [-260, 0], "to": [80, 25], "width": 380, "height": 110, "title": "Bubble-Cap Trays", "detail": "Caps force rising vapor to bubble through accumulated liquid, ensuring continuous equilibrium.", "color": "#F59E0B"},
+        {"type": "card", "id": "temp-gradient-card", "x": 1360, "y": 240, "width": 440, "height": 120, "title": "TOWER TEMPERATURE GRADIENT", "value": "20°C  ←  370°C", "badge": "Continuous Fractionation", "color": "#10B981", "valueSize": 36}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "tower-panel", "properties": {"opacity": [0, 0.94]}, "duration": 800, "ease": "out(3)"},
+          {"target": "tower-title", "properties": {"y": [240, 190], "opacity": [0, 1]}, "duration": 900, "ease": "out(3)"},
+          {"target": "dist-col", "properties": {"scale": [0.75, 1], "level": [0, 0.28], "opacity": [0, 1]}, "delay": 250, "duration": 1500, "ease": "out(4)"},
+          {"target": "feed-pipe", "properties": {"flow": [0, 500], "opacity": [0, 1]}, "delay": 600, "duration": 10000, "ease": "linear"},
+          {"target": "temp-gradient-card", "properties": {"x": [1500, 1360], "opacity": [0, 1]}, "delay": 900, "duration": 900, "ease": "out(3)"},
+          {"target": "call-condense", "properties": {"x": [1520, 1360], "opacity": [0, 1]}, "delay": 1400, "duration": 1000, "ease": "out(4)"},
+          {"target": "call-trays", "properties": {"x": [1520, 1360], "opacity": [0, 1]}, "delay": 2000, "duration": 1000, "ease": "out(4)"}
+        ]
+      }
+    },
+    {
+      "id": "scene-product-cuts",
+      "start": 38,
+      "duration": 12,
+      "type": "composition",
+      "title": "Separated Product Cuts",
+      "narration": "Different petroleum fractions condense at distinct tray heights, yielding refinery gases, gasoline, naphtha, jet fuel, diesel, and heavy residue.",
+      "transition": "slideLeft",
+      "elements": [
+        {"type": "panel", "id": "cuts-panel", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36},
+        {"type": "text", "id": "cuts-title", "x": 960, "y": 185, "content": "Fractional Cuts: From Light Gases to Heavy Residue", "size": 62, "weight": "800"},
+        {"type": "column", "id": "cuts-col", "x": 480, "y": 570, "width": 240, "height": 680, "trays": 6, "activeTray": 1, "level": 0.25, "trayLabels": ["Gas (<20°C)", "Petrol (20-70°C)", "Naphtha (70-120°C)", "Kerosene (120-170°C)", "Diesel (170-270°C)", "Bitumen (>350°C)"]},
+        {"type": "pipeline", "id": "pipe-gas", "x": 860, "y": 300, "width": 16, "fluidColor": "#38BDF8", "points": [[-20, 0], [180, 0]], "arrow": true, "label": "Refinery Gas (LPG)", "speed": 2},
+        {"type": "pipeline", "id": "pipe-petrol", "x": 860, "y": 410, "width": 18, "fluidColor": "#FBBF24", "points": [[-20, 0], [180, 0]], "arrow": true, "label": "Motor Gasoline", "speed": 1.7},
+        {"type": "pipeline", "id": "pipe-naphtha", "x": 860, "y": 520, "width": 18, "fluidColor": "#F59E0B", "points": [[-20, 0], [180, 0]], "arrow": true, "label": "Chemical Naphtha", "speed": 1.5},
+        {"type": "pipeline", "id": "pipe-kero", "x": 860, "y": 630, "width": 18, "fluidColor": "#A78BFA", "points": [[-20, 0], [180, 0]], "arrow": true, "label": "Aviation Kerosene", "speed": 1.3},
+        {"type": "pipeline", "id": "pipe-diesel", "x": 860, "y": 740, "width": 20, "fluidColor": "#10B981", "points": [[-20, 0], [180, 0]], "arrow": true, "label": "Diesel Transport Fuel", "speed": 1.1},
+        {"type": "pipeline", "id": "pipe-residue", "x": 860, "y": 850, "width": 22, "fluidColor": "#64748B", "points": [[-20, 0], [180, 0]], "arrow": true, "label": "Asphalt & Bunker Oil", "speed": 0.8},
+        {"type": "card", "id": "card-light-cuts", "x": 1400, "y": 420, "width": 460, "height": 220, "title": "LIGHT DISTILLATES", "value": "Petrol & Naphtha", "badge": "High Demand", "subtitle": "Carbon chains C5 to C12. Vital for automotive transportation and plastics feedstock.", "color": "#FBBF24"},
+        {"type": "card", "id": "card-middle-cuts", "x": 1400, "y": 700, "width": 460, "height": 220, "title": "MIDDLE & HEAVY CUTS", "value": "Kerosene & Diesel", "badge": "Heavy Power", "subtitle": "Commercial aviation jet fuel, locomotives, marine shipping, and roofing asphalt.", "color": "#10B981"}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "cuts-panel", "properties": {"opacity": [0, 0.94]}, "duration": 800, "ease": "out(3)"},
+          {"target": "cuts-title", "properties": {"y": [230, 185], "opacity": [0, 1]}, "duration": 900, "ease": "out(3)"},
+          {"target": "cuts-col", "properties": {"scale": [0.85, 1], "opacity": [0, 1]}, "delay": 200, "duration": 1100, "ease": "out(4)"},
+          {"targets": ["pipe-gas", "pipe-petrol", "pipe-naphtha", "pipe-kero", "pipe-diesel", "pipe-residue"], "properties": {"flow": [0, 400], "opacity": [0, 1]}, "stagger": 150, "delay": 400, "duration": 8000, "ease": "linear"},
+          {"target": "card-light-cuts", "properties": {"x": [1540, 1400], "opacity": [0, 1]}, "delay": 900, "duration": 1000, "ease": "out(3)"},
+          {"target": "card-middle-cuts", "properties": {"x": [1540, 1400], "opacity": [0, 1]}, "delay": 1400, "duration": 1000, "ease": "out(3)"}
+        ]
+      }
+    },
+    {
+      "id": "scene-catalytic-cracking",
+      "start": 50,
+      "duration": 12,
+      "type": "composition",
+      "title": "Catalytic Cracking",
+      "narration": "To meet high demand for transportation fuel, heavy gas oil is cracked using zeolite catalysts and heat, splitting long molecules into high-value gasoline.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "id": "crack-panel", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36},
+        {"type": "text", "id": "crack-title", "x": 960, "y": 190, "content": "Secondary Conversion: Fluid Catalytic Cracking (FCC)", "size": 60, "weight": "800"},
+        {"type": "column", "id": "reactor-col", "x": 520, "y": 570, "width": 250, "height": 640, "trays": 3, "activeTray": 1, "trayLabels": ["Cyclone Separator", "Fluidized Catalyst Bed", "Heavy Oil Riser"]},
+        {"type": "particles", "id": "catalyst-particles", "x": 520, "y": 580, "particleType": "bubbles", "count": 28, "color": "#FBBF24", "speed": 1.6},
+        {"type": "equation", "id": "crack-eq", "x": 1280, "y": 340, "content": "C₁₆H₃₄  →  C₈H₁₈  +  C₈H₁₆", "size": 52, "color": "#FBBF24"},
+        {"type": "text", "id": "crack-eq-sub", "x": 1280, "y": 410, "content": "Heavy Alkane (Gas Oil)  →  Octane (Gasoline)  +  Octene (Petrochemical)", "size": 26, "color": "#94A3B8"},
+        {"type": "gauge", "id": "yield-gauge", "x": 1100, "y": 660, "title": "GASOLINE UPGRADE YIELD", "min": 0, "max": 100, "value": 0, "unit": "%", "color": "#10B981", "radius": 95},
+        {"type": "card", "id": "card-zeolite", "x": 1490, "y": 660, "width": 380, "height": 220, "title": "ZEOLITE CATALYST", "value": "500°C", "badge": "Cracking Reactor", "subtitle": "Porous aluminosilicate catalysts break strong carbon-carbon bonds selectively.", "color": "#A78BFA"}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "crack-panel", "properties": {"opacity": [0, 0.94]}, "duration": 800, "ease": "out(3)"},
+          {"target": "crack-title", "properties": {"y": [230, 190], "opacity": [0, 1]}, "duration": 900, "ease": "out(3)"},
+          {"target": "reactor-col", "properties": {"scale": [0.8, 1], "opacity": [0, 1]}, "delay": 200, "duration": 1100, "ease": "out(4)"},
+          {"target": "crack-eq", "properties": {"scale": [0.6, 1], "opacity": [0, 1]}, "delay": 500, "duration": 1100, "ease": "out(4)"},
+          {"target": "crack-eq-sub", "properties": {"opacity": [0, 1]}, "delay": 800, "duration": 800, "ease": "out(3)"},
+          {"target": "yield-gauge", "properties": {"value": [0, 88], "scale": [0.5, 1], "opacity": [0, 1]}, "delay": 1000, "duration": 3500, "ease": "out(3)"},
+          {"target": "card-zeolite", "properties": {"x": [1600, 1490], "opacity": [0, 1]}, "delay": 1400, "duration": 900, "ease": "out(3)"}
+        ]
+      }
+    },
+    {
+      "id": "scene-refinery-yields",
+      "start": 62,
+      "duration": 10,
+      "type": "composition",
+      "title": "Refinery Yields: Powering Global Industry",
+      "narration": "Modern refineries transform a single barrel of crude into versatile fuels, lubricants, and feedstocks powering global transport and petrochemical manufacturing.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "id": "yield-panel", "x": 960, "y": 540, "width": 1580, "height": 720, "radius": 36},
+        {"type": "text", "id": "yield-title", "x": 960, "y": 180, "content": "Refinery Yields: Fueling Modern Civilization", "size": 64, "weight": "800"},
+        {"type": "chart", "id": "barrel-chart", "x": 700, "y": 560, "width": 800, "height": 450, "title": "TYPICAL PRODUCT YIELD PER BARREL OF CRUDE", "maxValue": 50, "unit": "%", "data": [
+          {"label": "Motor Gasoline", "value": 44, "color": "#FBBF24"},
+          {"label": "Diesel & Heating Fuel", "value": 26, "color": "#10B981"},
+          {"label": "Aviation Jet Fuel", "value": 10, "color": "#38BDF8"},
+          {"label": "Heavy Fuel & Asphalt", "value": 9, "color": "#64748B"},
+          {"label": "Petrochemical Feed", "value": 7, "color": "#A78BFA"},
+          {"label": "LPG & Refinery Gas", "value": 4, "color": "#F59E0B"}
+        ]},
+        {"type": "card", "id": "card-bpd", "x": 1440, "y": 430, "width": 440, "height": 190, "title": "GLOBAL PROCESSING SCALE", "value": 102, "unit": "M bpd", "badge": "Daily Production", "subtitle": "Refining over one hundred million barrels of crude oil every single day.", "color": "#38BDF8"},
+        {"type": "card", "id": "card-prods", "x": 1440, "y": 680, "width": 440, "height": 190, "title": "DOWNSTREAM PRODUCTS", "value": "6,000+", "badge": "Everyday Life", "subtitle": "Plastics, pharmaceuticals, lubricants, textiles, synthetic rubber, and fertilizer.", "color": "#F59E0B"}
+      ],
+      "decorations": [
+        {"id": "icon-plane", "kind": "svg", "asset": "jetPlane", "x": 1260, "y": 240, "width": 70, "height": 70},
+        {"id": "icon-pump", "kind": "svg", "asset": "gasolinePump", "x": 1600, "y": 240, "width": 60, "height": 75}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "yield-panel", "properties": {"opacity": [0, 0.94]}, "duration": 800, "ease": "out(3)"},
+          {"target": "yield-title", "properties": {"y": [230, 180], "opacity": [0, 1]}, "duration": 900, "ease": "out(3)"},
+          {"target": "barrel-chart", "properties": {"progress": [0, 1], "scale": [0.9, 1], "opacity": [0, 1]}, "delay": 200, "duration": 2200, "ease": "out(4)"},
+          {"target": "card-bpd", "properties": {"x": [1560, 1440], "value": [0, 102], "opacity": [0, 1]}, "delay": 700, "duration": 1800, "ease": "out(3)"},
+          {"target": "card-prods", "properties": {"x": [1560, 1440], "opacity": [0, 1]}, "delay": 1200, "duration": 1200, "ease": "out(3)"},
+          {"target": "icon-plane", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 1600, "duration": 700, "ease": "out(4)"},
+          {"target": "icon-pump", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 1800, "duration": 700, "ease": "out(4)"}
+        ]
+      }
+    }
+  ]
+}
+

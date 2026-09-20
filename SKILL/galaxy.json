@@ -1,0 +1,236 @@
+{
+  "video": {
+    "title": "Galaxy: A Composable Journey Through Light",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 72,
+    "background": "#050816",
+    "language": "en-US"
+  },
+  "theme": {
+    "primary": "#6EE7F9",
+    "secondary": "#FFD166",
+    "accent": "#C084FC",
+    "text": "#F8FAFC",
+    "muted": "#A9B5D1",
+    "panel": "#111A38",
+    "font": "Segoe UI",
+    "iconFont": "Segoe UI Symbol",
+    "emojiFont": "Segoe UI Emoji"
+  },
+  "assets": {
+    "spiralGalaxy": {
+      "viewBox": "0 0 500 500",
+      "paths": [
+        {"d": "M250 250 C330 180 430 220 420 300 C410 390 280 440 170 390 C70 345 65 220 145 145 C225 70 365 75 430 155", "stroke": "#6EE7F9", "strokeWidth": 14, "fill": "none", "lineCap": "round", "opacity": 0.9},
+        {"d": "M250 250 C190 205 105 225 92 290 C78 360 170 405 245 385 C335 362 377 275 340 190 C305 110 190 92 120 155", "stroke": "#C084FC", "strokeWidth": 10, "fill": "none", "lineCap": "round", "opacity": 0.75},
+        {"d": "M250 225 C285 225 300 250 290 275 C280 300 245 310 220 290 C195 270 205 235 235 220", "stroke": "#FFD166", "strokeWidth": 18, "fill": "none", "lineCap": "round", "opacity": 0.95}
+      ]
+    },
+    "orbitRing": {
+      "viewBox": "0 0 500 250",
+      "paths": [
+        {"d": "M20 125 C100 15 400 15 480 125 C400 235 100 235 20 125 Z", "stroke": "#6EE7F9", "strokeWidth": 7, "fill": "none", "lineCap": "round", "opacity": 0.65},
+        {"d": "M40 125 C130 55 370 55 460 125", "stroke": "#FFD166", "strokeWidth": 4, "fill": "none", "lineCap": "round", "opacity": 0.6}
+      ]
+    },
+    "starburst": {
+      "viewBox": "0 0 200 200",
+      "paths": [
+        {"d": "M100 8 L120 78 L192 100 L120 122 L100 192 L80 122 L8 100 L80 78 Z", "fill": "#FFD166", "opacity": 0.92},
+        {"d": "M100 45 L112 88 L155 100 L112 112 L100 155 L88 112 L45 100 L88 88 Z", "fill": "#FFF4B8", "opacity": 0.9}
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "galaxy-opening",
+      "start": 0,
+      "duration": 10,
+      "type": "composition",
+      "title": "Galaxy",
+      "narration": "A galaxy is a vast visual story written in stars, dust, motion, and light.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "id": "opening-panel", "x": 960, "y": 540, "width": 1500, "height": 700, "radius": 40, "opacity": 0.78},
+        {"type": "text", "id": "opening-title", "x": 960, "y": 250, "content": "A Journey Through a Galaxy", "size": 74, "weight": "800"},
+        {"type": "text", "id": "opening-subtitle", "x": 960, "y": 340, "content": "Light, structure, motion", "size": 42, "color": "#A9B5D1"},
+        {"type": "visual", "id": "opening-galaxy", "kind": "svg", "asset": "spiralGalaxy", "x": 960, "y": 650, "width": 440, "height": 440, "animation": "pulse"}
+      ],
+      "decorations": [
+        {"id": "opening-star-left", "kind": "svg", "asset": "starburst", "x": 420, "y": 250, "width": 100, "height": 100, "animation": "pulse"},
+        {"id": "opening-star-right", "kind": "svg", "asset": "starburst", "x": 1510, "y": 290, "width": 76, "height": 76, "animation": "pulse"}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "opening-panel", "properties": {"scale": [0.86, 1], "opacity": [0, 0.78]}, "duration": 900, "ease": "out(3)"},
+          {"target": "opening-title", "properties": {"y": [340, 250], "scale": [0.7, 1], "opacity": [0, 1]}, "duration": 1200, "ease": "out(4)"},
+          {"target": "opening-subtitle", "properties": {"y": [390, 340], "opacity": [0, 1]}, "delay": 500, "duration": 900, "ease": "out(3)"},
+          {"target": "opening-galaxy", "properties": {"scale": [0.08, 1], "rotate": [-90, 0], "opacity": [0, 1]}, "delay": 300, "duration": 1800, "ease": "out(4)"},
+          {"target": "opening-star-left", "properties": {"scale": [0, 1], "rotate": [-45, 0], "opacity": [0, 1]}, "delay": 900, "duration": 800, "ease": "out(4)"},
+          {"target": "opening-star-right", "properties": {"scale": [0, 1], "rotate": [45, 0], "opacity": [0, 1]}, "delay": 1100, "duration": 800, "ease": "out(4)"}
+        ]
+      }
+    },
+    {
+      "id": "galaxy-structure",
+      "start": 10,
+      "duration": 12,
+      "type": "composition",
+      "title": "Structure in Motion",
+      "narration": "Spiral arms create a strong sense of direction, carrying the eye around a bright central region.",
+      "transition": "slideLeft",
+      "elements": [
+        {"type": "panel", "id": "structure-panel", "x": 960, "y": 550, "width": 1540, "height": 690, "radius": 36},
+        {"type": "text", "id": "structure-title", "x": 960, "y": 180, "content": "Structure in Motion", "size": 68, "weight": "800"},
+        {"type": "visual", "id": "structure-galaxy", "kind": "svg", "asset": "spiralGalaxy", "x": 960, "y": 570, "width": 580, "height": 580},
+        {"type": "visual", "id": "structure-orbit", "kind": "svg", "asset": "orbitRing", "x": 960, "y": 570, "width": 900, "height": 450, "animation": "spinIn"},
+        {"type": "text", "id": "structure-caption", "x": 960, "y": 900, "content": "A luminous center, sweeping arms, and a field of surrounding points", "size": 34, "color": "#A9B5D1", "maxWidth": 1250}
+      ],
+      "decorations": [
+        {"id": "structure-dot-a", "kind": "fontIcon", "value": "●", "x": 470, "y": 390, "size": 28, "color": "#FFD166", "animation": "pulse"},
+        {"id": "structure-dot-b", "kind": "fontIcon", "value": "●", "x": 1450, "y": 430, "size": 22, "color": "#6EE7F9", "animation": "pulse"},
+        {"id": "structure-dot-c", "kind": "fontIcon", "value": "●", "x": 1510, "y": 760, "size": 32, "color": "#C084FC", "animation": "pulse"}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "structure-panel", "properties": {"x": [1040, 960], "opacity": [0, 0.92]}, "duration": 900, "ease": "out(3)"},
+          {"target": "structure-title", "properties": {"x": [1150, 960], "opacity": [0, 1]}, "delay": 150, "duration": 900, "ease": "out(3)"},
+          {"target": "structure-galaxy", "properties": {"scale": [0.4, 1], "rotate": [-30, 0], "opacity": [0, 1]}, "delay": 250, "duration": 1700, "ease": "out(4)"},
+          {"target": "structure-orbit", "properties": {"scale": [0.5, 1], "rotate": [-180, 0], "opacity": [0, 1]}, "delay": 700, "duration": 2200, "ease": "out(3)"},
+          {"target": "structure-caption", "properties": {"y": [960, 900], "opacity": [0, 1]}, "delay": 1800, "duration": 900, "ease": "out(3)"},
+          {"target": "structure-dot-a", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 1100, "duration": 700, "ease": "out(4)"},
+          {"target": "structure-dot-b", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 1400, "duration": 700, "ease": "out(4)"},
+          {"target": "structure-dot-c", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 1700, "duration": 700, "ease": "out(4)"}
+        ]
+      }
+    },
+    {
+      "id": "galaxy-starfield",
+      "start": 22,
+      "duration": 12,
+      "type": "composition",
+      "title": "A Field of Light",
+      "narration": "Across the dark canvas, points of light create depth, rhythm, and a feeling of scale.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "id": "field-panel", "x": 960, "y": 550, "width": 1560, "height": 720, "radius": 36, "opacity": 0.72},
+        {"type": "text", "id": "field-title", "x": 960, "y": 180, "content": "A Field of Light", "size": 68, "weight": "800"},
+        {"type": "grid", "id": "field-grid", "x": 960, "y": 560, "rows": 5, "columns": 9, "cellSize": 120, "size": 32, "color": "#6EE7F9", "alternateColor": "#C084FC", "itemAnimation": "pulse"},
+        {"type": "text", "id": "field-caption", "x": 960, "y": 890, "content": "Small signals become a living composition", "size": 42, "color": "#FFD166"}
+      ],
+      "decorations": [
+        {"id": "field-spark-a", "kind": "svg", "asset": "starburst", "x": 360, "y": 360, "width": 72, "height": 72},
+        {"id": "field-spark-b", "kind": "svg", "asset": "starburst", "x": 1570, "y": 410, "width": 96, "height": 96},
+        {"id": "field-spark-c", "kind": "svg", "asset": "starburst", "x": 460, "y": 810, "width": 56, "height": 56}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "field-panel", "properties": {"scale": [0.9, 1], "opacity": [0, 0.72]}, "duration": 900, "ease": "out(3)"},
+          {"target": "field-title", "properties": {"y": [260, 180], "opacity": [0, 1]}, "delay": 200, "duration": 900, "ease": "out(3)"},
+          {"target": "field-grid", "properties": {"scale": [0.6, 1], "rotate": [-8, 0], "opacity": [0, 1]}, "delay": 300, "duration": 2400, "ease": "out(4)"},
+          {"target": "field-caption", "properties": {"y": [950, 890], "opacity": [0, 1]}, "delay": 1700, "duration": 900, "ease": "out(3)"},
+          {"target": "field-spark-a", "properties": {"scale": [0, 1], "rotate": [-40, 0], "opacity": [0, 1]}, "delay": 900, "duration": 700, "ease": "out(4)"},
+          {"target": "field-spark-b", "properties": {"scale": [0, 1], "rotate": [40, 0], "opacity": [0, 1]}, "delay": 1200, "duration": 700, "ease": "out(4)"},
+          {"target": "field-spark-c", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 1500, "duration": 700, "ease": "out(4)"}
+        ]
+      }
+    },
+    {
+      "id": "galaxy-orbit",
+      "start": 34,
+      "duration": 12,
+      "type": "composition",
+      "title": "Orbit as Choreography",
+      "narration": "An orbit turns a still illustration into choreography: a path, a rhythm, and a moving focal point.",
+      "transition": "slideUp",
+      "elements": [
+        {"type": "panel", "id": "orbit-panel", "x": 960, "y": 550, "width": 1540, "height": 700, "radius": 36},
+        {"type": "text", "id": "orbit-title", "x": 960, "y": 180, "content": "Orbit as Choreography", "size": 66, "weight": "800"},
+        {"type": "visual", "id": "orbit-ring", "kind": "svg", "asset": "orbitRing", "x": 960, "y": 560, "width": 1120, "height": 560},
+        {"type": "visual", "id": "orbit-sun", "kind": "svg", "asset": "starburst", "x": 960, "y": 560, "width": 150, "height": 150, "animation": "pulse"},
+        {"type": "visual", "id": "orbit-planet", "kind": "emoji", "value": "🌍", "x": 420, "y": 560, "size": 92, "animation": "pulse"},
+        {"type": "text", "id": "orbit-caption", "x": 960, "y": 900, "content": "Position can become a story", "size": 46, "color": "#6EE7F9"}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "orbit-panel", "properties": {"y": [650, 550], "opacity": [0, 0.92]}, "duration": 900, "ease": "out(3)"},
+          {"target": "orbit-title", "properties": {"y": [270, 180], "opacity": [0, 1]}, "delay": 150, "duration": 850, "ease": "out(3)"},
+          {"target": "orbit-ring", "properties": {"scale": [0.45, 1], "rotate": [-18, 0], "opacity": [0, 1]}, "delay": 250, "duration": 1500, "ease": "out(4)"},
+          {"target": "orbit-sun", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 800, "duration": 900, "ease": "out(4)"},
+          {"target": "orbit-planet", "properties": {"x": [420, 760, 1190, 1500, 1190, 760, 420], "y": [560, 380, 420, 560, 700, 740, 560], "scale": [0.4, 1.1, 0.85, 0.4, 0.85, 1.1, 0.4], "opacity": [0, 1, 1, 1, 1, 1, 0]}, "delay": 900, "duration": 8600, "ease": "inOut(2)"},
+          {"target": "orbit-caption", "properties": {"y": [960, 900], "opacity": [0, 1]}, "delay": 2200, "duration": 800, "ease": "out(3)"}
+        ]
+      }
+    },
+    {
+      "id": "galaxy-composition",
+      "start": 46,
+      "duration": 14,
+      "type": "composition",
+      "title": "Compose the Cosmos",
+      "narration": "A complex scene becomes manageable when each visual element owns a small, reusable animation track.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "id": "compose-panel", "x": 960, "y": 550, "width": 1580, "height": 720, "radius": 36},
+        {"type": "text", "id": "compose-title", "x": 960, "y": 175, "content": "Compose the Cosmos", "size": 68, "weight": "800"},
+        {"type": "visual", "id": "compose-galaxy", "kind": "svg", "asset": "spiralGalaxy", "x": 610, "y": 570, "width": 490, "height": 490},
+        {"type": "visual", "id": "compose-orbit", "kind": "svg", "asset": "orbitRing", "x": 610, "y": 570, "width": 720, "height": 360},
+        {"type": "equation", "id": "compose-formula", "x": 1280, "y": 430, "content": "motion + light + rhythm", "size": 54, "color": "#FFD166", "weight": "800"},
+        {"type": "list", "id": "compose-list", "x": 1290, "y": 660, "width": 620, "gap": 94, "size": 32, "items": [
+          {"text": "Reusable targets", "icon": {"kind": "fontIcon", "value": "◆", "color": "#6EE7F9"}},
+          {"text": "Composable tracks", "icon": {"kind": "fontIcon", "value": "◆", "color": "#C084FC"}},
+          {"text": "Recordable frames", "icon": {"kind": "fontIcon", "value": "◆", "color": "#FFD166"}}
+        ]}
+      ],
+      "decorations": [
+        {"id": "compose-spark", "kind": "svg", "asset": "starburst", "x": 1500, "y": 250, "width": 110, "height": 110}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "compose-panel", "properties": {"scale": [0.9, 1], "opacity": [0, 0.92]}, "duration": 900, "ease": "out(3)"},
+          {"target": "compose-title", "properties": {"y": [260, 175], "opacity": [0, 1]}, "delay": 150, "duration": 900, "ease": "out(3)"},
+          {"target": "compose-galaxy", "properties": {"x": [460, 610], "scale": [0.35, 1], "rotate": [-90, 0], "opacity": [0, 1]}, "delay": 300, "duration": 1700, "ease": "out(4)"},
+          {"target": "compose-orbit", "properties": {"scale": [0.5, 1], "rotate": [-30, 0], "opacity": [0, 1]}, "delay": 800, "duration": 1800, "ease": "out(3)"},
+          {"target": "compose-formula", "properties": {"x": [1430, 1280], "scale": [0.6, 1], "opacity": [0, 1]}, "delay": 1000, "duration": 1200, "ease": "out(4)"},
+          {"target": "compose-list", "properties": {"x": [1450, 1290], "opacity": [0, 1]}, "delay": 1900, "duration": 1200, "ease": "out(3)"},
+          {"target": "compose-spark", "properties": {"scale": [0, 1], "rotate": [-90, 0], "opacity": [0, 1]}, "delay": 2200, "duration": 900, "ease": "out(4)"}
+        ]
+      }
+    },
+    {
+      "id": "galaxy-finale",
+      "start": 60,
+      "duration": 12,
+      "type": "composition",
+      "title": "One Living Picture",
+      "narration": "The final picture is more than a collection of objects. It is a coordinated system of timing, layering, and light.",
+      "transition": "fadeZoom",
+      "elements": [
+        {"type": "panel", "id": "finale-panel", "x": 960, "y": 540, "width": 1500, "height": 720, "radius": 40, "opacity": 0.76},
+        {"type": "visual", "id": "finale-galaxy", "kind": "svg", "asset": "spiralGalaxy", "x": 960, "y": 530, "width": 620, "height": 620, "animation": "pulse"},
+        {"type": "text", "id": "finale-title", "x": 960, "y": 195, "content": "One Living Picture", "size": 74, "weight": "800"},
+        {"type": "text", "id": "finale-subtitle", "x": 960, "y": 875, "content": "A galaxy rendered as a composition of moments", "size": 42, "color": "#A9B5D1"}
+      ],
+      "decorations": [
+        {"id": "finale-star-a", "kind": "svg", "asset": "starburst", "x": 380, "y": 350, "width": 90, "height": 90},
+        {"id": "finale-star-b", "kind": "svg", "asset": "starburst", "x": 1540, "y": 370, "width": 80, "height": 80},
+        {"id": "finale-star-c", "kind": "svg", "asset": "starburst", "x": 450, "y": 780, "width": 54, "height": 54},
+        {"id": "finale-star-d", "kind": "svg", "asset": "starburst", "x": 1490, "y": 760, "width": 62, "height": 62}
+      ],
+      "animation": {
+        "tracks": [
+          {"target": "finale-panel", "properties": {"scale": [0.86, 1], "opacity": [0, 0.76]}, "duration": 1000, "ease": "out(3)"},
+          {"target": "finale-title", "properties": {"y": [280, 195], "scale": [0.75, 1], "opacity": [0, 1]}, "delay": 200, "duration": 1100, "ease": "out(4)"},
+          {"target": "finale-galaxy", "properties": {"scale": [0.15, 1], "rotate": [-180, 0], "opacity": [0, 1]}, "delay": 450, "duration": 2400, "ease": "out(4)"},
+          {"target": "finale-subtitle", "properties": {"y": [950, 875], "opacity": [0, 1]}, "delay": 2200, "duration": 900, "ease": "out(3)"},
+          {"target": "finale-star-a", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 1500, "duration": 700, "ease": "out(4)"},
+          {"target": "finale-star-b", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 1750, "duration": 700, "ease": "out(4)"},
+          {"target": "finale-star-c", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 2000, "duration": 700, "ease": "out(4)"},
+          {"target": "finale-star-d", "properties": {"scale": [0, 1], "opacity": [0, 1]}, "delay": 2250, "duration": 700, "ease": "out(4)"}
+        ]
+      }
+    }
+  ]
+}

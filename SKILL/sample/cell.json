@@ -1,0 +1,2231 @@
+{
+    "video": {
+        "title": "Cell Reproduction: From One Cell to Two",
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "duration": 105,
+        "background": "#050B18",
+        "language": "en-US"
+    },
+    "theme": {
+        "primary": "#38BDF8",
+        "secondary": "#A78BFA",
+        "accent": "#34D399",
+        "text": "#F8FAFC",
+        "muted": "#94A3B8",
+        "panel": "#0C1729",
+        "font": "Segoe UI",
+        "iconFont": "Segoe UI Symbol",
+        "emojiFont": "Segoe UI Emoji"
+    },
+    "assets": {},
+    "scenes": [
+        {
+            "type": "composition",
+            "id": "cell-reproduction-intro",
+            "title": "Cell Reproduction: Overview",
+            "start": 0,
+            "duration": 12,
+            "narration": "Cell reproduction allows organisms to grow, replace damaged cells, and continue life. In eukaryotic cells, this process is coordinated through the cell cycle, where genetic material is copied and carefully distributed.",
+            "elements": [
+                {
+                    "type": "panel",
+                    "id": "intro-panel",
+                    "x": 960,
+                    "y": 540,
+                    "z": 0,
+                    "width": 1580,
+                    "height": 720,
+                    "radius": 40,
+                    "color": "#0C1729",
+                    "border": "#38BDF855",
+                    "delay": 0
+                },
+                {
+                    "type": "particles",
+                    "id": "intro-particles",
+                    "x": 960,
+                    "y": 540,
+                    "z": 5,
+                    "particleType": "dots",
+                    "count": 70,
+                    "color": "#38BDF8",
+                    "speed": 0.35,
+                    "width": 1450,
+                    "height": 660,
+                    "delay": 0
+                },
+                {
+                    "type": "text",
+                    "id": "intro-title",
+                    "x": 960,
+                    "y": 205,
+                    "z": 40,
+                    "content": "CELL REPRODUCTION",
+                    "size": 74,
+                    "weight": "800",
+                    "color": "#F8FAFC",
+                    "delay": 100
+                },
+                {
+                    "type": "badge",
+                    "id": "intro-badge",
+                    "x": 960,
+                    "y": 285,
+                    "z": 40,
+                    "text": "ONE CELL • TWO DAUGHTER CELLS",
+                    "color": "#34D399",
+                    "size": 21,
+                    "delay": 350
+                },
+                {
+                    "type": "shape",
+                    "id": "intro-cell",
+                    "x": 960,
+                    "y": 590,
+                    "z": 20,
+                    "d": "M0 -210 C135 -210 230 -115 230 0 C230 120 135 210 0 210 C-135 210 -230 120 -230 0 C-230 -115 -135 -210 0 -210 Z",
+                    "fill": "#102A43",
+                    "stroke": "#38BDF8",
+                    "strokeWidth": 8,
+                    "delay": 450
+                },
+                {
+                    "type": "shape",
+                    "id": "intro-nucleus",
+                    "x": 960,
+                    "y": 590,
+                    "z": 25,
+                    "d": "M0 -92 C58 -92 102 -50 102 0 C102 54 58 92 0 92 C-58 92 -102 54 -102 0 C-102 -50 -58 -92 0 -92 Z",
+                    "fill": "#392D69",
+                    "stroke": "#A78BFA",
+                    "strokeWidth": 6,
+                    "delay": 650
+                },
+                {
+                    "type": "callout",
+                    "id": "intro-callout",
+                    "x": 1370,
+                    "y": 560,
+                    "z": 40,
+                    "from": [
+                        -180,
+                        30
+                    ],
+                    "to": [
+                        70,
+                        -40
+                    ],
+                    "title": "Controlled Duplication",
+                    "detail": "Genetic information is copied before the cell separates.",
+                    "color": "#A78BFA",
+                    "delay": 1300
+                }
+            ],
+            "animation": {
+                "tracks": [
+                    {
+                        "target": "intro-panel",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "scale": [
+                                0.94,
+                                1
+                            ]
+                        },
+                        "duration": 1000,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "intro-particles",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                0.65
+                            ],
+                            "intensity": [
+                                0.2,
+                                1
+                            ]
+                        },
+                        "duration": 2200,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "target": "intro-title",
+                        "properties": {
+                            "y": [
+                                150,
+                                205
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "intro-badge",
+                        "properties": {
+                            "y": [
+                                230,
+                                285
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 250,
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "intro-cell",
+                            "intro-nucleus"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0.25,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                -20,
+                                0
+                            ]
+                        },
+                        "stagger": 220,
+                        "delay": 500,
+                        "duration": 1500,
+                        "ease": "out(5)"
+                    },
+                    {
+                        "target": "intro-callout",
+                        "properties": {
+                            "x": [
+                                1510,
+                                1370
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 1900,
+                        "duration": 1100,
+                        "ease": "out(4)"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "composition",
+            "id": "cell-cycle-overview",
+            "title": "The Cell Cycle: Interphase to Mitosis",
+            "start": 12,
+            "duration": 12,
+            "narration": "The cell cycle contains interphase and the mitotic phase. During interphase, the cell grows, duplicates its DNA, and prepares for division. The mitotic phase then separates the chromosomes and divides the cell.",
+            "elements": [
+                {
+                    "type": "panel",
+                    "id": "cycle-panel",
+                    "x": 960,
+                    "y": 540,
+                    "z": 0,
+                    "width": 1580,
+                    "height": 720,
+                    "radius": 40,
+                    "color": "#0C1729",
+                    "border": "#A78BFA55",
+                    "delay": 0
+                },
+                {
+                    "type": "text",
+                    "id": "cycle-title",
+                    "x": 960,
+                    "y": 190,
+                    "z": 40,
+                    "content": "THE CELL CYCLE",
+                    "size": 64,
+                    "weight": "800",
+                    "color": "#F8FAFC",
+                    "delay": 100
+                },
+                {
+                    "type": "gauge",
+                    "id": "cycle-gauge",
+                    "x": 960,
+                    "y": 545,
+                    "z": 20,
+                    "style": "radial",
+                    "title": "CYCLE PROGRESS",
+                    "min": 0,
+                    "max": 100,
+                    "value": 0,
+                    "unit": "%",
+                    "color": "#38BDF8",
+                    "radius": 185,
+                    "delay": 350
+                },
+                {
+                    "type": "card",
+                    "id": "cycle-g1",
+                    "x": 475,
+                    "y": 410,
+                    "z": 30,
+                    "width": 350,
+                    "height": 180,
+                    "title": "G1 PHASE",
+                    "value": "Cell Growth",
+                    "badge": "INTERPHASE",
+                    "subtitle": "The cell grows and performs normal functions.",
+                    "color": "#38BDF8",
+                    "delay": 500
+                },
+                {
+                    "type": "card",
+                    "id": "cycle-s",
+                    "x": 475,
+                    "y": 700,
+                    "z": 30,
+                    "width": 350,
+                    "height": 180,
+                    "title": "S PHASE",
+                    "value": "DNA Copying",
+                    "badge": "INTERPHASE",
+                    "subtitle": "The cell duplicates its genetic material.",
+                    "color": "#A78BFA",
+                    "delay": 700
+                },
+                {
+                    "type": "card",
+                    "id": "cycle-g2",
+                    "x": 1445,
+                    "y": 410,
+                    "z": 30,
+                    "width": 350,
+                    "height": 180,
+                    "title": "G2 PHASE",
+                    "value": "Preparation",
+                    "badge": "INTERPHASE",
+                    "subtitle": "The cell prepares its division machinery.",
+                    "color": "#F59E0B",
+                    "delay": 900
+                },
+                {
+                    "type": "card",
+                    "id": "cycle-m",
+                    "x": 1445,
+                    "y": 700,
+                    "z": 30,
+                    "width": 350,
+                    "height": 180,
+                    "title": "M PHASE",
+                    "value": "Division",
+                    "badge": "MITOSIS",
+                    "subtitle": "Chromosomes separate and the cell divides.",
+                    "color": "#34D399",
+                    "delay": 1100
+                },
+                {
+                    "type": "connector",
+                    "id": "cycle-flow-one",
+                    "x": 720,
+                    "y": 480,
+                    "z": 15,
+                    "from": [
+                        -90,
+                        0
+                    ],
+                    "to": [
+                        90,
+                        0
+                    ],
+                    "curve": -45,
+                    "color": "#38BDF8",
+                    "arrow": true,
+                    "delay": 600
+                },
+                {
+                    "type": "connector",
+                    "id": "cycle-flow-two",
+                    "x": 1200,
+                    "y": 610,
+                    "z": 15,
+                    "from": [
+                        -90,
+                        0
+                    ],
+                    "to": [
+                        90,
+                        0
+                    ],
+                    "curve": 45,
+                    "color": "#34D399",
+                    "arrow": true,
+                    "delay": 1000
+                }
+            ],
+            "animation": {
+                "tracks": [
+                    {
+                        "target": "cycle-panel",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 700,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "target": "cycle-title",
+                        "properties": {
+                            "y": [
+                                135,
+                                190
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "cycle-gauge",
+                        "properties": {
+                            "value": [
+                                0,
+                                100
+                            ],
+                            "scale": [
+                                0.5,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 400,
+                        "duration": 8500,
+                        "ease": "linear"
+                    },
+                    {
+                        "targets": [
+                            "cycle-g1",
+                            "cycle-s",
+                            "cycle-g2",
+                            "cycle-m"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0.75,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "stagger": 600,
+                        "delay": 500,
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "cycle-flow-one",
+                            "cycle-flow-two"
+                        ],
+                        "properties": {
+                            "progress": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "stagger": 700,
+                        "delay": 1100,
+                        "duration": 1800,
+                        "ease": "out(3)"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "composition",
+            "id": "dna-replication",
+            "title": "S Phase: DNA Replication",
+            "start": 24,
+            "duration": 12,
+            "narration": "During S phase, the DNA molecule is replicated. Each chromosome becomes two identical sister chromatids joined at a centromere. This duplication ensures that both future daughter cells can receive equivalent genetic information.",
+            "elements": [
+                {
+                    "type": "panel",
+                    "id": "replication-panel",
+                    "x": 960,
+                    "y": 540,
+                    "z": 0,
+                    "width": 1580,
+                    "height": 720,
+                    "radius": 40,
+                    "color": "#0C1729",
+                    "border": "#A78BFA66",
+                    "delay": 0
+                },
+                {
+                    "type": "text",
+                    "id": "replication-title",
+                    "x": 960,
+                    "y": 185,
+                    "z": 40,
+                    "content": "S PHASE: DNA REPLICATION",
+                    "size": 62,
+                    "weight": "800",
+                    "color": "#F8FAFC",
+                    "delay": 100
+                },
+                {
+                    "type": "badge",
+                    "id": "replication-status",
+                    "x": 960,
+                    "y": 265,
+                    "z": 40,
+                    "text": "GENETIC COPY IN PROGRESS",
+                    "color": "#A78BFA",
+                    "size": 20,
+                    "delay": 350
+                },
+                {
+                    "type": "shape",
+                    "id": "dna-left-strand",
+                    "x": 650,
+                    "y": 560,
+                    "z": 20,
+                    "d": "M-180 -220 C-70 -160 -70 -80 -180 -20 C-290 40 -290 120 -180 220",
+                    "fill": "transparent",
+                    "stroke": "#38BDF8",
+                    "strokeWidth": 12,
+                    "delay": 550
+                },
+                {
+                    "type": "shape",
+                    "id": "dna-right-strand",
+                    "x": 650,
+                    "y": 560,
+                    "z": 20,
+                    "d": "M180 -220 C70 -160 70 -80 180 -20 C290 40 290 120 180 220",
+                    "fill": "transparent",
+                    "stroke": "#A78BFA",
+                    "strokeWidth": 12,
+                    "delay": 700
+                },
+                {
+                    "type": "connector",
+                    "id": "replication-transfer",
+                    "x": 960,
+                    "y": 560,
+                    "z": 15,
+                    "from": [
+                        -120,
+                        0
+                    ],
+                    "to": [
+                        120,
+                        0
+                    ],
+                    "curve": -20,
+                    "color": "#F59E0B",
+                    "arrow": true,
+                    "delay": 1000
+                },
+                {
+                    "type": "shape",
+                    "id": "chromatid-left",
+                    "x": 1260,
+                    "y": 555,
+                    "z": 20,
+                    "d": "M-100 -210 L0 -20 L100 -210 L35 0 L110 210 L0 35 L-110 210 L-35 0 Z",
+                    "fill": "#573C8C",
+                    "stroke": "#C4B5FD",
+                    "strokeWidth": 8,
+                    "delay": 1300
+                },
+                {
+                    "type": "shape",
+                    "id": "centromere-point",
+                    "x": 1260,
+                    "y": 555,
+                    "z": 25,
+                    "d": "M0 -24 C18 -24 30 -12 30 0 C30 14 18 24 0 24 C-18 24 -30 14 -30 0 C-30 -12 -18 -24 0 -24 Z",
+                    "fill": "#F59E0B",
+                    "stroke": "#FDE68A",
+                    "strokeWidth": 4,
+                    "delay": 1700
+                },
+                {
+                    "type": "callout",
+                    "id": "chromatid-callout",
+                    "x": 1440,
+                    "y": 360,
+                    "z": 40,
+                    "from": [
+                        -130,
+                        75
+                    ],
+                    "to": [
+                        45,
+                        -25
+                    ],
+                    "title": "Sister Chromatids",
+                    "detail": "Two replicated DNA copies remain connected at the centromere.",
+                    "color": "#F59E0B",
+                    "delay": 1900
+                }
+            ],
+            "animation": {
+                "tracks": [
+                    {
+                        "target": "replication-panel",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 700,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "targets": [
+                            "replication-title",
+                            "replication-status"
+                        ],
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "y": [
+                                135,
+                                185
+                            ]
+                        },
+                        "stagger": 250,
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "dna-left-strand",
+                            "dna-right-strand"
+                        ],
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "scaleY": [
+                                0.1,
+                                1
+                            ],
+                            "rotate": [
+                                -8,
+                                0
+                            ]
+                        },
+                        "stagger": 220,
+                        "delay": 500,
+                        "duration": 1500,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "replication-transfer",
+                        "properties": {
+                            "progress": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 1400,
+                        "duration": 1600,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "targets": [
+                            "chromatid-left",
+                            "centromere-point"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0.25,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                20,
+                                0
+                            ]
+                        },
+                        "stagger": 250,
+                        "delay": 2300,
+                        "duration": 1300,
+                        "ease": "out(5)"
+                    },
+                    {
+                        "target": "chromatid-callout",
+                        "properties": {
+                            "x": [
+                                1580,
+                                1440
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 3500,
+                        "duration": 1000,
+                        "ease": "out(4)"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "composition",
+            "id": "prophase-spindle",
+            "title": "Prophase: Preparing Division Machinery",
+            "start": 36,
+            "duration": 12,
+            "narration": "Mitosis begins with prophase. Chromatin condenses into visible chromosomes, the nuclear envelope breaks down, and the spindle apparatus forms. Spindle fibers will guide chromosome movement during the following stages.",
+            "elements": [
+                {
+                    "type": "panel",
+                    "id": "prophase-panel",
+                    "x": 960,
+                    "y": 540,
+                    "z": 0,
+                    "width": 1580,
+                    "height": 720,
+                    "radius": 40,
+                    "color": "#0C1729",
+                    "border": "#F59E0B55",
+                    "delay": 0
+                },
+                {
+                    "type": "text",
+                    "id": "prophase-title",
+                    "x": 960,
+                    "y": 180,
+                    "z": 40,
+                    "content": "PROPHASE: PREPARING THE DIVISION MACHINE",
+                    "size": 53,
+                    "weight": "800",
+                    "color": "#F8FAFC",
+                    "delay": 100
+                },
+                {
+                    "type": "shape",
+                    "id": "prophase-cell",
+                    "x": 960,
+                    "y": 575,
+                    "z": 15,
+                    "d": "M0 -300 C205 -300 350 -170 350 0 C350 175 205 300 0 300 C-205 300 -350 175 -350 0 C-350 -170 -205 -300 0 -300 Z",
+                    "fill": "#0E2439",
+                    "stroke": "#38BDF8",
+                    "strokeWidth": 8,
+                    "delay": 350
+                },
+                {
+                    "type": "shape",
+                    "id": "prophase-nuclear-envelope",
+                    "x": 960,
+                    "y": 575,
+                    "z": 18,
+                    "d": "M0 -185 C125 -185 215 -100 215 0 C215 105 125 185 0 185 C-125 185 -215 105 -215 0 C-215 -100 -125 -185 0 -185 Z",
+                    "fill": "#231A45",
+                    "stroke": "#A78BFA",
+                    "strokeWidth": 7,
+                    "delay": 550
+                },
+                {
+                    "type": "shape",
+                    "id": "prophase-chromosome-one",
+                    "x": 885,
+                    "y": 530,
+                    "z": 25,
+                    "d": "M-38 -90 L0 -12 L38 -90 L14 0 L42 90 L0 14 L-42 90 L-14 0 Z",
+                    "fill": "#A78BFA",
+                    "stroke": "#DDD6FE",
+                    "strokeWidth": 5,
+                    "delay": 800
+                },
+                {
+                    "type": "shape",
+                    "id": "prophase-chromosome-two",
+                    "x": 1040,
+                    "y": 620,
+                    "z": 25,
+                    "d": "M-38 -90 L0 -12 L38 -90 L14 0 L42 90 L0 14 L-42 90 L-14 0 Z",
+                    "fill": "#38BDF8",
+                    "stroke": "#BAE6FD",
+                    "strokeWidth": 5,
+                    "delay": 950
+                },
+                {
+                    "type": "shape",
+                    "id": "prophase-pole-left",
+                    "x": 680,
+                    "y": 575,
+                    "z": 25,
+                    "d": "M-26 -26 L26 26 M26 -26 L-26 26 M0 -38 L0 38 M-38 0 L38 0",
+                    "fill": "transparent",
+                    "stroke": "#F59E0B",
+                    "strokeWidth": 8,
+                    "delay": 1200
+                },
+                {
+                    "type": "shape",
+                    "id": "prophase-pole-right",
+                    "x": 1240,
+                    "y": 575,
+                    "z": 25,
+                    "d": "M-26 -26 L26 26 M26 -26 L-26 26 M0 -38 L0 38 M-38 0 L38 0",
+                    "fill": "transparent",
+                    "stroke": "#F59E0B",
+                    "strokeWidth": 8,
+                    "delay": 1350
+                },
+                {
+                    "type": "connector",
+                    "id": "prophase-spindle-left",
+                    "x": 820,
+                    "y": 575,
+                    "z": 20,
+                    "from": [
+                        -130,
+                        0
+                    ],
+                    "to": [
+                        130,
+                        -30
+                    ],
+                    "curve": -45,
+                    "color": "#F59E0B",
+                    "arrow": false,
+                    "delay": 1500
+                },
+                {
+                    "type": "connector",
+                    "id": "prophase-spindle-right",
+                    "x": 1100,
+                    "y": 575,
+                    "z": 20,
+                    "from": [
+                        130,
+                        0
+                    ],
+                    "to": [
+                        -130,
+                        30
+                    ],
+                    "curve": 45,
+                    "color": "#F59E0B",
+                    "arrow": false,
+                    "delay": 1650
+                },
+                {
+                    "type": "callout",
+                    "id": "prophase-callout",
+                    "x": 1400,
+                    "y": 780,
+                    "z": 40,
+                    "from": [
+                        -220,
+                        -90
+                    ],
+                    "to": [
+                        40,
+                        15
+                    ],
+                    "title": "Spindle Apparatus",
+                    "detail": "Microtubule structures organize chromosome movement.",
+                    "color": "#F59E0B",
+                    "delay": 2100
+                }
+            ],
+            "animation": {
+                "tracks": [
+                    {
+                        "target": "prophase-panel",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 700,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "target": "prophase-title",
+                        "properties": {
+                            "y": [
+                                130,
+                                180
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "prophase-cell",
+                            "prophase-nuclear-envelope"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0.4,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "stagger": 250,
+                        "delay": 350,
+                        "duration": 1200,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "prophase-chromosome-one",
+                            "prophase-chromosome-two"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0.2,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                -45,
+                                0
+                            ]
+                        },
+                        "stagger": 300,
+                        "delay": 1100,
+                        "duration": 1300,
+                        "ease": "out(5)"
+                    },
+                    {
+                        "target": "prophase-nuclear-envelope",
+                        "properties": {
+                            "opacity": [
+                                1,
+                                0.15
+                            ],
+                            "scale": [
+                                1,
+                                1.18
+                            ]
+                        },
+                        "delay": 2600,
+                        "duration": 2200,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "targets": [
+                            "prophase-pole-left",
+                            "prophase-pole-right"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                0,
+                                180
+                            ]
+                        },
+                        "stagger": 250,
+                        "delay": 1800,
+                        "duration": 1400,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "prophase-spindle-left",
+                            "prophase-spindle-right"
+                        ],
+                        "properties": {
+                            "progress": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "stagger": 250,
+                        "delay": 2800,
+                        "duration": 1700,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "target": "prophase-callout",
+                        "properties": {
+                            "x": [
+                                1540,
+                                1400
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 4000,
+                        "duration": 1000,
+                        "ease": "out(4)"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "composition",
+            "id": "metaphase-alignment",
+            "title": "Metaphase: Chromosome Alignment",
+            "start": 48,
+            "duration": 12,
+            "narration": "During metaphase, duplicated chromosomes align along the cell's central plane. Spindle fibers attach to opposite sides of each chromosome. This arrangement prepares every pair of sister chromatids for equal separation.",
+            "elements": [
+                {
+                    "type": "panel",
+                    "id": "metaphase-panel",
+                    "x": 960,
+                    "y": 540,
+                    "z": 0,
+                    "width": 1580,
+                    "height": 720,
+                    "radius": 40,
+                    "color": "#0C1729",
+                    "border": "#34D39955",
+                    "delay": 0
+                },
+                {
+                    "type": "text",
+                    "id": "metaphase-title",
+                    "x": 960,
+                    "y": 180,
+                    "z": 40,
+                    "content": "METAPHASE: PRECISION ALIGNMENT",
+                    "size": 58,
+                    "weight": "800",
+                    "color": "#F8FAFC",
+                    "delay": 100
+                },
+                {
+                    "type": "badge",
+                    "id": "metaphase-badge",
+                    "x": 960,
+                    "y": 255,
+                    "z": 40,
+                    "text": "CHROMOSOMES AT THE EQUATOR",
+                    "color": "#34D399",
+                    "size": 20,
+                    "delay": 300
+                },
+                {
+                    "type": "shape",
+                    "id": "metaphase-cell",
+                    "x": 960,
+                    "y": 590,
+                    "z": 10,
+                    "d": "M0 -275 C220 -275 375 -155 375 0 C375 160 220 275 0 275 C-220 275 -375 160 -375 0 C-375 -155 -220 -275 0 -275 Z",
+                    "fill": "#0E2439",
+                    "stroke": "#38BDF8",
+                    "strokeWidth": 8,
+                    "delay": 400
+                },
+                {
+                    "type": "connector",
+                    "id": "metaphase-equator",
+                    "x": 960,
+                    "y": 590,
+                    "z": 12,
+                    "from": [
+                        0,
+                        -230
+                    ],
+                    "to": [
+                        0,
+                        230
+                    ],
+                    "curve": 0,
+                    "color": "#34D399",
+                    "arrow": false,
+                    "delay": 600
+                },
+                {
+                    "type": "shape",
+                    "id": "metaphase-chromosome-one",
+                    "x": 960,
+                    "y": 430,
+                    "z": 25,
+                    "d": "M-34 -66 L0 -10 L34 -66 L12 0 L38 66 L0 12 L-38 66 L-12 0 Z",
+                    "fill": "#A78BFA",
+                    "stroke": "#EDE9FE",
+                    "strokeWidth": 4,
+                    "delay": 850
+                },
+                {
+                    "type": "shape",
+                    "id": "metaphase-chromosome-two",
+                    "x": 960,
+                    "y": 535,
+                    "z": 25,
+                    "d": "M-34 -66 L0 -10 L34 -66 L12 0 L38 66 L0 12 L-38 66 L-12 0 Z",
+                    "fill": "#38BDF8",
+                    "stroke": "#E0F2FE",
+                    "strokeWidth": 4,
+                    "delay": 1000
+                },
+                {
+                    "type": "shape",
+                    "id": "metaphase-chromosome-three",
+                    "x": 960,
+                    "y": 650,
+                    "z": 25,
+                    "d": "M-34 -66 L0 -10 L34 -66 L12 0 L38 66 L0 12 L-38 66 L-12 0 Z",
+                    "fill": "#F59E0B",
+                    "stroke": "#FEF3C7",
+                    "strokeWidth": 4,
+                    "delay": 1150
+                },
+                {
+                    "type": "shape",
+                    "id": "metaphase-chromosome-four",
+                    "x": 960,
+                    "y": 755,
+                    "z": 25,
+                    "d": "M-34 -66 L0 -10 L34 -66 L12 0 L38 66 L0 12 L-38 66 L-12 0 Z",
+                    "fill": "#34D399",
+                    "stroke": "#D1FAE5",
+                    "strokeWidth": 4,
+                    "delay": 1300
+                },
+                {
+                    "type": "shape",
+                    "id": "metaphase-pole-left",
+                    "x": 640,
+                    "y": 590,
+                    "z": 25,
+                    "d": "M-28 -28 L28 28 M28 -28 L-28 28 M0 -40 L0 40 M-40 0 L40 0",
+                    "fill": "transparent",
+                    "stroke": "#F59E0B",
+                    "strokeWidth": 7,
+                    "delay": 900
+                },
+                {
+                    "type": "shape",
+                    "id": "metaphase-pole-right",
+                    "x": 1280,
+                    "y": 590,
+                    "z": 25,
+                    "d": "M-28 -28 L28 28 M28 -28 L-28 28 M0 -40 L0 40 M-40 0 L40 0",
+                    "fill": "transparent",
+                    "stroke": "#F59E0B",
+                    "strokeWidth": 7,
+                    "delay": 1100
+                },
+                {
+                    "type": "connector",
+                    "id": "metaphase-spindle-left",
+                    "x": 800,
+                    "y": 590,
+                    "z": 18,
+                    "from": [
+                        -150,
+                        0
+                    ],
+                    "to": [
+                        150,
+                        -55
+                    ],
+                    "curve": -30,
+                    "color": "#F59E0B",
+                    "arrow": false,
+                    "delay": 1600
+                },
+                {
+                    "type": "connector",
+                    "id": "metaphase-spindle-right",
+                    "x": 1120,
+                    "y": 590,
+                    "z": 18,
+                    "from": [
+                        150,
+                        0
+                    ],
+                    "to": [
+                        -150,
+                        55
+                    ],
+                    "curve": 30,
+                    "color": "#F59E0B",
+                    "arrow": false,
+                    "delay": 1800
+                }
+            ],
+            "animation": {
+                "tracks": [
+                    {
+                        "target": "metaphase-panel",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 700,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "targets": [
+                            "metaphase-title",
+                            "metaphase-badge"
+                        ],
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "y": [
+                                135,
+                                180
+                            ]
+                        },
+                        "stagger": 220,
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "metaphase-cell",
+                        "properties": {
+                            "scale": [
+                                0.65,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 350,
+                        "duration": 1200,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "metaphase-equator",
+                        "properties": {
+                            "progress": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                0.8
+                            ]
+                        },
+                        "delay": 750,
+                        "duration": 1400,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "targets": [
+                            "metaphase-chromosome-one",
+                            "metaphase-chromosome-two",
+                            "metaphase-chromosome-three",
+                            "metaphase-chromosome-four"
+                        ],
+                        "properties": {
+                            "x": [
+                                760,
+                                960
+                            ],
+                            "scale": [
+                                0.45,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                -25,
+                                0
+                            ]
+                        },
+                        "stagger": 250,
+                        "delay": 1000,
+                        "duration": 1400,
+                        "ease": "out(5)"
+                    },
+                    {
+                        "targets": [
+                            "metaphase-pole-left",
+                            "metaphase-pole-right"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                0,
+                                180
+                            ]
+                        },
+                        "stagger": 250,
+                        "delay": 1700,
+                        "duration": 1200,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "metaphase-spindle-left",
+                            "metaphase-spindle-right"
+                        ],
+                        "properties": {
+                            "progress": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "stagger": 300,
+                        "delay": 2800,
+                        "duration": 1700,
+                        "ease": "out(3)"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "composition",
+            "id": "anaphase-separation",
+            "title": "Anaphase: Sister Chromatid Separation",
+            "start": 60,
+            "duration": 12,
+            "narration": "In anaphase, the connection between sister chromatids is released. Spindle fibers move the separated chromatids toward opposite poles. Each chromatid is now considered an individual chromosome.",
+            "elements": [
+                {
+                    "type": "panel",
+                    "id": "anaphase-panel",
+                    "x": 960,
+                    "y": 540,
+                    "z": 0,
+                    "width": 1580,
+                    "height": 720,
+                    "radius": 40,
+                    "color": "#0C1729",
+                    "border": "#EF444455",
+                    "delay": 0
+                },
+                {
+                    "type": "text",
+                    "id": "anaphase-title",
+                    "x": 960,
+                    "y": 180,
+                    "z": 40,
+                    "content": "ANAPHASE: SISTER CHROMATIDS SEPARATE",
+                    "size": 54,
+                    "weight": "800",
+                    "color": "#F8FAFC",
+                    "delay": 100
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-cell",
+                    "x": 960,
+                    "y": 575,
+                    "z": 10,
+                    "d": "M0 -280 C230 -280 390 -160 390 0 C390 165 230 280 0 280 C-230 280 -390 165 -390 0 C-390 -160 -230 -280 0 -280 Z",
+                    "fill": "#0E2439",
+                    "stroke": "#38BDF8",
+                    "strokeWidth": 8,
+                    "delay": 350
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-left-a",
+                    "x": 930,
+                    "y": 470,
+                    "z": 25,
+                    "d": "M0 -72 L-38 0 L0 72 L14 0 Z",
+                    "fill": "#A78BFA",
+                    "stroke": "#EDE9FE",
+                    "strokeWidth": 5,
+                    "delay": 700
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-right-a",
+                    "x": 990,
+                    "y": 470,
+                    "z": 25,
+                    "d": "M0 -72 L38 0 L0 72 L-14 0 Z",
+                    "fill": "#A78BFA",
+                    "stroke": "#EDE9FE",
+                    "strokeWidth": 5,
+                    "delay": 700
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-left-b",
+                    "x": 930,
+                    "y": 620,
+                    "z": 25,
+                    "d": "M0 -72 L-38 0 L0 72 L14 0 Z",
+                    "fill": "#38BDF8",
+                    "stroke": "#E0F2FE",
+                    "strokeWidth": 5,
+                    "delay": 850
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-right-b",
+                    "x": 990,
+                    "y": 620,
+                    "z": 25,
+                    "d": "M0 -72 L38 0 L0 72 L-14 0 Z",
+                    "fill": "#38BDF8",
+                    "stroke": "#E0F2FE",
+                    "strokeWidth": 5,
+                    "delay": 850
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-left-c",
+                    "x": 930,
+                    "y": 755,
+                    "z": 25,
+                    "d": "M0 -62 L-34 0 L0 62 L12 0 Z",
+                    "fill": "#34D399",
+                    "stroke": "#D1FAE5",
+                    "strokeWidth": 5,
+                    "delay": 1000
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-right-c",
+                    "x": 990,
+                    "y": 755,
+                    "z": 25,
+                    "d": "M0 -62 L34 0 L0 62 L-12 0 Z",
+                    "fill": "#34D399",
+                    "stroke": "#D1FAE5",
+                    "strokeWidth": 5,
+                    "delay": 1000
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-pole-left",
+                    "x": 625,
+                    "y": 575,
+                    "z": 25,
+                    "d": "M-28 -28 L28 28 M28 -28 L-28 28 M0 -40 L0 40 M-40 0 L40 0",
+                    "fill": "transparent",
+                    "stroke": "#F59E0B",
+                    "strokeWidth": 7,
+                    "delay": 850
+                },
+                {
+                    "type": "shape",
+                    "id": "anaphase-pole-right",
+                    "x": 1295,
+                    "y": 575,
+                    "z": 25,
+                    "d": "M-28 -28 L28 28 M28 -28 L-28 28 M0 -40 L0 40 M-40 0 L40 0",
+                    "fill": "transparent",
+                    "stroke": "#F59E0B",
+                    "strokeWidth": 7,
+                    "delay": 1000
+                },
+                {
+                    "type": "callout",
+                    "id": "anaphase-callout",
+                    "x": 1400,
+                    "y": 790,
+                    "z": 40,
+                    "from": [
+                        -250,
+                        -120
+                    ],
+                    "to": [
+                        35,
+                        10
+                    ],
+                    "title": "Opposite Poles",
+                    "detail": "Separated chromosomes move into two distinct groups.",
+                    "color": "#EF4444",
+                    "delay": 1800
+                }
+            ],
+            "animation": {
+                "tracks": [
+                    {
+                        "target": "anaphase-panel",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 700,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "target": "anaphase-title",
+                        "properties": {
+                            "y": [
+                                130,
+                                180
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "anaphase-cell",
+                        "properties": {
+                            "scale": [
+                                0.65,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 350,
+                        "duration": 1100,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "anaphase-pole-left",
+                            "anaphase-pole-right"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                0,
+                                180
+                            ]
+                        },
+                        "stagger": 200,
+                        "delay": 800,
+                        "duration": 1200,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "anaphase-left-a",
+                            "anaphase-left-b",
+                            "anaphase-left-c"
+                        ],
+                        "properties": {
+                            "x": [
+                                930,
+                                720
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                0,
+                                -15
+                            ]
+                        },
+                        "stagger": 180,
+                        "delay": 1400,
+                        "duration": 2600,
+                        "ease": "inOut(3)"
+                    },
+                    {
+                        "targets": [
+                            "anaphase-right-a",
+                            "anaphase-right-b",
+                            "anaphase-right-c"
+                        ],
+                        "properties": {
+                            "x": [
+                                990,
+                                1200
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "rotate": [
+                                0,
+                                15
+                            ]
+                        },
+                        "stagger": 180,
+                        "delay": 1400,
+                        "duration": 2600,
+                        "ease": "inOut(3)"
+                    },
+                    {
+                        "target": "anaphase-callout",
+                        "properties": {
+                            "x": [
+                                1540,
+                                1400
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 4200,
+                        "duration": 1000,
+                        "ease": "out(4)"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "composition",
+            "id": "telophase-cytokinesis",
+            "title": "Telophase & Cytokinesis: Final Division",
+            "start": 72,
+            "duration": 12,
+            "narration": "During telophase, chromosomes arrive at opposite poles and new nuclear envelopes form around them. Cytokinesis then divides the cytoplasm, physically separating the parent cell into two daughter cells.",
+            "elements": [
+                {
+                    "type": "panel",
+                    "id": "cytokinesis-panel",
+                    "x": 960,
+                    "y": 540,
+                    "z": 0,
+                    "width": 1580,
+                    "height": 720,
+                    "radius": 40,
+                    "color": "#0C1729",
+                    "border": "#34D39966",
+                    "delay": 0
+                },
+                {
+                    "type": "text",
+                    "id": "cytokinesis-title",
+                    "x": 960,
+                    "y": 180,
+                    "z": 40,
+                    "content": "TELOPHASE + CYTOKINESIS",
+                    "size": 62,
+                    "weight": "800",
+                    "color": "#F8FAFC",
+                    "delay": 100
+                },
+                {
+                    "type": "badge",
+                    "id": "cytokinesis-badge",
+                    "x": 960,
+                    "y": 255,
+                    "z": 40,
+                    "text": "PHYSICAL CELL SEPARATION",
+                    "color": "#34D399",
+                    "size": 20,
+                    "delay": 300
+                },
+                {
+                    "type": "shape",
+                    "id": "cytokinesis-parent",
+                    "x": 960,
+                    "y": 585,
+                    "z": 10,
+                    "d": "M0 -275 C250 -275 410 -155 410 0 C410 160 250 275 0 275 C-250 275 -410 160 -410 0 C-410 -155 -250 -275 0 -275 Z",
+                    "fill": "#0E2439",
+                    "stroke": "#38BDF8",
+                    "strokeWidth": 8,
+                    "delay": 400
+                },
+                {
+                    "type": "shape",
+                    "id": "cytokinesis-nucleus-left",
+                    "x": 760,
+                    "y": 585,
+                    "z": 22,
+                    "d": "M0 -105 C75 -105 128 -58 128 0 C128 63 75 105 0 105 C-75 105 -128 63 -128 0 C-128 -58 -75 -105 0 -105 Z",
+                    "fill": "#392D69",
+                    "stroke": "#A78BFA",
+                    "strokeWidth": 6,
+                    "delay": 700
+                },
+                {
+                    "type": "shape",
+                    "id": "cytokinesis-nucleus-right",
+                    "x": 1160,
+                    "y": 585,
+                    "z": 22,
+                    "d": "M0 -105 C75 -105 128 -58 128 0 C128 63 75 105 0 105 C-75 105 -128 63 -128 0 C-128 -58 -75 -105 0 -105 Z",
+                    "fill": "#392D69",
+                    "stroke": "#A78BFA",
+                    "strokeWidth": 6,
+                    "delay": 850
+                },
+                {
+                    "type": "connector",
+                    "id": "cytokinesis-furrow",
+                    "x": 960,
+                    "y": 585,
+                    "z": 30,
+                    "from": [
+                        0,
+                        -250
+                    ],
+                    "to": [
+                        0,
+                        250
+                    ],
+                    "curve": 0,
+                    "color": "#F59E0B",
+                    "arrow": false,
+                    "delay": 1100
+                },
+                {
+                    "type": "shape",
+                    "id": "daughter-cell-left",
+                    "x": 650,
+                    "y": 585,
+                    "z": 20,
+                    "d": "M0 -210 C150 -210 255 -118 255 0 C255 122 150 210 0 210 C-150 210 -255 122 -255 0 C-255 -118 -150 -210 0 -210 Z",
+                    "fill": "#102A43",
+                    "stroke": "#34D399",
+                    "strokeWidth": 8,
+                    "delay": 1700
+                },
+                {
+                    "type": "shape",
+                    "id": "daughter-cell-right",
+                    "x": 1270,
+                    "y": 585,
+                    "z": 20,
+                    "d": "M0 -210 C150 -210 255 -118 255 0 C255 122 150 210 0 210 C-150 210 -255 122 -255 0 C-255 -118 -150 -210 0 -210 Z",
+                    "fill": "#102A43",
+                    "stroke": "#34D399",
+                    "strokeWidth": 8,
+                    "delay": 1850
+                },
+                {
+                    "type": "badge",
+                    "id": "daughter-label-left",
+                    "x": 650,
+                    "y": 845,
+                    "z": 40,
+                    "text": "DAUGHTER CELL A",
+                    "color": "#34D399",
+                    "size": 19,
+                    "delay": 2200
+                },
+                {
+                    "type": "badge",
+                    "id": "daughter-label-right",
+                    "x": 1270,
+                    "y": 845,
+                    "z": 40,
+                    "text": "DAUGHTER CELL B",
+                    "color": "#34D399",
+                    "size": 19,
+                    "delay": 2350
+                }
+            ],
+            "animation": {
+                "tracks": [
+                    {
+                        "target": "cytokinesis-panel",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 700,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "targets": [
+                            "cytokinesis-title",
+                            "cytokinesis-badge"
+                        ],
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "y": [
+                                130,
+                                180
+                            ]
+                        },
+                        "stagger": 220,
+                        "duration": 900,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "cytokinesis-parent",
+                        "properties": {
+                            "scale": [
+                                0.65,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "scaleX": [
+                                1,
+                                1.12
+                            ]
+                        },
+                        "delay": 350,
+                        "duration": 1800,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "targets": [
+                            "cytokinesis-nucleus-left",
+                            "cytokinesis-nucleus-right"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0.15,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "stagger": 250,
+                        "delay": 1200,
+                        "duration": 1400,
+                        "ease": "out(5)"
+                    },
+                    {
+                        "target": "cytokinesis-furrow",
+                        "properties": {
+                            "progress": [
+                                0,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "scaleY": [
+                                0.1,
+                                1
+                            ]
+                        },
+                        "delay": 2300,
+                        "duration": 1800,
+                        "ease": "inOut(3)"
+                    },
+                    {
+                        "target": "cytokinesis-parent",
+                        "properties": {
+                            "scaleX": [
+                                1.12,
+                                0.08
+                            ],
+                            "opacity": [
+                                1,
+                                0
+                            ]
+                        },
+                        "delay": 3900,
+                        "duration": 1600,
+                        "ease": "inOut(4)"
+                    },
+                    {
+                        "targets": [
+                            "daughter-cell-left",
+                            "daughter-cell-right"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0.4,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "x": [
+                                960,
+                                650
+                            ]
+                        },
+                        "stagger": 250,
+                        "delay": 4200,
+                        "duration": 1700,
+                        "ease": "out(5)"
+                    },
+                    {
+                        "targets": [
+                            "daughter-label-left",
+                            "daughter-label-right"
+                        ],
+                        "properties": {
+                            "y": [
+                                900,
+                                845
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "stagger": 200,
+                        "delay": 5500,
+                        "duration": 900,
+                        "ease": "out(4)"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "composition",
+            "id": "cell-cycle-control",
+            "title": "Cell-Cycle Quality Control",
+            "start": 84,
+            "duration": 12,
+            "narration": "Cell reproduction is not an uncontrolled event. Checkpoints monitor preparation, DNA replication, and chromosome attachment. When division succeeds, two daughter cells enter their own cycles, supporting growth, repair, and biological continuity.",
+            "elements": [
+                {
+                    "type": "panel",
+                    "id": "control-panel",
+                    "x": 960,
+                    "y": 540,
+                    "z": 0,
+                    "width": 1580,
+                    "height": 720,
+                    "radius": 40,
+                    "color": "#0C1729",
+                    "border": "#38BDF866",
+                    "delay": 0
+                },
+                {
+                    "type": "particles",
+                    "id": "control-particles",
+                    "x": 960,
+                    "y": 540,
+                    "z": 5,
+                    "particleType": "dots",
+                    "count": 60,
+                    "color": "#34D399",
+                    "speed": 0.3,
+                    "width": 1450,
+                    "height": 650,
+                    "delay": 0
+                },
+                {
+                    "type": "text",
+                    "id": "control-title",
+                    "x": 960,
+                    "y": 180,
+                    "z": 40,
+                    "content": "CONTROLLED REPRODUCTION SUSTAINS LIFE",
+                    "size": 55,
+                    "weight": "800",
+                    "color": "#F8FAFC",
+                    "delay": 100
+                },
+                {
+                    "type": "pipeline",
+                    "id": "control-spine",
+                    "x": 960,
+                    "y": 540,
+                    "z": 12,
+                    "width": 18,
+                    "fluidColor": "#38BDF8",
+                    "pulseColor": "#BAE6FD",
+                    "points": [
+                        [
+                            -570,
+                            0
+                        ],
+                        [
+                            570,
+                            0
+                        ]
+                    ],
+                    "arrow": true,
+                    "speed": 1.4,
+                    "label": "CELL-CYCLE QUALITY CONTROL",
+                    "delay": 350
+                },
+                {
+                    "type": "card",
+                    "id": "checkpoint-g1",
+                    "x": 475,
+                    "y": 700,
+                    "z": 30,
+                    "width": 340,
+                    "height": 185,
+                    "title": "CHECKPOINT 01",
+                    "value": "Cell Readiness",
+                    "badge": "G1",
+                    "subtitle": "Preparation is evaluated before DNA replication.",
+                    "color": "#38BDF8",
+                    "delay": 600
+                },
+                {
+                    "type": "card",
+                    "id": "checkpoint-g2",
+                    "x": 960,
+                    "y": 380,
+                    "z": 30,
+                    "width": 340,
+                    "height": 185,
+                    "title": "CHECKPOINT 02",
+                    "value": "DNA Status",
+                    "badge": "G2",
+                    "subtitle": "Replication is evaluated before mitosis.",
+                    "color": "#A78BFA",
+                    "delay": 850
+                },
+                {
+                    "type": "card",
+                    "id": "checkpoint-m",
+                    "x": 1445,
+                    "y": 700,
+                    "z": 30,
+                    "width": 340,
+                    "height": 185,
+                    "title": "CHECKPOINT 03",
+                    "value": "Attachment",
+                    "badge": "M PHASE",
+                    "subtitle": "Chromosome attachment is checked before separation.",
+                    "color": "#F59E0B",
+                    "delay": 1100
+                },
+                {
+                    "type": "badge",
+                    "id": "control-result",
+                    "x": 960,
+                    "y": 825,
+                    "z": 40,
+                    "text": "GROWTH • REPAIR • CONTINUITY",
+                    "color": "#34D399",
+                    "size": 23,
+                    "delay": 1600
+                },
+                {
+                    "type": "gauge",
+                    "id": "control-gauge",
+                    "x": 960,
+                    "y": 650,
+                    "z": 30,
+                    "style": "radial",
+                    "title": "DIVISION SEQUENCE",
+                    "min": 0,
+                    "max": 100,
+                    "value": 0,
+                    "unit": "%",
+                    "color": "#34D399",
+                    "radius": 90,
+                    "delay": 1300
+                }
+            ],
+            "animation": {
+                "tracks": [
+                    {
+                        "target": "control-panel",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "scale": [
+                                0.95,
+                                1
+                            ]
+                        },
+                        "duration": 850,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "control-particles",
+                        "properties": {
+                            "opacity": [
+                                0,
+                                0.55
+                            ],
+                            "intensity": [
+                                0.2,
+                                1
+                            ]
+                        },
+                        "duration": 2200,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "target": "control-title",
+                        "properties": {
+                            "y": [
+                                125,
+                                180
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "duration": 950,
+                        "ease": "out(4)"
+                    },
+                    {
+                        "target": "control-spine",
+                        "properties": {
+                            "flow": [
+                                0,
+                                800
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 500,
+                        "duration": 9000,
+                        "ease": "linear"
+                    },
+                    {
+                        "targets": [
+                            "checkpoint-g1",
+                            "checkpoint-g2",
+                            "checkpoint-m"
+                        ],
+                        "properties": {
+                            "scale": [
+                                0.7,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "stagger": 550,
+                        "delay": 800,
+                        "duration": 1000,
+                        "ease": "out(5)"
+                    },
+                    {
+                        "target": "control-gauge",
+                        "properties": {
+                            "value": [
+                                0,
+                                100
+                            ],
+                            "scale": [
+                                0.45,
+                                1
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ]
+                        },
+                        "delay": 2300,
+                        "duration": 5200,
+                        "ease": "out(3)"
+                    },
+                    {
+                        "target": "control-result",
+                        "properties": {
+                            "y": [
+                                890,
+                                825
+                            ],
+                            "opacity": [
+                                0,
+                                1
+                            ],
+                            "scale": [
+                                0.75,
+                                1
+                            ]
+                        },
+                        "delay": 5200,
+                        "duration": 1200,
+                        "ease": "out(5)"
+                    }
+                ]
+            }
+        }
+    ]
+}
