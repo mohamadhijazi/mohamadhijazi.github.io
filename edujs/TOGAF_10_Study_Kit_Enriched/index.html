@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>TOGAF 10 Study Kit — Learning Tracker</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --surface: #fff;
+      --ink: #182230;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --accent: #3157c8;
+      --accent-soft: #edf2ff;
+      --green: #137a52;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.5; }
+    .wrap { max-width: 920px; padding: 48px 22px 64px; margin: auto; }
+    header { margin-bottom: 28px; }
+    .eyebrow { margin: 0 0 8px; color: var(--accent); font-size: .76rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(1.8rem, 5vw, 2.65rem); letter-spacing: -.04em; line-height: 1.12; }
+    .intro { max-width: 650px; margin: 12px 0 0; color: var(--muted); }
+    .progress-card, .resource-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+    .progress-card { padding: 22px; margin: 26px 0 30px; }
+    .progress-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .progress-top strong { font-size: 1rem; }
+    #progress-label { color: var(--muted); font-size: .9rem; }
+    progress { display: block; width: 100%; height: 10px; border: 0; border-radius: 99px; overflow: hidden; appearance: none; }
+    progress::-webkit-progress-bar { background: #e9edf5; border-radius: 99px; }
+    progress::-webkit-progress-value { background: var(--accent); border-radius: 99px; transition: width .2s ease; }
+    progress::-moz-progress-bar { background: var(--accent); border-radius: 99px; }
+    .progress-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+    .progress-bottom small { color: var(--muted); }
+    button { border: 0; background: transparent; color: var(--accent); font: inherit; font-size: .85rem; font-weight: 650; cursor: pointer; padding: 5px 0; }
+    button:hover { text-decoration: underline; }
+    h2 { margin: 0 0 12px; font-size: 1.05rem; }
+    .list { display: grid; gap: 10px; }
+    .resource-card { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 15px 17px; transition: border-color .15s, box-shadow .15s; }
+    .resource-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 14px #1e293b0b; }
+    .resource-card.is-done { background: #fbfefc; }
+    .check { width: 19px; height: 19px; accent-color: var(--green); cursor: pointer; }
+    .resource-title { display: inline-block; color: var(--ink); font-weight: 680; text-decoration: none; }
+    .resource-title:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    .filename { display: block; margin-top: 2px; color: var(--muted); font-size: .77rem; overflow-wrap: anywhere; }
+    .status { color: var(--muted); font-size: .76rem; white-space: nowrap; }
+    .is-done .status { color: var(--green); font-weight: 700; }
+    .section { margin-top: 28px; }
+    footer { margin-top: 28px; color: var(--muted); font-size: .82rem; }
+    @media (max-width: 560px) {
+      .wrap { padding: 32px 16px 48px; }
+      .resource-card { grid-template-columns: 24px minmax(0, 1fr); gap: 11px; padding: 14px; }
+      .status { grid-column: 2; margin-top: -8px; }
+      .progress-card { padding: 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <p class="eyebrow">Study kit</p>
+      <h1>TOGAF Standard, 10th Edition</h1>
+      <p class="intro">Your reading list and lightweight study tracker. Mark a guide complete as you work through it; your progress stays in this browser.</p>
+    </header>
+
+    <section class="progress-card" aria-label="Learning progress">
+      <div class="progress-top"><strong>Learning progress</strong><span id="progress-label" aria-live="polite">0 of 14 complete</span></div>
+      <progress id="progress" max="14" value="0" aria-label="Study guides completed"></progress>
+      <div class="progress-bottom"><small id="progress-percent">0% complete</small><button id="reset" type="button">Reset progress</button></div>
+    </section>
+
+    <section aria-labelledby="study-heading">
+      <h2 id="study-heading">Study guides</h2>
+      <div class="list" id="study-list"></div>
+    </section>
+
+    <section class="section" aria-labelledby="reference-heading">
+      <h2 id="reference-heading">Reference</h2>
+      <div class="list" id="reference-list"></div>
+    </section>
+
+    <footer>Progress is stored locally in this browser and is not uploaded. Clearing browser site data will clear it.</footer>
+  </main>
+  <script>
+    (() => {
+      const storageKey = 'togaf10-study-kit-progress-v1';
+      const resources = [
+        { file: '01_EXAM_BLUEPRINT_AND_PLAN.md', title: 'Exam blueprint and study plan', group: 'study' },
+        { file: '02_CORE_CONCEPTS_AND_GLOSSARY.md', title: 'Core concepts and glossary', group: 'study' },
+        { file: '03_ADM_COMPLETE_GUIDE.md', title: 'The ADM: complete guide', group: 'study' },
+        { file: '04_ADM_TECHNIQUES.md', title: 'ADM techniques', group: 'study' },
+        { file: '05_GOVERNANCE_CONTENT_AND_CAPABILITY.md', title: 'Governance, content, and capability', group: 'study' },
+        { file: '06_APPLYING_AND_ADAPTING_THE_ADM.md', title: 'Applying and adapting the ADM', group: 'study' },
+        { file: '07_PRACTITIONER_SCENARIO_PLAYBOOK.md', title: 'Practitioner scenario playbook', group: 'study' },
+        { file: '08_PRACTICE_QUESTIONS.md', title: 'Practice questions', group: 'study' },
+        { file: '09_FINAL_REVIEW_CHEATSHEETS.md', title: 'Final review and cheatsheets', group: 'study' },
+        { file: '10_SOURCES_AND_VERSION_GUARDRAILS.md', title: 'Sources and version guardrails', group: 'study' },
+        { file: '11_ADM_DELIVERABLES_DEEP_DIVE.md', title: 'ADM deliverables deep dive', group: 'study' },
+        { file: '12_BUSINESS_DIGITAL_SECURITY_DOMAIN_GUIDE.md', title: 'Business, digital, and security domains', group: 'study' },
+        { file: '13_PDF_COVERAGE_CHECKLIST.md', title: 'PDF coverage checklist', group: 'study' },
+        { file: 'README.md', title: 'Kit overview and how to use it', group: 'reference' }
+      ];
+
+      let completed = {};
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        if (saved && typeof saved === 'object' && !Array.isArray(saved)) completed = saved;
+      } catch (_) { completed = {}; }
+
+      const escapeHtml = (value) => value.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+      const render = () => {
+        for (const group of ['study', 'reference']) {
+          const list = document.getElementById(group === 'study' ? 'study-list' : 'reference-list');
+          list.innerHTML = resources.filter((item) => item.group === group).map((item) => {
+            const done = completed[item.file] === true;
+            const file = escapeHtml(item.file);
+            const title = escapeHtml(item.title);
+            return `<article class="resource-card${done ? ' is-done' : ''}">
+              <input class="check" type="checkbox" data-file="${file}" aria-label="Mark ${title} complete" ${done ? 'checked' : ''}>
+              <div><a class="resource-title" href="${file}">${title}</a><span class="filename">${file}</span></div>
+              <span class="status">${done ? 'Complete' : 'Not started'}</span>
+            </article>`;
+          }).join('');
+        }
+        const count = resources.filter((item) => completed[item.file] === true).length;
+        const percent = Math.round((count / resources.length) * 100);
+        document.getElementById('progress').value = count;
+        document.getElementById('progress-label').textContent = `${count} of ${resources.length} complete`;
+        document.getElementById('progress-percent').textContent = `${percent}% complete`;
+        document.querySelectorAll('.check').forEach((checkbox) => checkbox.addEventListener('change', (event) => {
+          completed[event.currentTarget.dataset.file] = event.currentTarget.checked;
+          try { localStorage.setItem(storageKey, JSON.stringify(completed)); } catch (_) { /* Storage may be disabled. */ }
+          render();
+        }));
+      };
+
+      document.getElementById('reset').addEventListener('click', () => {
+        completed = {};
+        try { localStorage.removeItem(storageKey); } catch (_) { /* Storage may be disabled. */ }
+        render();
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>
