@@ -271,20 +271,28 @@ class App {
     if (c4Type === "container") {
       const cnt = this.data.c4.contextL2.containers.find(c => c.id === itemId);
       if (cnt) {
-        const layerId = cnt.layerIds?.[0];
-        this.inspectLayer(layerId);
         const mappedLayers = (cnt.layerIds || []).map(id => this.data.layers.find(layer => layer.id === id)).filter(Boolean);
-        if (mappedLayers.length > 1) {
-          const layerLinks = mappedLayers.map(layer => `
-            <li><button class="btn btn-ghost" onclick="window.app.inspectLayer('${layer.id}')">${layer.name}</button></li>
-          `).join("");
-          document.getElementById("drawer-body").insertAdjacentHTML("afterbegin", `
-            <div class="drawer-section">
-              <h4 class="drawer-section-title">All mapped architecture layers</h4>
-              <ul class="drawer-bullet-list">${layerLinks}</ul>
-            </div>
-          `);
-        }
+        const team = this.data.teams[cnt.team];
+        const titleEl = document.getElementById("drawer-title");
+        const subEl = document.getElementById("drawer-subtitle");
+        const bodyEl = document.getElementById("drawer-body");
+        titleEl.textContent = cnt.name;
+        subEl.textContent = `C4 Container • ${cnt.tech}`;
+        bodyEl.innerHTML = `
+          <div class="drawer-section">
+            <span class="sim-team-tag" style="background:${team.lightBg};color:${team.color};border:1px solid ${team.border};">Owner: ${team.name}</span>
+            <h4 class="drawer-section-title">Container responsibility</h4>
+            <p class="drawer-lead-desc">${cnt.desc}</p>
+            <p><strong>Technology:</strong> <code>${cnt.tech}</code></p>
+          </div>
+          <div class="drawer-section">
+            <h4 class="drawer-section-title">Mapped architecture layers</h4>
+            ${mappedLayers.length ? `<ul class="drawer-bullet-list">${mappedLayers.map(layer => `
+              <li><button class="btn btn-ghost" onclick="window.app.inspectLayer('${layer.id}')">${layer.name}</button><p>${layer.description}</p></li>
+            `).join("")}</ul>` : `<p>No architecture-layer mapping is defined for this container.</p>`}
+          </div>
+        `;
+        this.openInspector();
         return;
       }
     }
@@ -310,7 +318,7 @@ class App {
           <div class="drawer-section">
             <h4 class="drawer-section-title">Technology & Implementation</h4>
             <p><strong>Stack:</strong> <code>${cmp.tech}</code></p>
-            <p>Runs as part of the stateful Agentic Orchestrator runtime container, maintaining event loops, scratchpad state, and tool invocation hooks.</p>
+            <p><strong>Container:</strong> ${this.data.c4.contextL3.containerName}</p>
           </div>
           <div class="drawer-section">
             <button class="btn btn-outline-cyan btn-block" onclick="window.app.inspectLayer('orchestrator')">
@@ -338,8 +346,8 @@ class App {
             <p class="drawer-lead-desc">${node.desc}</p>
           </div>
           <div class="drawer-section">
-            <h4 class="drawer-section-title">Architectural Role</h4>
-            <p>In the Enterprise AI Platform Context, this entity represents an external boundary interaction point with mutual TLS authentication and cryptographic audit trails.</p>
+            <h4 class="drawer-section-title">Role in the architecture</h4>
+            <p>${node.role || "No role description is defined for this context element."}</p>
           </div>
         `;
         this.openInspector();
@@ -352,15 +360,16 @@ class App {
     const label = decodeURIComponent(labelEncoded);
     const fromName = decodeURIComponent(fromNameEncoded);
     const toName = decodeURIComponent(toNameEncoded);
+    const protocol = label.match(/\[([^\]]+)\]/)?.[1] || "Not specified in the relationship data";
     const team = this.data.teams[teamId] || { name: "System", color: "#64748b", lightBg: "rgba(100,116,139,0.12)", border: "rgba(100,116,139,0.4)" };
+    const relationshipSubtitle = `C4 Relationship - ${team.name}`;
 
     const titleEl = document.getElementById("drawer-title");
     const subEl = document.getElementById("drawer-subtitle");
     const bodyEl = document.getElementById("drawer-body");
+    subEl.textContent = relationshipSubtitle;
 
     titleEl.textContent = `Data Flow: ${fromName} → ${toName}`;
-    subEl.textContent = `Inter-Container Communication Protocol • ${team.name}`;
-
     bodyEl.innerHTML = `
       <div class="drawer-section">
         <span class="sim-team-tag" style="background: ${team.lightBg}; color: ${team.color}; border: 1px solid ${team.border};">
@@ -373,21 +382,13 @@ class App {
       </div>
 
       <div class="drawer-section">
-        <h4 class="drawer-section-title">Security & Protocol Guarantees</h4>
+        <h4 class="drawer-section-title">Relationship details</h4>
         <ul class="drawer-bullet-list">
-          <li><strong>Transport Security:</strong> Strict mutual TLS 1.3 (mTLS) with ephemeral per-session certificate validation.</li>
-          <li><strong>Authentication & Authorization:</strong> JWT Bearer token propagation with fine-grained claim scopes (OAuth2 / OIDC).</li>
-          <li><strong>Data Sanitization:</strong> Ingress/Egress inspection hooks ensure no unredacted PII or secret credentials traverse container boundaries.</li>
-          <li><strong>Reliability:</strong> Async backoff retry policy with circuit breaker tripping after 3 consecutive failures.</li>
+          <li><strong>Direction:</strong> ${fromName} → ${toName}</li>
+          <li><strong>Declared protocol:</strong> ${protocol}</li>
+          <li><strong>Control owner:</strong> ${team.name}</li>
         </ul>
-      </div>
-
-      <div class="drawer-section">
-        <h4 class="drawer-section-title">Telemetry & Observability Spans</h4>
-        <ul class="drawer-bullet-list code-bullets">
-          <li><code>traceparent</code> W3C distributed tracing context propagation injected in request headers.</li>
-          <li>OpenTelemetry GenAI span records: duration, token size, byte payload, HTTP status code.</li>
-        </ul>
+        <p>The diagram records the interaction intent and any protocol named in its label. It does not define a shared authentication, encryption, retry, or telemetry contract for every relationship.</p>
       </div>
     `;
     this.openInspector();

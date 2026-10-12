@@ -413,18 +413,18 @@ const ARCHITECTURE_DATA = {
       subtitle: "Context boundary showing enterprise users, external channels, third-party model providers, enterprise systems, and governance actors.",
       nodes: [
         // Actors
-        { id: "actor-business", type: "actor", label: "Business User / Employee", desc: "Interacts via Web Copilot, Slack/Teams to execute workflows and retrieve intelligence.", x: 100, y: 120 },
-        { id: "actor-dev", type: "actor", label: "AI Developer / Engineer", desc: "Builds agent graphs and reusable skills, deploys custom MCP servers, reviews traces, and monitors evals.", x: 100, y: 320 },
-        { id: "actor-auditor", type: "actor", label: "Governance & SecOps Auditor", desc: "Reviews safety logs, inspects policy decisions, verifies compliance with regulations.", x: 100, y: 520 },
+        { id: "actor-business", type: "actor", label: "Business User / Employee", desc: "Interacts via Web Copilot, Slack/Teams to execute workflows and retrieve intelligence.", role: "Starts an approved business journey, supplies task context, reviews the generated result, and provides feedback. The business owner remains responsible for decisions made using that result.", x: 100, y: 120 },
+        { id: "actor-dev", type: "actor", label: "AI Developer / Engineer", desc: "Builds agent graphs and reusable skills, deploys custom MCP servers, reviews traces, and monitors evals.", role: "Builds and evaluates data, models, prompts, agent graphs, skills, and integrations through the controlled engineering and release lifecycle.", x: 100, y: 320 },
+        { id: "actor-auditor", type: "actor", label: "Governance & SecOps Auditor", desc: "Reviews safety logs, inspects policy decisions, verifies compliance with regulations.", role: "Independently reviews risk classifications, policy decisions, human approvals, release evidence, and retained audit records.", x: 100, y: 520 },
 
         // Core System
-        { id: "system-platform", type: "system-core", label: "Enterprise Agentic AI Platform", desc: "Enterprise AI applications and workflows supported by governed data, agent skills, model lifecycle controls, safety, inference, operations, and cost governance.", x: 480, y: 280, width: 340, height: 260 },
+        { id: "system-platform", type: "system-core", label: "Enterprise Agentic AI Platform", desc: "Enterprise AI applications and workflows supported by governed data, agent skills, model lifecycle controls, safety, inference, operations, and cost governance.", role: "Provides the governed execution boundary for AI use cases: authenticates requests, applies policy and safety controls, coordinates models and tools, records evidence, and measures service quality and cost.", x: 480, y: 280, width: 340, height: 260 },
 
         // External Systems
-        { id: "ext-llm-cloud", type: "system-ext", label: "Frontier Cloud LLMs", desc: "OpenAI (GPT-4o), Anthropic (Claude 3.5), Google Vertex AI (Gemini Pro/Flash).", x: 960, y: 100 },
-        { id: "ext-enterprise-apps", type: "system-ext", label: "Enterprise Systems & ERP", desc: "SAP, Salesforce, Jira, ServiceNow, Snowflake, SharePoint via MCP Servers.", x: 960, y: 270 },
-        { id: "ext-idp", type: "system-ext", label: "Identity & Access (IdP)", desc: "Okta / Microsoft Entra ID providing OAuth2, SAML, and user group claims.", x: 960, y: 440 },
-        { id: "ext-regulators", type: "system-ext", label: "Audit & Regulatory Archives", desc: "Immutable compliance ledgers for EU AI Act, SEC, and NIST audit reporting.", x: 960, y: 610 }
+        { id: "ext-llm-cloud", type: "system-ext", label: "Frontier Cloud LLMs", desc: "OpenAI (GPT-4o), Anthropic (Claude 3.5), Google Vertex AI (Gemini Pro/Flash).", role: "Supplies externally hosted model inference. The platform sends requests according to its provider, privacy, residency, and routing controls, then treats returned content as model output subject to validation.", x: 960, y: 100 },
+        { id: "ext-enterprise-apps", type: "system-ext", label: "Enterprise Systems & ERP", desc: "SAP, Salesforce, Jira, ServiceNow, Snowflake, SharePoint via MCP Servers.", role: "Remains the system of record for enterprise transactions and knowledge. The platform accesses it through approved, scoped integrations and returns results or permitted actions.", x: 960, y: 270 },
+        { id: "ext-idp", type: "system-ext", label: "Identity & Access (IdP)", desc: "Okta / Microsoft Entra ID providing OAuth2, SAML, and user group claims.", role: "Authenticates people and workloads and supplies identity claims used by the platform to make access decisions for applications, data, and tools.", x: 960, y: 440 },
+        { id: "ext-regulators", type: "system-ext", label: "Audit & Regulatory Archives", desc: "Immutable compliance ledgers for EU AI Act, SEC, and NIST audit reporting.", role: "Receives or preserves evidence needed for oversight and audit. It is an external evidence destination, not part of request execution or policy decisioning.", x: 960, y: 610 }
       ],
       edges: [
         { from: "actor-business", to: "system-platform", label: "Submits prompts, tasks, receives synthesized answers [HTTPS/WSS]", team: "product" },
