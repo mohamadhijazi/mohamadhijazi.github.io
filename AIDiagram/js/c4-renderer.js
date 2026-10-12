@@ -358,7 +358,7 @@ class C4Renderer {
 
           <!-- Boundary box for Container -->
           <rect x="30" y="80" width="1180" height="630" rx="16" class="container-boundary-box" />
-          <text x="50" y="105" class="boundary-label">CONTAINER: Agentic Orchestrator & Swarm Runtime (LangGraph / Async Core)</text>
+          <text x="50" y="105" class="boundary-label">CONTAINER: Agentic Orchestrator & Agent Harness Runtime (LangGraph / Async Core)</text>
 
           <!-- Edges -->
           <g class="edges-group">${edgesHtml}</g>

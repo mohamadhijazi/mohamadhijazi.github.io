@@ -7,7 +7,7 @@ Interactive architectural modeling tool built with pure vanilla **HTML5**, **CSS
 The architecture covers 14 enterprise AI capability layers, including the runtime, engineering lifecycle, business operating model, and supporting enterprise services:
 1. **Multi-Interaction Channels**: Omnichannel ingress (Next.js Copilot Web UI, Mobile SDKs, Enterprise ChatOps for Slack & MS Teams, Realtime Voice/WebRTC, Headless REST/GraphQL APIs).
 2. **Guardrails & Safety Firewall**: Dual-sided (Ingress/Egress) security interceptor (Prompt injection defense, Jailbreak detection, Presidio PII tokenization vault, Toxicity filters, Hallucination/Groundedness verification, JSON Schema validation).
-3. **Agentic Orchestrator & State Engine**: Cognitive brain (LangGraph / AutoGen / CrewAI runtime, Task graph DAG decomposition, ReAct & Reflection reasoning loops, Temporal state checkpoints, Human-in-the-Loop approval gates, Dynamic tool caller).
+3. **Agentic Orchestrator & State Engine**: Agent harness and cognitive runtime (bounded model/tool loop, LangGraph / AutoGen / CrewAI, task graph decomposition, ReAct / reflection, state checkpoints, human approval, and tool dispatch).
 4. **Multi-Agent Swarm & Specialists**: Ecosystem of specialized autonomous agents and a versioned Agent Skills Catalog for reusable instructions and assets (Supervisor Agent, Deep Research Agent, Sandboxed Code Runner, SQL Data Analyst, Critic/Verification Agent).
 5. **Decision & Policy Engine**: Hybrid decisioning combining Policy-as-Code (Open Policy Agent / Rego), deterministic business rules (Drools/JSON Rules), probabilistic confidence thresholds, and risk escalation workflows.
 6. **Model Context Protocol (MCP) Hub**: Standardized tool discovery and execution implementing Anthropic's Model Context Protocol (PostgreSQL/Snowflake MCPs, Enterprise SaaS MCPs for SAP/Salesforce/Jira, Git & Filesystem MCPs).
@@ -49,10 +49,11 @@ The architecture covers 14 enterprise AI capability layers, including the runtim
 
 ### View 4: C4 Level 3 - Component Diagrams
   - Select any of the 14 architecture layers to see every component listed for that layer.
-- Includes an additional in-depth decomposition of the **Agentic Orchestrator & Swarm Runtime** container:
+- Includes an additional in-depth decomposition of the **Agentic Orchestrator & Agent Harness Runtime** container:
   - Session & Context Coordinator
   - Graph Decomposition & Planner (ReAct / LangGraph)
   - Multi-Agent Swarm Supervisor
+  - Agent Harness & Execution Control Loop
   - Agent Skills Catalog & Registry
   - Specialist Agents Pool (Research, Code, SQL, Critic)
   - Working Memory & Scratchpad

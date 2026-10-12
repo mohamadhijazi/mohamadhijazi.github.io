@@ -4,7 +4,7 @@
  * - Architectural Layers (Matrix View with RACI for AI, Product, Governance, Cyber Security)
  * - C4 Level 1: System Context Diagram
  * - C4 Level 2: Container Diagram
- * - C4 Level 3: Component Diagram (Agentic Orchestrator Deep-Dive)
+ * - C4 Level 3: Component Diagram (Agent Harness / Orchestrator Deep-Dive)
  * - Dynamic Flow: Interactive End-to-End Execution Trace
  */
 
@@ -115,10 +115,11 @@ const ARCHITECTURE_DATA = {
       id: "orchestrator",
       name: "Agentic Orchestrator & State Engine",
       category: "Cognitive Core",
-      description: "Central brain managing multi-step reasoning, plan decomposition, stateful scratchpads, tool invocation loops, and dynamic recovery.",
-      techStack: ["LangGraph Runtime", "AutoGen / CrewAI Engine", "FastAPI Asynchronous Gateway", "Temporal.io Workflow Coordinator", "Redis State Checkpoints"],
+      description: "Agent harness and central orchestration runtime managing bounded model/tool turns, context, plan execution, stateful checkpoints, policy hooks, and recovery.",
+      techStack: ["Agent Harness / Execution Loop", "LangGraph Runtime", "AutoGen / CrewAI Engine", "FastAPI Asynchronous Gateway", "Temporal.io Workflow Coordinator", "Redis State Checkpoints"],
       components: [
         "Task Graph Decomposition Engine",
+        "Agent Harness & Bounded Execution Loop",
         "ReAct & Reflection Loop Controller",
         "Short-term Working Memory Manager",
         "Checkpoint & State Store",
@@ -131,9 +132,9 @@ const ARCHITECTURE_DATA = {
         governance: { role: "C", details: "Reviews autonomous agent permissions, ensures human override capability, and enforces accountability chains." },
         security: { role: "R", details: "Enforces least-privilege tool execution tokens, sandbox isolation, and prevention of infinite reasoning loops." }
       },
-      keyDeliverables: ["Stateful Workflow Graphs", "ReAct Execution Runtime", "Human Checkpoint UI Integration", "Agent Context Cache"],
+      keyDeliverables: ["Stateful Workflow Graphs", "Bounded Agent Harness Runtime", "Human Checkpoint UI Integration", "Agent Context Cache"],
       governanceTouchpoints: ["Human-in-the-Loop (HITL) Approval Records", "Explainability Logs of Agent Reasoning Steps"],
-      securityControls: ["Maximum Step Counter (Loop Breaker)", "Token Scoping per Execution Branch", "Ephemeral Memory Auto-purge"],
+      securityControls: ["Maximum Step, Time & Token Budgets", "Per-Agent Tool and Identity Scopes", "Sandboxed Execution Boundaries", "Ephemeral Memory Auto-purge"],
       finopsLevers: ["Pruning past trajectory history to save context tokens", "Dynamic early exit when confidence reaches 95%"],
       aiopsMetrics: ["Agent Plan Execution Success Rate (>92%)", "Average Steps per Goal", "Memory Checkpoint Serialization Time (<12ms)"]
     },
@@ -466,11 +467,11 @@ const ARCHITECTURE_DATA = {
         },
         {
           id: "cnt-orchestrator",
-          name: "Agentic Orchestrator & Swarm Runtime",
+          name: "Agentic Orchestrator & Agent Harness Runtime",
           tech: "LangGraph / Python / AsyncIO / Redis",
           type: "container",
           layerIds: ["orchestrator", "multiagent", "applications"],
-          desc: "Core cognitive engine running multi-agent swarms, reusable skill discovery, planning DAGs, session scratchpads, and reflection loops.",
+          desc: "Agent harness and orchestration runtime coordinating bounded model/tool turns, multi-agent swarms, skill discovery, planning, checkpoints, and recovery.",
           team: "ai",
           x: 610, y: 140, w: 250, h: 110
         },
@@ -581,12 +582,12 @@ const ARCHITECTURE_DATA = {
       ]
     },
 
-    // LEVEL 3: COMPONENT DIAGRAM (Deep Dive into Container 3: Agentic Orchestrator)
+    // LEVEL 3: COMPONENT DIAGRAM (Agent Harness / Orchestrator Runtime)
     contextL3: {
       id: "c4-component",
       title: "C4 Level 3: Component Diagram",
-      subtitle: "Internal software components of Container 3: 'Agentic Orchestrator & Swarm Runtime', illustrating reasoning loops, tool dispatch, and state coordination.",
-      containerName: "Container: Agentic Orchestrator & Swarm Runtime",
+      subtitle: "Internal components of the Agent Harness and Orchestrator container, showing the bounded model/tool loop and the services it coordinates.",
+      containerName: "Container: Agentic Orchestrator & Agent Harness Runtime",
       components: [
         {
           id: "cmp-session",
@@ -613,6 +614,14 @@ const ARCHITECTURE_DATA = {
           x: 640, y: 120, w: 240, h: 110
         },
         {
+          id: "cmp-harness",
+          name: "Agent Harness & Execution Control Loop",
+          tech: "Bounded Agent Runtime / Turn Controller",
+          desc: "Coordinates each agent run: assembles context, invokes the model, routes tool calls, resumes with results, and enforces step, time, and token limits. It delegates safety, policy, state, and sandbox work to their owning components.",
+          team: "ai",
+          x: 640, y: 500, w: 240, h: 110
+        },
+        {
           id: "cmp-specialists",
           name: "Specialist Agents Pool",
           tech: "Research, SQL, Code, Critique Agents",
@@ -626,7 +635,7 @@ const ARCHITECTURE_DATA = {
           tech: "Versioned Skill Definitions / Metadata Store",
           desc: "Indexes reusable agent skills, instructions, and supporting assets; resolves versions and makes selected skills available to agents at runtime.",
           team: "ai",
-          x: 490, y: 500, w: 240, h: 110
+          x: 350, y: 500, w: 240, h: 110
         },
         {
           id: "cmp-memory",
@@ -666,7 +675,7 @@ const ARCHITECTURE_DATA = {
           tech: "Middleware Pipeline Hook",
           desc: "Validates intermediate agent thoughts and tool parameters against safety policies before execution.",
           team: "security",
-          x: 200, y: 500, w: 240, h: 110
+          x: 60, y: 500, w: 240, h: 110
         },
         {
           id: "cmp-telemetry-hook",
@@ -674,20 +683,24 @@ const ARCHITECTURE_DATA = {
           tech: "OpenTelemetry Span Exporter",
           desc: "Instruments every graph node with step latency, token count, model ID, and cost metadata.",
           team: "product",
-          x: 780, y: 500, w: 240, h: 110
+          x: 930, y: 500, w: 240, h: 110
         }
       ],
       edges: [
         { from: "cmp-session", to: "cmp-planner", label: "Passes sanitized context & intent", team: "ai" },
         { from: "cmp-planner", to: "cmp-supervisor", label: "Assigns sub-task DAG to agent swarm", team: "ai" },
-        { from: "cmp-supervisor", to: "cmp-skills", label: "Discovers skills for delegated task", team: "ai" },
+        { from: "cmp-supervisor", to: "cmp-harness", label: "Starts bounded agent run", team: "ai" },
+        { from: "cmp-harness", to: "cmp-skills", label: "Resolves selected reusable skill", team: "ai" },
         { from: "cmp-skills", to: "cmp-specialists", label: "Loads selected skill definitions & assets", team: "ai" },
-        { from: "cmp-specialists", to: "cmp-guardrail-hook", label: "Validates tool call parameters", team: "security" },
+        { from: "cmp-harness", to: "cmp-specialists", label: "Runs selected specialist within turn limits", team: "ai" },
+        { from: "cmp-harness", to: "cmp-guardrail-hook", label: "Checks model turns and tool requests", team: "security" },
         { from: "cmp-guardrail-hook", to: "cmp-hitl", label: "Checks if action requires human review", team: "governance" },
         { from: "cmp-hitl", to: "cmp-mcp-client", label: "Approves safe execution of tool", team: "governance" },
         { from: "cmp-mcp-client", to: "cmp-memory", label: "Writes tool output to working memory", team: "ai" },
-        { from: "cmp-specialists", to: "cmp-llm-client", label: "Requests reasoning completion", team: "ai" },
-        { from: "cmp-llm-client", to: "cmp-telemetry-hook", label: "Emits token & latency metrics", team: "product" }
+        { from: "cmp-memory", to: "cmp-harness", label: "Resumes loop from checkpointed result", team: "ai" },
+        { from: "cmp-harness", to: "cmp-mcp-client", label: "Dispatches approved tool calls", team: "security" },
+        { from: "cmp-harness", to: "cmp-llm-client", label: "Invokes model and processes each response", team: "ai" },
+        { from: "cmp-harness", to: "cmp-telemetry-hook", label: "Emits run trace, budgets, and outcome", team: "product" }
       ]
     }
   },
@@ -747,6 +760,7 @@ const ARCHITECTURE_DATA = {
         summary: "LangGraph Orchestrator decomposes query into 3 sub-tasks: (1) Query Snowflake ERP database, (2) Retrieve internal fraud guidelines from Vector DB, (3) Synthesize executive report.",
         details: {
           planDag: "Step A [SQL Agent] -> Step B [Policy Vector Search] -> Step C [Synthesis Agent]",
+          agentHarness: "Runs a bounded model/tool loop with session context, checkpoint recovery, and step/token limits",
           scratchpadState: "Initialized session state key in Redis: session_f92b",
           loopBreaker: "Max reasoning steps capped at 8"
         }
