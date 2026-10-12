@@ -44,7 +44,7 @@ const ARCHITECTURE_DATA = {
       color: "#f59e0b", // Amber/Gold
       lightBg: "rgba(245, 158, 11, 0.12)",
       border: "rgba(245, 158, 11, 0.4)",
-      roleDescription: "Ensures compliance with EU AI Act, NIST AI RMF, ethical alignment, bias mitigation, and corporate auditability.",
+      roleDescription: "Coordinates risk classification, applicability review, ethical review, bias assessment where relevant, and corporate audit evidence.",
       coreMembers: ["AI Ethics Officers", "Compliance Analysts", "Legal Counsel", "Model Risk Officers", "Privacy & Data Governance Officers", "Third-Party Risk Officers", "Audit Leads"]
     },
     security: {
@@ -71,7 +71,10 @@ const ARCHITECTURE_DATA = {
         "Mobile Agent Client SDKs",
         "Enterprise ChatOps (Slack / MS Teams)",
         "Voice & Realtime Audio Ingress",
-        "Headless API & Webhook Ingestion"
+        "Headless API & Webhook Ingestion",
+        "Human Identity Federation & Session Authentication",
+        "Workload Identity Bootstrap for Service-to-Service Calls",
+        "Tenant Context, Request Correlation & Consent Envelope"
       ],
       raci: {
         ai: { role: "C", details: "Advises on streaming latency budgets, context payload constraints, and multimodal token handling." },
@@ -81,9 +84,9 @@ const ARCHITECTURE_DATA = {
       },
       keyDeliverables: ["Channel Adapters", "Streaming SSE Clients", "Human Feedback (Thumbs up/down) Widgets", "Enterprise Single Sign-On"],
       governanceTouchpoints: ["User AI Disclosure Banner", "Explicit Opt-in for Voice Biometrics", "Session Retention Disclaimers"],
-      securityControls: ["Cloudflare WAF / AWS Shield", "mTLS Channel Endpoints", "Session Token Revocation", "Input Rate Caps"],
+      securityControls: ["Authenticate human and workload identities separately; reject missing, expired, or invalid credentials", "Bind tenant, purpose, and correlation context to each request; do not infer identity from model output", "Cloudflare WAF / AWS Shield", "mTLS Channel Endpoints", "Session Token Revocation", "Input Rate Caps"],
       finopsLevers: ["Client-side caching of static responses", "Debounce high-frequency keystrokes", "Channel-specific token budgets"],
-      aiopsMetrics: ["Channel P95 Latency (<800ms initial token)", "Client-side Dropout Rate", "Streaming Connection Stability"]
+      aiopsMetrics: ["Channel P50/P95/P99 latency by journey (targets set by service owner)", "Client-side dropout and streaming stability"]
     },
     {
       id: "guardrails",
@@ -97,7 +100,10 @@ const ARCHITECTURE_DATA = {
         "Toxicity & Hate Speech Sanitizer",
         "Hallucination & Groundedness Checker",
         "System Prompt Leakage Prevention",
-        "Structured JSON Schema Enforcer"
+        "Structured JSON Schema Enforcer",
+        "Retrieved-Content and Model-Output Trust Boundary Classifier",
+        "Secret / PII Egress Minimization and Redaction Gate",
+        "Untrusted Tool-Result and Agent-Handoff Labeling"
       ],
       raci: {
         ai: { role: "R", details: "Trains domain classifiers, tunes safety embeddings, benchmark false-positive rates on domain vocabulary." },
@@ -106,10 +112,10 @@ const ARCHITECTURE_DATA = {
         security: { role: "R/A", details: "Owns prompt injection defenses, vulnerability red-teaming, zero-day jailbreak mitigations, and secret detection." }
       },
       keyDeliverables: ["Dual Ingress/Egress Interceptor Pipeline", "Zero-PII Tokenizer Vault", "Automated Red-Teaming Test Suites"],
-      governanceTouchpoints: ["NIST AI RMF Safety Benchmarks", "EU AI Act High-Risk Checks", "Audit Trail of Intercepted Prompts"],
-      securityControls: ["Multi-layer Classifier Ensemble", "TruffleHog Secret Scans", "Prompt Obfuscation De-cloaker", "Automated IP Blacklisting"],
+      governanceTouchpoints: ["Risk register maps direct/indirect injection, poisoned or stale knowledge, unsafe parameters, exfiltration, secret/PII leakage, and repeated actions to enforcement point, accountable owner, decision, and auditable outcome", "Review applicable obligations and safety thresholds for the use case; framework references do not establish compliance", "Audit Trail of Intercepted Prompts"],
+      securityControls: ["Treat user prompts, retrieved documents, provider responses, tool results, and agent handoffs as untrusted data", "Screen for direct/indirect prompt injection and unsafe parameters; detection informs policy and is not a prevention guarantee", "Validate tool arguments against schemas and authorization before execution", "Redact/minimize secrets and PII before provider egress; deny or route to approved private inference when policy requires", "If required guardrail checks are unavailable, deny consequential actions; any lower-risk degraded mode requires explicit policy", "Multi-layer Classifier Ensemble", "TruffleHog Secret Scans", "Prompt Obfuscation De-cloaker"],
       finopsLevers: ["Fast-path heuristic reject (avoids costly LLM invocation for banned prompts)", "Lightweight embedding filter before LLM guard"],
-      aiopsMetrics: ["Guardrail Latency Overhead (<45ms)", "False Positive Intercept Rate (<0.3%)", "Jailbreak Detection Recall (>99.4%)"]
+      aiopsMetrics: ["Guardrail latency overhead", "False-positive and false-negative rates by threat class (risk-based targets TBD)", "Adversarial test coverage and escape rate"]
     },
     {
       id: "orchestrator",
@@ -124,7 +130,11 @@ const ARCHITECTURE_DATA = {
         "Short-term Working Memory Manager",
         "Checkpoint & State Store",
         "Human-in-the-Loop (HITL) Interrupter",
-        "Dynamic Tool Calling Dispatcher"
+        "Dynamic Tool Calling Dispatcher",
+        "Delegated Identity & Authorization Context Propagator",
+        "Durable Workflow, Timeout, Retry & Idempotency Coordinator",
+        "Cancellation, Backpressure & Dead-Letter Recovery Controller",
+        "Human Approval Evidence, Expiry & Revocation Handler"
       ],
       raci: {
         ai: { role: "R/A", details: "Designs graph topologies, prompt templates, reflection heuristics, loop limits, and state machines." },
@@ -134,9 +144,9 @@ const ARCHITECTURE_DATA = {
       },
       keyDeliverables: ["Stateful Workflow Graphs", "Bounded Agent Harness Runtime", "Human Checkpoint UI Integration", "Agent Context Cache"],
       governanceTouchpoints: ["Human-in-the-Loop (HITL) Approval Records", "Explainability Logs of Agent Reasoning Steps"],
-      securityControls: ["Maximum Step, Time & Token Budgets", "Per-Agent Tool and Identity Scopes", "Sandboxed Execution Boundaries", "Ephemeral Memory Auto-purge"],
-      finopsLevers: ["Pruning past trajectory history to save context tokens", "Dynamic early exit when confidence reaches 95%"],
-      aiopsMetrics: ["Agent Plan Execution Success Rate (>92%)", "Average Steps per Goal", "Memory Checkpoint Serialization Time (<12ms)"]
+      securityControls: ["Propagate actor, tenant, purpose, and authorization decision context to retrieval and tools; use short-lived, audience-bound delegated credentials", "Re-authorize every resource and action at the enforcement point; least privilege and tenant isolation; deny on absent/expired context", "Maximum Step, Time & Token Budgets", "Per-Agent Tool and Identity Scopes", "Sandboxed Execution Boundaries", "Ephemeral Memory Auto-purge"],
+      finopsLevers: ["Prune past trajectory history under approved context policy", "Early exit based on calibrated, use-case-specific confidence and risk thresholds"],
+      aiopsMetrics: ["Agent plan success and safe termination rate", "Average steps per goal", "Checkpoint serialization time and recovery outcomes"]
     },
     {
       id: "multiagent",
@@ -151,7 +161,9 @@ const ARCHITECTURE_DATA = {
         "Code Generation & Sandboxed Runner Agent",
         "SQL & Enterprise Data Analyst Agent",
         "Critic & Quality Verification Agent",
-        "Domain Specialist Sub-agents"
+        "Domain Specialist Sub-agents",
+        "Agent-to-Agent Delegation Envelope with Provenance and Scope",
+        "Versioned Skills Trust, Review & Compatibility Metadata"
       ],
       raci: {
         ai: { role: "R/A", details: "Develops agent system personas, sub-goal delegation logic, multi-agent debate protocols, and evaluations." },
@@ -161,7 +173,7 @@ const ARCHITECTURE_DATA = {
       },
       keyDeliverables: ["Agent Persona Definitions", "Multi-Agent Consensus Protocols", "Sandboxed Agent Worker Pods", "Sub-task Eval Suites"],
       governanceTouchpoints: ["Dual-Signoff on High-Stakes Actions", "Clear Attribution of Which Sub-Agent Made Specific Claims"],
-      securityControls: ["gVisor / Firecracker Container Isolation", "No Internet Egress from Code Agent Sandbox", "Role-Based Agent Scopes"],
+      securityControls: ["Treat inter-agent messages and skill assets as untrusted; preserve source/provenance labels across handoffs", "Constrain delegated agents to task-specific tools, resources, and time budgets; deny unapproved privilege escalation", "gVisor / Firecracker Container Isolation", "No Internet Egress from Code Agent Sandbox", "Role-Based Agent Scopes"],
       finopsLevers: ["Assign lightweight models to sub-agents (e.g. Haiku/Flash for workers, Sonnet/GPT-4o for supervisor)", "Parallel batching"],
       aiopsMetrics: ["Multi-Agent Consensus Convergence Time", "Sub-Agent Failure Rate", "Inter-Agent Token Communication Overhead"]
     },
@@ -176,7 +188,10 @@ const ARCHITECTURE_DATA = {
         "Probabilistic Routing Confidence Gate",
         "Deterministic Business Rules Validator",
         "Human-in-the-Loop Escalation Queue",
-        "Action Impact & Financial Thresholds"
+        "Action Impact & Financial Thresholds",
+        "Resource-Level ABAC / Tenant Authorization Decision Point",
+        "Human Review Queue with Decision Context, Expiry and Revocation",
+        "Fail-Closed Policy and Evidence-Dependency Behavior"
       ],
       raci: {
         ai: { role: "C", details: "Provides confidence scores, uncertainty estimations, and calibrated probability outputs to the decision gate." },
@@ -186,9 +201,9 @@ const ARCHITECTURE_DATA = {
       },
       keyDeliverables: ["Rego Policy Repository", "Automated Decision Audit Trail", "Escalation Workflow Dashboard", "Risk Scoring Matrix"],
       governanceTouchpoints: ["Compliance Certification of Policy Rules", "Immutable Decision Ledgers for Regulators (SEC/FINRA/HIPAA)"],
-      securityControls: ["Cryptographically Signed Decisions", "ABAC Policy Evaluation at Runtime", "Immutable Audit Storage"],
+      securityControls: ["Re-authorize against resource ACL and current actor/delegation claims at action time; default deny when context is missing or stale", "Require idempotency key / deduplication for retryable consequential actions", "Cryptographically Signed Decisions", "ABAC Policy Evaluation at Runtime", "Immutable Audit Storage"],
       finopsLevers: ["Bypass LLMs entirely when deterministic rule matches 100% (Instant, 0-token cost execution)"],
-      aiopsMetrics: ["Decision Latency (<8ms)", "HITL Escalation Rate (%)", "Policy Evaluation Coverage (100% of external actions)"]
+      aiopsMetrics: ["Decision latency", "Human review and escalation rates", "Policy evaluation coverage for in-scope actions (target set by owner)"]
     },
     {
       id: "mcps",
@@ -202,7 +217,10 @@ const ARCHITECTURE_DATA = {
         "Database & Data Warehouse MCPs (Postgres, Snowflake)",
         "Enterprise SaaS MCPs (Salesforce, SAP, Jira)",
         "Developer Ecosystem MCPs (Git, Filesystem, Terminal)",
-        "Dynamic Tool Schema Synthesizer"
+        "Dynamic Tool Schema Synthesizer",
+        "Identity-Aware MCP Authorization & Resource ACL Adapter",
+        "Tool Parameter Validation, Idempotency & Duplicate-Action Guard",
+        "MCP Timeout, Retry/Backoff, Cancellation & Dead-Letter Handler"
       ],
       raci: {
         ai: { role: "R", details: "Integrates MCP tool schemas into agent prompt contexts, optimizes tool selection prompts, and validates JSON outputs." },
@@ -212,9 +230,9 @@ const ARCHITECTURE_DATA = {
       },
       keyDeliverables: ["Standardized MCP Server Catalog", "Dynamic Tool Permission Gate", "Tool Parameter Injection Validator"],
       governanceTouchpoints: ["Data Minimization Audits on Tool Returns", "Data Residency Validation per MCP Connector"],
-      securityControls: ["Scoped Tool Execution Credentials", "Parameter Schema Hardening (Prevent SQLi/Command Injection via tools)", "Egress Whitelisting"],
+      securityControls: ["Use workload identity for MCP services and short-lived delegated user identity for user-scoped actions; never share a broad service credential", "Enforce resource-level authorization, tenant isolation, least privilege, parameter validation, and egress allowlists at each server", "Unsafe parameters, unauthorized actions, repeated non-idempotent requests, and missing identity context are denied and audited", "If a dependency fails, retry only bounded/idempotent actions with backoff; surface timeout or manual recovery for uncertain outcomes", "Scoped Tool Execution Credentials", "Parameter Schema Hardening (validate against injection; does not guarantee prevention)", "Egress Whitelisting"],
       finopsLevers: ["Payload pruning: Truncate large MCP tool outputs before injecting into LLM context window", "Cache static MCP tool results"],
-      aiopsMetrics: ["Tool Call Success Rate (>98.5%)", "MCP Server Response Latency", "Tool Execution Timeout Rate (<0.1%)"]
+      aiopsMetrics: ["Tool call success and denial rates", "MCP server response latency", "Timeout, retry, duplicate, and manual recovery rates"]
     },
     {
       id: "multillm",
@@ -229,7 +247,9 @@ const ARCHITECTURE_DATA = {
         "Fast/Cost-effective Model Pool (GPT-4o-mini, Haiku, Flash)",
         "Self-Hosted Private LLM Cluster (vLLM / Triton on GPUs)",
         "Semantic Response Cache & Prompt Caching",
-        "Automatic Model Failover & Circuit Breaker"
+        "Automatic Model Failover & Circuit Breaker",
+        "Provider Privacy, Region & Egress Policy Router",
+        "Provider Response Provenance and Untrusted-Output Contract"
       ],
       raci: {
         ai: { role: "R/A", details: "Evaluates model capabilities, configures semantic router thresholds, manages prompt caching, and fine-tunes OSS models." },
@@ -239,9 +259,9 @@ const ARCHITECTURE_DATA = {
       },
       keyDeliverables: ["Multi-Model Dynamic Routing Rules", "Semantic Cache Layer", "Automated Failover Topology", "Private vLLM GPU Nodes"],
       governanceTouchpoints: ["Zero Data Retention (ZDR) Verification with Providers", "Sovereign Cloud Data Residency Compliance"],
-      securityControls: ["Encrypted Provider Keys in HashiCorp Vault", "TLS 1.3 Strict Ingress/Egress", "Prompt Scrubbing before External Cloud Egress"],
+      securityControls: ["Keep service/workload credentials in managed secrets; rotate and scope provider keys", "Apply tenant, data classification, purpose, residency, and approved-provider policy before egress", "Treat provider output as untrusted and validate before tool use or user delivery", "Encrypted Provider Keys in HashiCorp Vault", "TLS 1.3 Strict Ingress/Egress", "Prompt Scrubbing before External Cloud Egress"],
       finopsLevers: ["Semantic Cache Hit Ratio (>25% target savings)", "Model Down-tiering for simple tasks (90% cost drop)", "Prompt Caching discounts (up to 75% off)"],
-      aiopsMetrics: ["Time to First Token (TTFT < 400ms)", "Tokens per Second (TPS > 60)", "Provider Availability (99.99%)", "Failover Activation Rate"]
+      aiopsMetrics: ["Time to first token and tokens per second by workload", "Provider availability and failover outcomes (service targets TBD)", "Circuit-breaker and fallback rates"]
     },
     {
       id: "infra",
@@ -259,7 +279,10 @@ const ARCHITECTURE_DATA = {
         "Network Fabric, DNS, Load Balancing & Service Mesh",
         "Block, File, NVMe & Object Storage with Backup / Restore",
         "Infrastructure Provisioning, Patching & Capacity Management",
-        "High Availability, Disaster Recovery & Regional Failover"
+        "High Availability, Disaster Recovery & Regional Failover",
+        "Durable Queue, Event Bus & Workflow Checkpoint Store",
+        "Source ACL Snapshot, Index Version & Citation Metadata Store",
+        "Tenant / Region / Environment Network and Egress Boundaries"
       ],
       raci: {
         ai: { role: "R", details: "Selects embedding models, chunking strategies, hybrid search reciprocal rank fusion (RRF), and vector indexes (HNSW)." },
@@ -268,10 +291,10 @@ const ARCHITECTURE_DATA = {
         security: { role: "R/A", details: "Secures Kubernetes network policies, enforces AES-256 encryption at rest, vector multi-tenancy isolation, and secret management." }
       },
       keyDeliverables: ["Compute / Network / Storage Service Catalog", "GPU Autoscaling and Capacity Plans", "Infrastructure-as-Code Modules", "Backup Restore and Disaster Recovery Playbooks"],
-      governanceTouchpoints: ["Vector Multi-Tenant Tenant Separation", "Right-to-be-Forgotten Data Purge in Vector Indices"],
+      governanceTouchpoints: ["Infrastructure implements governance-approved retention, correction, legal hold, and deletion; it does not set data purpose or retention policy", "Track deletion completion across replicas, embeddings, indexes, caches, and derived artifacts with evidence", "Validate tenant isolation and regional placement in each deployment environment"],
       securityControls: ["Row-Level Security (RLS) in Vector Search", "Kubernetes Network Policies & mTLS", "OS / Container / Firmware Patch Baselines", "FIPS 140-2 Compliant Key Storage"],
       finopsLevers: ["HNSW index quantization reducing RAM use", "Right-size CPU and GPU pools", "Spot GPU scaling for eligible offline workloads", "Storage tiering and retention"],
-      aiopsMetrics: ["Vector Query Recall@10 (>94%)", "Vector Search P99 (<20ms)", "CPU / GPU / memory utilization", "Storage IOPS and capacity headroom", "Backup restore and failover time"]
+      aiopsMetrics: ["Retrieval recall/precision at selected K (risk-based target TBD)", "Vector search P95/P99 latency", "CPU / GPU / memory utilization", "Storage IOPS and capacity headroom", "Backup restore and failover outcomes against approved RTO/RPO"]
     },
     {
       id: "aiops",
@@ -285,7 +308,10 @@ const ARCHITECTURE_DATA = {
         "Prompt Regression CI/CD Pipeline",
         "Model Drift & Output Quality Monitors",
         "Automated Incident Alerting & Triage",
-        "Human Feedback & Ground Truth Annotations"
+        "Human Feedback & Ground Truth Annotations",
+        "Privacy-Minimized Audit and Trace Correlation Pipeline",
+        "Evaluation Dataset / Version Provenance and Risk-Based Threshold Registry",
+        "SLO, Alert, On-Call and Incident Learning Dashboards"
       ],
       raci: {
         ai: { role: "R/A", details: "Builds synthetic eval datasets, defines Ragas metrics (Faithfulness, Answer Relevance), debugs trace spans." },
@@ -295,9 +321,9 @@ const ARCHITECTURE_DATA = {
       },
       keyDeliverables: ["Trace Dashboard (Spans, Inputs, Tokens, Latency)", "Automated CI/CD Eval Gate", "Drift Detection Alarms", "Annotation Portal"],
       governanceTouchpoints: ["Model Card Updates Based on Continuous Evals", "Systemic Bias Degradation Notifications"],
-      securityControls: ["Sanitized Telemetry Storage (No raw PII in traces)", "Audit Logging of Trace Access", "Tamper-proof Log Retention"],
+      securityControls: ["Record actor/workload, tenant, purpose, policy and guardrail decisions, versions, citations, tool/action outcomes, approval identity, timing, and correlation IDs", "Minimize or redact prompts, outputs, secrets, and PII; restrict trace access and configure retention/legal hold", "If required audit evidence storage is unavailable, block consequential actions; safe read-only behavior follows an approved degraded-mode policy", "Sanitized Telemetry Storage", "Audit Logging of Trace Access", "Tamper-evident Log Retention"],
       finopsLevers: ["Sampling traces for high-volume non-critical queries to save telemetry storage costs", "Identifying expensive slow prompt chains"],
-      aiopsMetrics: ["Eval Faithfulness Score (>0.92)", "Eval Answer Relevance (>0.89)", "Trace Coverage (100% of Production Calls)", "MTTR (<15m)"]
+      aiopsMetrics: ["Evaluate task success, groundedness, quality, robustness, safety/security, privacy, fairness where relevant, and calibration/uncertainty where relevant", "Record evaluation dataset and system versions, thresholds, reviewer, and release decision", "Set service-specific latency, availability, recovery, and incident targets (TBD until owned)"]
     },
     {
       id: "finops",
@@ -324,8 +350,8 @@ const ARCHITECTURE_DATA = {
       keyDeliverables: ["Per-Department and Per-Service Cost Allocation", "AI TCO / ROI Forecasts", "Real-Time Quota Breaker Service", "Token Optimization Audit Report"],
       governanceTouchpoints: ["Corporate Cost Transparency Audits", "Executive Budget Variance Notifications"],
       securityControls: ["Protection Against Financial Denial of Service (FDoS)", "API Key Hard Spend Thresholds", "Tamper-resistant Billing Records"],
-      finopsLevers: ["Strict per-user token rate limits", "Automatic fallback to cheaper models when budget tier passes 80%", "Prompt compression"],
-      aiopsMetrics: ["Cost Per Resolved Goal ($/task)", "Semantic Cache Dollar Savings ($ saved/month)", "Budget Forecast Accuracy (±5%)"]
+      finopsLevers: ["Per-user and per-tenant token rate limits", "Budget-triggered routing or throttling at owner-approved thresholds", "Prompt compression"],
+      aiopsMetrics: ["Cost per resolved goal", "Semantic cache savings", "Budget forecast accuracy against service-owned tolerance"]
     },
     {
       id: "applications",
@@ -341,7 +367,7 @@ const ARCHITECTURE_DATA = {
         security: { role: "R", details: "Reviews application threat models, identity boundaries, API exposure, and data access." }
       },
       keyDeliverables: ["AI Use-Case Register", "Application Service Catalog", "Process Maps & Outcome Baselines", "Business Owner and Support Handoff"],
-      governanceTouchpoints: ["Use-Case Approval Before Build", "Business Process Owner Sign-Off", "User Disclosure and Human Handoff Design"],
+      governanceTouchpoints: ["Use-case inventory, purpose, risk classification, jurisdiction/sector applicability review, affected parties, and named accountable owner before build", "For consequential actions, show reviewers the proposed action, rationale, evidence, data, and impact; record reviewer identity and decision; expire or revoke approvals", "Define reject, timeout, appeal/correction, cancellation, and safe-resumption paths; operators retain stop/containment control", "Business process owner sign-off, user disclosure, and meaningful human handoff design"],
       securityControls: ["Application Threat Model", "Least-Privilege Identity & Data Scopes", "Approved Integration Inventory"],
       finopsLevers: ["Value and cost per completed business outcome", "Application tier budgets", "Retire or redesign low-value use cases"],
       aiopsMetrics: ["Adoption and task completion rate", "Business process cycle time", "Application availability and user satisfaction"]
@@ -352,7 +378,7 @@ const ARCHITECTURE_DATA = {
       category: "Data Management & Governance",
       description: "Controls enterprise data from source onboarding through classification, quality, lineage, retrieval, retention, correction, and deletion for AI use.",
       techStack: ["Enterprise Data Catalog & Lineage", "Data Quality / DLP Rules", "Lakehouse & ETL/ELT Pipelines", "Embedding / Index Build Pipeline", "Retention & Deletion Workflows"],
-      components: ["Source Registration, Data Contracts & Ownership", "Classification, Consent, Residency & Purpose Controls", "Data Quality, Provenance, Lineage & Freshness Checks", "Curated Dataset, Document & Knowledge Versioning", "RAG Ingestion, Chunking, Embedding & Index Promotion", "Retention, Correction, Legal Hold & Right-to-Erasure Workflow"],
+      components: ["Source Registration, Data Contracts & Ownership", "Classification, Consent, Residency & Purpose Controls", "Data Quality, Provenance, Lineage & Freshness Checks", "Source ACL Synchronization and Authorization-Aware Retrieval", "Curated Dataset, Document & Knowledge Versioning", "RAG Ingestion, Chunking, Embedding & Index Promotion", "Citations with Source Version and Freshness Metadata", "Retention, Correction, Legal Hold & Right-to-Erasure Workflow", "Deletion Propagation and Completion Evidence Across Replicas, Indexes, Caches and Derived Artifacts"],
       raci: {
         ai: { role: "R", details: "Defines dataset and retrieval requirements, validates grounding quality, and versions AI-ready corpora." },
         product: { role: "C", details: "Identifies authoritative business sources, data owners, and freshness expectations." },
@@ -360,8 +386,8 @@ const ARCHITECTURE_DATA = {
         security: { role: "R", details: "Enforces identity-aware access, encryption, DLP, isolation, and secure data movement." }
       },
       keyDeliverables: ["AI Data Source Register", "Dataset Cards & Lineage", "Approved Ingestion Pipelines", "Retention and Deletion Evidence"],
-      governanceTouchpoints: ["Data Owner Approval and Lawful Purpose", "Dataset / Knowledge Change Review", "Retention and Deletion Certification"],
-      securityControls: ["Row / Document-Level Authorization", "DLP and Secret Scanning", "Encrypted Transfer and Tenant Isolation"],
+      governanceTouchpoints: ["Data owner approval, lawful purpose and classification", "Dataset / knowledge change review; source ACL changes propagate to retrieval authorization", "Correction, retention expiry, legal hold, and deletion workflow records completion evidence across replicas, indexes, caches, and derived artifacts"],
+      securityControls: ["Synchronize source ACLs and enforce resource-level authorization at retrieval time; deny when identity or ACL state is unavailable/stale", "Track source provenance and freshness; quarantine or exclude poisoned, stale, or unverified content according to owner policy", "Retrieval failure must not silently fall back to an unfiltered corpus; disclose degraded/insufficient evidence", "Row / Document-Level Authorization", "DLP and Secret Scanning", "Encrypted Transfer and Tenant Isolation"],
       finopsLevers: ["Storage and embedding cost per corpus", "Incremental index refresh", "Archive stale or unused knowledge"],
       aiopsMetrics: ["Source freshness lag", "Ingestion and index build duration", "Retrieval coverage and data quality failure rate"]
     },
@@ -371,7 +397,7 @@ const ARCHITECTURE_DATA = {
       category: "Engineering & Change Management",
       description: "Reproducible lifecycle for datasets, models, prompts, skills, agents, evaluations, approvals, deployment, monitoring, and rollback.",
       techStack: ["Git / Artifact Repository", "Experiment Tracking & Model Registry", "Prompt / Agent / Skill Versioning", "CI/CD & Evaluation Gates", "Canary / Blue-Green Release Automation"],
-      components: ["Experiment, Dataset & Model Artifact Tracking", "Model, Prompt, Agent Graph & Skill Version Registry", "Feature Engineering, Training & Offline / Online Model Serving", "Automated Unit, Integration, Safety & Regression Evaluation", "Risk-Based Review, Approval & Release Gates", "Build, Package, Sign & Environment Promotion Pipeline", "Canary, A/B, Rollback & Model Retirement Controller"],
+      components: ["Experiment, Dataset & Model Artifact Tracking", "Model, Prompt, Agent Graph & Skill Version Registry", "Feature Engineering, Training & Offline / Online Model Serving", "Evaluation of task success, groundedness, quality, robustness, safety/security, privacy, fairness and calibration as relevant", "Dataset/version provenance, risk-based thresholds and independent review where required", "Material-change assessment, incident/complaint feedback, rollback and retirement workflow", "Risk-Based Review, Approval & Release Gates", "Build, Package, Sign & Environment Promotion Pipeline", "Canary, A/B, Rollback & Model Retirement Controller"],
       raci: {
         ai: { role: "R", details: "Builds reproducible pipelines, evaluations, model packages, prompts, agents, and skills." },
         product: { role: "C", details: "Approves user impact, release timing, acceptance criteria, and business readiness." },
@@ -379,7 +405,7 @@ const ARCHITECTURE_DATA = {
         security: { role: "R", details: "Secures source, artifacts, build systems, signing keys, deployment identities, and supply chain." }
       },
       keyDeliverables: ["Versioned Model / Prompt / Agent / Skill Artifacts", "Evaluation Reports & Release Evidence", "Signed Deployment Packages", "Rollback and Retirement Records"],
-      governanceTouchpoints: ["Pre-Production Risk Review", "Independent Evaluation for Material Changes", "Release Approval and Change Record"],
+      governanceTouchpoints: ["Map use-case risk to applicable jurisdiction/sector obligations and oversight requirements; architecture reference does not establish compliance", "Pre-Production Risk Review", "Independent Evaluation where risk and policy require it", "Material-change assessment, release approval, retained evidence, rollback, retirement, and incident/complaint feedback"],
       securityControls: ["Protected Branches and Artifact Signing", "Dependency / Container Scanning", "Separated Build and Production Credentials"],
       finopsLevers: ["Training and inference cost per release", "GPU queue and experiment budgets", "Release cost / quality comparison"],
       aiopsMetrics: ["Change lead time", "Deployment frequency and failure rate", "Rollback time", "Evaluation gate pass rate"]
@@ -388,7 +414,7 @@ const ARCHITECTURE_DATA = {
       id: "operating-model",
       name: "Enterprise AI Operating Model, Policies & Service Management",
       category: "People, Process & Control Plane",
-      description: "Defines accountable people, lifecycle procedures, policy ownership, operational controls, service levels, training, incident response, and audit evidence.",
+      description: "Defines accountable people, lifecycle procedures, policy ownership, operational controls, service levels, training, incident response, and audit evidence. Targets and obligations are set by each service and jurisdiction.",
       techStack: ["RACI & Service Ownership Register", "Policy / Procedure Repository", "ITSM Change / Incident / Problem Workflows", "Runbooks & On-Call Schedules", "Training & Competency Records"],
       components: ["Named Business, Application, Data, Model & Service Owners", "AI Use-Case, Risk Classification & Approval Procedure", "Regulatory & Internal Policy Applicability Register", "Acceptable Use, Data Use, Human Oversight & Model Change Policies", "Standard Operating Procedures, Runbooks & Exception Handling", "Incident, Escalation, Complaint & Problem Management", "Service Levels, Support Handoff, Training & Competency Management", "Third-Party Model / Vendor Review, Renewal & Exit Procedure"],
       raci: {
@@ -401,7 +427,7 @@ const ARCHITECTURE_DATA = {
       governanceTouchpoints: ["EU AI Act, NIST AI RMF, Sector and Jurisdiction Applicability Review", "Policy Approval and Scheduled Review", "Risk Acceptance and Exception Expiry", "Incident Notification and Audit Evidence Retention"],
       securityControls: ["On-Call Escalation and Breach Procedures", "Privileged Access Review", "Business Continuity and Recovery Exercises"],
       finopsLevers: ["Named budget owners and approval thresholds", "Service cost allocation", "Vendor renewal and exit cost review"],
-      aiopsMetrics: ["Incident response and recovery time", "SLO attainment", "Change approval duration", "Training and review completion"]
+      aiopsMetrics: ["Service-owned SLO, RTO and RPO targets (TBD until approved)", "SLO attainment, on-call response and recovery exercise outcomes", "Change approval duration, training completion and incident learning actions"]
     }
   ],
 
@@ -411,7 +437,7 @@ const ARCHITECTURE_DATA = {
     context: {
       id: "c4-context",
       title: "C4 Level 1: System Context Diagram",
-      subtitle: "Context boundary showing enterprise users, external channels, third-party model providers, enterprise systems, and governance actors.",
+      subtitle: "People and external systems interacting with the platform; internal identity, tenant, data, and provider controls are detailed in containers and layer specifications.",
       nodes: [
         // Actors
         { id: "actor-business", type: "actor", label: "Business User / Employee", desc: "Interacts via Web Copilot, Slack/Teams to execute workflows and retrieve intelligence.", role: "Starts an approved business journey, supplies task context, reviews the generated result, and provides feedback. The business owner remains responsible for decisions made using that result.", x: 100, y: 120 },
@@ -425,16 +451,16 @@ const ARCHITECTURE_DATA = {
         { id: "ext-llm-cloud", type: "system-ext", label: "Frontier Cloud LLMs", desc: "OpenAI (GPT-4o), Anthropic (Claude 3.5), Google Vertex AI (Gemini Pro/Flash).", role: "Supplies externally hosted model inference. The platform sends requests according to its provider, privacy, residency, and routing controls, then treats returned content as model output subject to validation.", x: 960, y: 100 },
         { id: "ext-enterprise-apps", type: "system-ext", label: "Enterprise Systems & ERP", desc: "SAP, Salesforce, Jira, ServiceNow, Snowflake, SharePoint via MCP Servers.", role: "Remains the system of record for enterprise transactions and knowledge. The platform accesses it through approved, scoped integrations and returns results or permitted actions.", x: 960, y: 270 },
         { id: "ext-idp", type: "system-ext", label: "Identity & Access (IdP)", desc: "Okta / Microsoft Entra ID providing OAuth2, SAML, and user group claims.", role: "Authenticates people and workloads and supplies identity claims used by the platform to make access decisions for applications, data, and tools.", x: 960, y: 440 },
-        { id: "ext-regulators", type: "system-ext", label: "Audit & Regulatory Archives", desc: "Immutable compliance ledgers for EU AI Act, SEC, and NIST audit reporting.", role: "Receives or preserves evidence needed for oversight and audit. It is an external evidence destination, not part of request execution or policy decisioning.", x: 960, y: 610 }
+        { id: "ext-regulators", type: "system-ext", label: "Enterprise Audit & Evidence Repositories", desc: "Illustrative external archives or evidence repositories selected according to organizational policy and retention requirements.", role: "Receives or preserves evidence needed for oversight and audit when configured. Retention, immutability, access, and legal obligations depend on approved organizational policy and deployment controls.", x: 960, y: 610 }
       ],
       edges: [
         { from: "actor-business", to: "system-platform", label: "Submits prompts, tasks, receives synthesized answers [HTTPS/WSS]", team: "product" },
         { from: "actor-dev", to: "system-platform", label: "Configures agent graphs, registers tools, inspects traces [REST/gRPC]", team: "ai" },
         { from: "actor-auditor", to: "system-platform", label: "Inspects decision logs, audit trails, and policy violations [HTTPS]", team: "governance" },
-        { from: "system-platform", to: "ext-llm-cloud", label: "Routes filtered prompts with zero data retention [TLS 1.3]", team: "security" },
+        { from: "system-platform", to: "ext-llm-cloud", label: "Routes policy-approved, minimized prompts; provider terms/configuration apply [protocol per deployment]", team: "security" },
         { from: "system-platform", to: "ext-enterprise-apps", label: "Executes tool actions via Model Context Protocol [JSON-RPC/SSE]", team: "ai" },
-        { from: "system-platform", to: "ext-idp", label: "Validates JWTs, user permissions, and ABAC policies", team: "security" },
-        { from: "system-platform", to: "ext-regulators", label: "Exports cryptographic compliance records and safety metrics", team: "governance" }
+        { from: "system-platform", to: "ext-idp", label: "Validates human/workload identity and obtains scoped claims; platform enforces authorization", team: "security" },
+        { from: "system-platform", to: "ext-regulators", label: "Exports policy-approved audit evidence and operational records", team: "governance" }
       ]
     },
 
@@ -442,8 +468,8 @@ const ARCHITECTURE_DATA = {
     contextL2: {
       id: "c4-container",
       title: "C4 Level 2: Container Diagram",
-      subtitle: "High-level technical containers making up the Enterprise Agentic AI Platform, their protocols, and inter-container communication.",
-      boundary: "Enterprise AI Platform Boundary (VPC / Kubernetes Mesh)",
+      subtitle: "Illustrative control-plane and request/data-plane containers, trust boundaries, and primary flows; regional/environment topology and recovery targets are deployment decisions.",
+      boundary: "Enterprise AI Platform (control plane / request-data plane; tenant, environment and regional boundaries per deployment)",
       containers: [
         {
           id: "cnt-ingress",
@@ -451,7 +477,7 @@ const ARCHITECTURE_DATA = {
           tech: "Kong Gateway / Envoy / Fastify",
           type: "container",
           layerIds: ["channels", "applications"],
-          desc: "Ingress proxy handling SSL termination, OAuth2 token validation, rate limiting, and multi-channel routing.",
+          desc: "REQUEST / DATA PLANE entry point authenticating human and workload identities separately, binding tenant/purpose/correlation context, enforcing rate limits, and routing requests. Missing, expired, or invalid identity is denied.",
           team: "security",
           x: 60, y: 140, w: 220, h: 110
         },
@@ -461,7 +487,7 @@ const ARCHITECTURE_DATA = {
           tech: "NeMo Guardrails / Presidio / Python",
           type: "container",
           layerIds: ["guardrails"],
-          desc: "Dual-sided safety interceptor executing prompt injection checks, PII redaction, jailbreak scans, and hallucination checks.",
+          desc: "Dual-sided trust boundary for untrusted user, retrieved, provider, tool, and agent content; screens injection and leakage risks, applies policy-driven redaction, validates outputs, and records outcomes. Detectors reduce risk but do not guarantee prevention.",
           team: "security",
           x: 330, y: 140, w: 230, h: 110
         },
@@ -471,7 +497,7 @@ const ARCHITECTURE_DATA = {
           tech: "LangGraph / Python / AsyncIO / Redis",
           type: "container",
           layerIds: ["orchestrator", "multiagent", "applications"],
-          desc: "Agent harness and orchestration runtime coordinating bounded model/tool turns, multi-agent swarms, skill discovery, planning, checkpoints, and recovery.",
+          desc: "Request-plane bounded agent runtime coordinating skills, plans, delegated identity context, durable workflow state, timeout/retry/idempotency, cancellation, backpressure, and recovery.",
           team: "ai",
           x: 610, y: 140, w: 250, h: 110
         },
@@ -481,7 +507,7 @@ const ARCHITECTURE_DATA = {
           tech: "Open Policy Agent (OPA) / Rego / Go",
           type: "container",
           layerIds: ["decisions", "operating-model"],
-          desc: "Evaluates action authorization policies, confidence thresholds, and coordinates Human-in-the-Loop approval workflows.",
+          desc: "Evaluates current resource-level authorization and risk policy; routes consequential actions to human review with evidence, reviewer identity, expiry/revocation, and recorded decisions. Denies on absent/stale identity or required evidence.",
           team: "governance",
           x: 910, y: 140, w: 220, h: 110
         },
@@ -491,7 +517,7 @@ const ARCHITECTURE_DATA = {
           tech: "Model Context Protocol / TypeScript / Docker",
           type: "container",
           layerIds: ["mcps"],
-          desc: "Standardized tool runtime discovering and executing tools against Enterprise DBs, SaaS APIs, and local code environments.",
+          desc: "MCP trust boundary using scoped workload and delegated user identity, current resource ACLs, tenant isolation, parameter validation, idempotency, bounded retries, cancellation, and auditable outcomes.",
           team: "ai",
           x: 610, y: 330, w: 250, h: 110
         },
@@ -511,7 +537,7 @@ const ARCHITECTURE_DATA = {
           tech: "MLflow / Git / CI-CD / Eval Gates",
           type: "container",
           layerIds: ["ai-engineering"],
-          desc: "Versions models, prompts, agent graphs, and skills; runs evaluation and approval gates before signed deployment, canary, rollback, or retirement.",
+          desc: "CONTROL PLANE pipeline: versions models, prompts, agent graphs, and skills; runs evaluation and approval gates before signed environment promotion, canary, rollback, or retirement.",
           team: "ai",
           x: 910, y: 330, w: 220, h: 110
         },
@@ -531,7 +557,7 @@ const ARCHITECTURE_DATA = {
           tech: "Langfuse / OpenTelemetry / Prometheus",
           type: "container",
           layerIds: ["aiops", "ai-engineering", "operating-model"],
-          desc: "Distributed tracing, quality and release evaluation gates, drift alerts, and operational service metrics across AI workloads.",
+          desc: "Control-plane release evaluation plus production telemetry, privacy-minimized audit, quality/drift alerts, SLO dashboards, on-call and incident evidence. Consequential actions fail closed if required evidence cannot be recorded; other degradation requires an approved policy.",
           team: "ai",
           x: 60, y: 520, w: 220, h: 110
         },
@@ -544,6 +570,16 @@ const ARCHITECTURE_DATA = {
           desc: "Real-time token usage meter, departmental cost attribution, budget cap enforcer, and cost optimization advisor.",
           team: "product",
           x: 330, y: 520, w: 230, h: 110
+        },
+        {
+          id: "cnt-workflow-store",
+          name: "Durable Workflow & Event Store",
+          tech: "Queue / Event Bus / Checkpoint Store (implementation TBD)",
+          type: "container",
+          layerIds: ["infra", "orchestrator", "operating-model"],
+          desc: "Persists asynchronous jobs, workflow checkpoints, retry schedules, idempotency keys, cancellation state, and dead-letter/manual recovery records. Queue technology, retention, and delivery semantics are deployment decisions.",
+          team: "ai",
+          x: 330, y: 660, w: 230, h: 110
         },
         {
           id: "cnt-gpu",
@@ -561,22 +597,26 @@ const ARCHITECTURE_DATA = {
           tech: "PostgreSQL / Cryptographic Hash Chain",
           type: "container",
           layerIds: ["decisions", "guardrails", "operating-model", "data-governance"],
-          desc: "Immutable append-only record of all AI actions, policy evaluations, human approvals, and guardrail intercepts.",
+          desc: "Audit/evidence store for minimized request correlation, actor/workload identity, versions, policy/guardrail decisions, citations, actions, and human approvals; immutability and retention depend on selected deployment and controls.",
           team: "governance",
           x: 910, y: 520, w: 220, h: 110
         }
       ],
       edges: [
-        { from: "cnt-ingress", to: "cnt-guardrails", label: "1. Forwards sanitized user request [HTTP/2]", team: "security" },
-        { from: "cnt-guardrails", to: "cnt-orchestrator", label: "2. Passes clean prompt + session tokens", team: "security" },
-        { from: "cnt-orchestrator", to: "cnt-decision", label: "3. Queries action approval & confidence gate", team: "governance" },
-        { from: "cnt-orchestrator", to: "cnt-mcp", label: "4. Dispatches tool invocation [MCP / JSON-RPC]", team: "ai" },
+        { from: "cnt-ingress", to: "cnt-guardrails", label: "1. Passes request, actor/workload identity, tenant and correlation context [protocol per deployment]", team: "security" },
+        { from: "cnt-guardrails", to: "cnt-orchestrator", label: "2. Passes screened content with trust labels and delegated authorization context", team: "security" },
+        { from: "cnt-orchestrator", to: "cnt-decision", label: "3. Requests current resource/action authorization and oversight decision", team: "governance" },
+        { from: "cnt-decision", to: "cnt-orchestrator", label: "Returns allow/deny or approval-required with expiry and evidence reference", team: "governance" },
+        { from: "cnt-orchestrator", to: "cnt-mcp", label: "4. Dispatches approved, scoped, idempotent tool request [MCP / JSON-RPC]", team: "ai" },
         { from: "cnt-orchestrator", to: "cnt-multillm", label: "5. Sends reasoning prompt [Unified OpenAI API]", team: "ai" },
         { from: "cnt-multillm", to: "cnt-gpu", label: "6. Routes internal/confidential tasks [vLLM gRPC]", team: "security" },
-        { from: "cnt-orchestrator", to: "cnt-vector", label: "7. Performs hybrid vector search [gRPC]", team: "ai" },
-        { from: "cnt-orchestrator", to: "cnt-aiops", label: "8. Emits trace spans & step durations [OTel]", team: "ai" },
-        { from: "cnt-multillm", to: "cnt-finops", label: "9. Records token counts & model cost [Async Kafka]", team: "product" },
-        { from: "cnt-decision", to: "cnt-governance-ledger", label: "10. Logs policy decision & HITL signoffs", team: "governance" },
+        { from: "cnt-orchestrator", to: "cnt-vector", label: "7. Retrieves with tenant, delegated identity and synchronized source ACL filters [protocol per deployment]", team: "ai" },
+        { from: "cnt-orchestrator", to: "cnt-aiops", label: "8. Emits correlated trace, budget, workflow, retry, cancellation and recovery evidence [OTel]", team: "ai" },
+        { from: "cnt-multillm", to: "cnt-finops", label: "9. Records token counts and cost [event/queue implementation TBD]", team: "product" },
+        { from: "cnt-orchestrator", to: "cnt-governance-ledger", label: "Correlated, minimized audit/action evidence; required evidence unavailable blocks consequential actions", team: "governance" },
+        { from: "cnt-decision", to: "cnt-governance-ledger", label: "Records policy decision, approval identity, expiry and outcome", team: "governance" },
+        { from: "cnt-orchestrator", to: "cnt-workflow-store", label: "Persists async job, checkpoint, retry/cancel state and idempotency key", team: "ai" },
+        { from: "cnt-workflow-store", to: "cnt-orchestrator", label: "Resumes durable workflow or routes dead letter to manual recovery", team: "ai" },
         { from: "cnt-aiops", to: "cnt-ai-lifecycle", label: "Evaluation results gate model and agent releases", team: "ai" },
         { from: "cnt-ai-lifecycle", to: "cnt-multillm", label: "Promotes approved signed model and prompt versions", team: "ai" }
       ]
@@ -593,7 +633,7 @@ const ARCHITECTURE_DATA = {
           id: "cmp-session",
           name: "Session & Context Coordinator",
           tech: "Async Python Class",
-          desc: "Loads user session, past conversation turn history, and manages context window budgeting.",
+          desc: "Loads session context and carries the authenticated actor/workload, tenant, purpose, consent, and correlation envelope. Rejects missing or expired identity context and minimizes retained history.",
           team: "ai",
           x: 60, y: 120, w: 240, h: 110
         },
@@ -649,7 +689,7 @@ const ARCHITECTURE_DATA = {
           id: "cmp-hitl",
           name: "Human-in-the-Loop Checkpointer",
           tech: "Interrupt Hook & Webhook Notifier",
-          desc: "Halts execution graph when action exceeds risk threshold; waits for human manager approval signal.",
+          desc: "Pauses consequential work and presents the reviewer with proposed action, impact, source evidence, policy basis, and uncertainty. Records reviewer identity and decision; approval expires or can be revoked, and rejection/timeout/cancellation cannot silently resume work.",
           team: "governance",
           x: 350, y: 310, w: 240, h: 110
         },
@@ -657,7 +697,7 @@ const ARCHITECTURE_DATA = {
           id: "cmp-mcp-client",
           name: "MCP Client & Tool Invoker",
           tech: "MCP Protocol Client / JSON-RPC",
-          desc: "Translates LLM tool call requests into standardized MCP protocol messages and executes them safely.",
+          desc: "Validates parameters and current resource ACLs, passes least-privilege delegated identity to MCP, applies tenant isolation and idempotency, and handles timeout/cancel/retry policy. Authorization denial or missing context blocks execution.",
           team: "security",
           x: 640, y: 310, w: 240, h: 110
         },
@@ -673,7 +713,7 @@ const ARCHITECTURE_DATA = {
           id: "cmp-guardrail-hook",
           name: "Guardrail Validation Interceptor",
           tech: "Middleware Pipeline Hook",
-          desc: "Validates intermediate agent thoughts and tool parameters against safety policies before execution.",
+          desc: "Treats prompts, retrieved content, provider responses, tool results, and agent handoffs as untrusted; screens for injection and leakage risks and routes policy decisions. Detection does not guarantee prevention.",
           team: "security",
           x: 60, y: 500, w: 240, h: 110
         },
@@ -785,11 +825,11 @@ const ARCHITECTURE_DATA = {
         layerId: "decisions",
         containerId: "cnt-decision",
         team: "governance",
-        summary: "Before executing the SQL tool, the Decision Engine validates that 'emp_9421' has authorization to query the 'revenue_gl' table under EU GDPR and SOX rules.",
+        summary: "Before executing the SQL tool, the Decision Engine checks current delegated identity, tenant, resource ACL, and approved purpose/action policy. Jurisdiction and sector applicability are assessed by the accountable governance process; this example makes no compliance determination.",
         details: {
           opaEngine: "Evaluated rule 'finance.access.read_revenue'",
-          policyResult: "ALLOW (User has claim 'corp_finance_analyst')",
-          hitlStatus: "Bypassed (Query is Read-Only; Write actions require Manager HITL approval)"
+          policyResult: "Illustrative ALLOW only if current claims and resource ACL satisfy policy",
+          hitlStatus: "Oversight depends on use-case risk and impact; consequential actions require configured review"
         }
       },
       {
@@ -825,10 +865,10 @@ const ARCHITECTURE_DATA = {
         layerId: "guardrails",
         containerId: "cnt-guardrails",
         team: "security",
-        summary: "Safety interceptor checks generated response for hallucination against Snowflake tool facts, verifies no raw PII leaked, and ensures JSON response adheres to schema.",
+        summary: "Safety interceptor checks citations against returned tool facts, screens for possible PII/secret leakage, and validates JSON structure. These checks reduce risk but cannot guarantee factuality or detect every leak.",
         details: {
-          faithfulnessCheck: "99.1% grounded in retrieved SQL tool facts",
-          leakageScanner: "0 internal API keys or secrets detected",
+          faithfulnessCheck: "Citation and grounding checks run; results require calibrated evaluation and review",
+          leakageScanner: "Secret/PII screening result recorded; detection is not a prevention guarantee",
           schemaValidator: "Valid ExecutiveReport JSON Schema"
         }
       },
@@ -855,10 +895,37 @@ const ARCHITECTURE_DATA = {
         summary: "Formatted markdown executive summary streamed back to user's Slack window with interactive citation links to Snowflake tables and compliance clauses.",
         details: {
           status: "SUCCESS (200 OK)",
-          clientFeedback: "Thumbs up/down widget attached for continuous RLHF learning"
+          clientFeedback: "Feedback captured for review and governed evaluation; it does not automatically train or update the model"
         }
       }
-    ]
+    ],
+    failureScenario: {
+      id: "identity-denied-recovery",
+      label: "Expired identity: deny and recover",
+      scenario: "Illustrative: an expired delegated identity attempts a scoped ERP read; authorization denies it, evidence is recorded, and the user reauthenticates before a new request.",
+      steps: [
+        {
+          step: 1, name: "Queued Request Resumes After Credential Expiry", layerId: "infra", containerId: "cnt-workflow-store", team: "ai",
+          summary: "An authenticated request waited in the durable workflow queue. Before any consequential action, its delegated credential expired; the resume path revalidates identity and sends no tool request.",
+          details: { workflow: "Authenticated request resumes from a durable checkpoint", identity: "Delegated credential expired while queued", action: "No MCP call dispatched", control: "Revalidate identity at execution time" }
+        },
+        {
+          step: 2, name: "Authorization Fails Closed", layerId: "decisions", containerId: "cnt-decision", team: "governance", outcome: "denied",
+          summary: "The policy enforcement point cannot establish a current actor and resource authorization context, so it denies the ERP read. No broad service credential is substituted.",
+          details: { policy: "Require current user/workload identity plus resource ACL", decision: "DENY", scope: "No MCP call; no data returned", owner: "Decision policy and MCP enforcement point" }
+        },
+        {
+          step: 3, name: "Record Minimized Denial Evidence", layerId: "operating-model", containerId: "cnt-governance-ledger", team: "governance",
+          summary: "The platform records the correlation ID, identity state, policy version, denial reason, and outcome without retaining unnecessary prompt content. If required evidence storage is unavailable, the consequential action remains blocked.",
+          details: { evidence: "Correlation ID, actor/workload reference, policy version, denial outcome", privacy: "Prompt content minimized or redacted per policy", outcome: "Denied action is auditable" }
+        },
+        {
+          step: 4, name: "Reauthenticate and Submit a New Request", layerId: "channels", containerId: "cnt-ingress", team: "security",
+          summary: "The user completes the identity provider challenge. A new request receives fresh scoped claims and a new idempotency key; policy and resource ACL checks run again before any action.",
+          details: { identity: "Fresh delegated context issued by identity provider", retry: "New request after authentication; no replay of the denied tool call", authorization: "Re-evaluate current policy and resource ACL", status: "May proceed only if the new check allows" }
+        }
+      ]
+    }
   }
 };
 

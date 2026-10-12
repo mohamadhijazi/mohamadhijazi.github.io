@@ -227,7 +227,7 @@ class C4Renderer {
   renderContainerL2() {
     const c2 = this.data.c4.contextL2;
     const width = 1240;
-    const height = 750;
+    const height = 860;
 
     let containersHtml = "";
     c2.containers.forEach(cnt => {
@@ -285,7 +285,7 @@ class C4Renderer {
           <text x="40" y="62" class="canvas-subtitle">${c2.subtitle}</text>
 
           <!-- Outer Platform Boundary -->
-          <rect x="30" y="85" width="1160" height="630" rx="16" class="container-boundary-box" />
+          <rect x="30" y="85" width="1160" height="750" rx="16" class="container-boundary-box" />
           <text x="50" y="112" class="boundary-label">${c2.boundary}</text>
 
           <!-- Edges -->

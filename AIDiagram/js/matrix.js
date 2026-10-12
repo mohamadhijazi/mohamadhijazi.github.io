@@ -271,7 +271,7 @@ class MatrixView {
                     <div class="detail-card">
                       <div class="detail-card-header">
                         <span class="icon">📊</span>
-                        <h5>AIOps & Observability Metrics</h5>
+                        <h5>AIOps Metrics (Illustrative / Service Targets TBD)</h5>
                       </div>
                       <ul class="detail-list">
                         ${layer.aiopsMetrics.map(m => `<li><code>${m}</code></li>`).join("")}

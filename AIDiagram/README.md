@@ -1,6 +1,6 @@
 # Enterprise Agentic AI Architecture & C4 Governance Platform
 
-Interactive architectural modeling tool built with pure vanilla **HTML5**, **CSS3**, and **Modern JavaScript (ES6+)**. This application visualizes the complete reference architecture for modern enterprise Agentic AI platforms with responsibility mapping (**RACI**) across multidisciplinary teams and full **C4 Model** engineering views.
+Interactive reference architecture built with pure vanilla **HTML5**, **CSS3**, and **Modern JavaScript (ES6+)**. It maps enterprise AI responsibilities (**RACI**), capability layers, illustrative C4 views, and example execution traces. It describes design considerations; it is not evidence that any control is deployed or that an organization complies with a law or standard.
 
 ## Architecture Scope
 
@@ -37,18 +37,16 @@ The architecture covers 14 enterprise AI capability layers, including the runtim
 
 ### View 2: C4 Level 1 - System Context Diagram
 - Shows the Enterprise AI Platform boundary within the broader enterprise ecosystem:
-  - Enterprise Personas: Business User, AI Developer, Governance Auditor.
-  - External Foundation Models: OpenAI, Anthropic, Google Vertex AI.
-  - Enterprise Systems: SAP, Salesforce, Jira, Snowflake.
-  - Identity & Access Provider: Okta / Microsoft Entra ID.
-  - Regulatory Archives.
+  - Enterprise personas: Business User, AI Developer, Governance & SecOps Auditor.
+  - External model providers, enterprise systems, and identity providers are illustrative examples.
+  - Shows external relationships and system context; internal trust boundaries and enforcement points are detailed in layers and containers.
 
 ### View 3: C4 Level 2 - Container Diagram
-- Detailed container landscape showing all 12 technical containers running within the platform boundary, their tech stacks, protocols (HTTP/2, gRPC, JSON-RPC over MCP, Kafka, SSE), and team ownership badges.
+- Detailed illustrative landscape showing 13 runtime, control-plane, workflow, and evidence containers, their example technologies, team ownership, mapped layers, trust boundaries, and primary request, authorization, retrieval, audit, and release flows. Protocols are named only where specified; topology, regions, and failure domains require deployment decisions.
 - Interactive click-to-inspect for any container or inter-container communication edge.
 
 ### View 4: C4 Level 3 - Component Diagrams
-  - Select any of the 14 architecture layers to see every component listed for that layer.
+  - Select any of the 14 architecture layers to see its listed internal responsibilities and components.
 - Includes an additional in-depth decomposition of the **Agentic Orchestrator & Agent Harness Runtime** container:
   - Session & Context Coordinator
   - Graph Decomposition & Planner (ReAct / LangGraph)
@@ -64,9 +62,8 @@ The architecture covers 14 enterprise AI capability layers, including the runtim
 - C4 Level 2 containers declare their mappings to one or more architecture layers; selecting a container opens the mapped layer specification.
 
 ### View 5: Dynamic Execution Trace (Interactive Simulation)
-- Step-by-step interactive simulation tracing an end-to-end request:
-  - *Scenario*: "Analyze Q3 regional revenue dip, pull ERP audit records, check fraud policy, and generate executive summary."
-  - Follows steps 1 through 11 with live protocol inspection, guardrail check scores, FinOps token billing, and dynamic spotlighting on the C4 Container diagram.
+  - Selectable illustrative traces for a successful request and an expired-identity denial/recovery path.
+  - Demonstrates identity propagation, policy checks, tool execution boundaries, evidence recording, and recovery. Example values and outcomes are not production measurements or guarantees.
 
 ---
 
@@ -94,9 +91,11 @@ https://mohamadhijazi.github.io/AIDiagram/
 
 ---
 
-## Regulatory & Standards Compliance
-- **EU AI Act (Regulation 2024/1689)**: Article 50 transparency requirements, Article 14 human oversight checkpointers, Article 15 cybersecurity safeguards.
-- **NIST AI Risk Management Framework (AI RMF 1.0)**: Govern, Map, Measure, Manage functions embedded across the RACI matrix.
-- **C4 Model**: Context (L1), Containers (L2), Components (L3) based on Simon Brown's software architecture visualization framework.
-- **Model Context Protocol (MCP)**: Tool integration aligned with Anthropic's open MCP specification.
+## Governance References and Assumptions
+- Risk classification and applicability review can consider the **EU AI Act (Regulation 2024/1689)**, **NIST AI Risk Management Framework (AI RMF 1.0)**, sector rules, and local requirements. Naming a framework does not establish applicability or compliance.
+- Human oversight, evidence retention, SLOs, RTO/RPO, regional placement, provider terms, and failure policies require service-specific decisions and accountable owners. Where no approved values are provided, the architecture marks them as TBD or illustrative.
+- Detection, redaction, evaluation, and audit mechanisms reduce and help manage risk; they do not guarantee prevention, correctness, availability, or legal compliance.
+- Named vendors, sample model choices, costs, metric values, and thresholds in the matrix and successful-request trace are illustrative examples unless an organization separately adopts them as approved targets.
+- **C4 Model**: Context (L1), Containers (L2), Components (L3) are used as architecture views; L3 layer diagrams list responsibilities and are not full deployable component specifications.
+- **Model Context Protocol (MCP)**: Used as an example tool integration interface; actual protocol versions, transports, and security profiles are deployment choices.
 

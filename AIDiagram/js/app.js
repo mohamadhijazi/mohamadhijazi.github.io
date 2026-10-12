@@ -254,7 +254,7 @@ class App {
       <div class="drawer-section">
         <h4 class="drawer-section-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          AIOps Observability & SLA Benchmarks
+          AIOps Observability Measures (Examples / Targets TBD)
         </h4>
         <ul class="drawer-bullet-list code-bullets">
           ${layer.aiopsMetrics.map(m => `<li><code>${m}</code></li>`).join("")}
