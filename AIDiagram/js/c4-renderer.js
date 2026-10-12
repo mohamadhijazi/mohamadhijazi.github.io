@@ -19,15 +19,30 @@ class C4Renderer {
     this.isPanning = false;
     this.startPan = { x: 0, y: 0 };
     this.highlightedNodeId = null;
+    this.componentLayer = "orchestrator-runtime";
   }
 
   init() {
+    const select = document.getElementById("c4-component-layer");
+    if (select) {
+      const options = this.data.layers.map(item => `<option value="${item.id}">${item.name}</option>`).join("");
+      select.innerHTML = `${options}<option value="orchestrator-runtime">Orchestrator runtime (detailed)</option>`;
+      select.value = this.componentLayer;
+    }
     this.render();
     this.setupPanAndZoom();
   }
 
   setView(viewKey) {
     this.currentView = viewKey;
+    this.zoomLevel = 1.0;
+    this.panX = 0;
+    this.panY = 0;
+    this.render();
+  }
+
+  setComponentLayer(layerId) {
+    this.componentLayer = layerId;
     this.zoomLevel = 1.0;
     this.panX = 0;
     this.panY = 0;
@@ -217,12 +232,14 @@ class C4Renderer {
     let containersHtml = "";
     c2.containers.forEach(cnt => {
       const team = this.data.teams[cnt.team];
+      const mappedLayerNames = (cnt.layerIds || []).map(id => this.data.layers.find(layer => layer.id === id)?.name).filter(Boolean);
       const isDimmed = this.activeTeam !== "all" && this.activeTeam !== cnt.team;
       const isHighlighted = this.activeTeam !== "all" && this.activeTeam === cnt.team;
 
       containersHtml += `
         <g class="c4-node-card node-container ${isDimmed ? 'node-dimmed' : ''} ${isHighlighted ? 'node-pulse' : ''}" 
            id="${cnt.id}" transform="translate(${cnt.x}, ${cnt.y})" onclick="window.app.inspectC4Item('${cnt.id}', 'container')">
+          <title>Architecture layers: ${mappedLayerNames.join(", ")}</title>
           <rect width="${cnt.w}" height="${cnt.h}" rx="10" class="container-rect" style="border-color:${team.color}" />
           
           <!-- Accent Header Bar -->
@@ -283,6 +300,11 @@ class C4Renderer {
 
   // --- C4 LEVEL 3: COMPONENT DIAGRAM ---
   renderComponentL3() {
+    if (this.componentLayer !== "orchestrator-runtime") {
+      this.renderLayerComponentsL3();
+      return;
+    }
+
     const c3 = this.data.c4.contextL3;
     const width = 1240;
     const height = 750;
@@ -343,6 +365,58 @@ class C4Renderer {
 
           <!-- Components -->
           <g class="nodes-group">${componentsHtml}</g>
+        </g>
+      </svg>
+    `;
+  }
+
+  renderLayerComponentsL3() {
+    const layer = this.data.layers.find(item => item.id === this.componentLayer) || this.data.layers[0];
+    const width = 1240;
+    const height = 750;
+    const select = document.getElementById("c4-component-layer");
+    if (select) {
+      const options = this.data.layers.map(item => `<option value="${item.id}">${item.name}</option>`).join("");
+      select.innerHTML = `${options}<option value="orchestrator-runtime">Orchestrator runtime (detailed)</option>`;
+      select.value = this.componentLayer;
+    }
+
+    const owner = Object.entries(layer.raci).find(([, info]) => info.role.includes("R"))?.[0]
+      || Object.entries(layer.raci).find(([, info]) => info.role.includes("A"))?.[0]
+      || "ai";
+    const team = this.data.teams[owner];
+    const componentNodes = layer.components.map((component, index) => {
+      const col = index % 4;
+      const row = Math.floor(index / 4);
+      const x = 40 + col * 295;
+      const y = 130 + row * 180;
+      const isDimmed = this.activeTeam !== "all" && this.activeTeam !== owner;
+      const isHighlighted = this.activeTeam !== "all" && this.activeTeam === owner;
+      return `
+        <g class="c4-node-card node-component ${isDimmed ? 'node-dimmed' : ''} ${isHighlighted ? 'node-pulse' : ''}" transform="translate(${x}, ${y})"
+           onclick="window.app.inspectLayer('${layer.id}')" style="cursor:pointer">
+          <rect width="270" height="150" rx="9" class="component-rect" style="border-color:${team.color}" />
+          <rect width="270" height="34" rx="9" fill="${team.lightBg}" />
+          <text x="14" y="22" font-size="11" font-weight="600" fill="${team.color}">${team.short} · ${layer.category}</text>
+          <foreignObject x="14" y="43" width="242" height="65">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:14px;font-weight:700;line-height:1.25;color:#f8fafc;">${component}</div>
+          </foreignObject>
+          <foreignObject x="14" y="112" width="242" height="32">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:10px;line-height:1.2;color:#94a3b8;">${layer.name}</div>
+          </foreignObject>
+        </g>
+      `;
+    }).join("");
+
+    this.container.innerHTML = `
+      <svg class="c4-svg-canvas" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+        <defs>${this.getSvgDefs()}</defs>
+        <g id="svg-pan-zoom-group">
+          <text x="40" y="38" class="canvas-title">C4 Level 3: ${layer.name} Components</text>
+          <text x="40" y="62" class="canvas-subtitle">Every component listed for this architecture layer. Select a card to inspect the full layer specification.</text>
+          <rect x="30" y="85" width="1180" height="630" rx="16" class="container-boundary-box" />
+          <text x="50" y="111" class="boundary-label">LAYER: ${layer.name} · ${layer.components.length} COMPONENTS</text>
+          <g class="nodes-group">${componentNodes}</g>
         </g>
       </svg>
     `;

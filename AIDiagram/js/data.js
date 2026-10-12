@@ -11,7 +11,7 @@
 const ARCHITECTURE_DATA = {
   meta: {
     title: "Enterprise Agentic AI Architecture Platform",
-    version: "2.4.0",
+    version: "2.5.0",
     lastUpdated: "October 2026",
     author: "Enterprise AI Architecture Board"
   },
@@ -25,7 +25,7 @@ const ARCHITECTURE_DATA = {
       lightBg: "rgba(59, 130, 246, 0.12)",
       border: "rgba(59, 130, 246, 0.4)",
       roleDescription: "Builds, fine-tunes, and evaluates models, prompt graphs, agent workflows, and semantic routing logic.",
-      coreMembers: ["ML Engineers", "Agent Engineers", "Prompt Engineers", "Data Scientists", "AI Ops Engineers"]
+      coreMembers: ["ML Engineers", "Agent Engineers", "Prompt Engineers", "Data Scientists", "AI Platform Engineers", "MLOps / LLMOps Engineers"]
     },
     product: {
       id: "product",
@@ -35,7 +35,7 @@ const ARCHITECTURE_DATA = {
       lightBg: "rgba(16, 185, 129, 0.12)",
       border: "rgba(16, 185, 129, 0.4)",
       roleDescription: "Defines user journeys, multi-channel experiences, domain workflows, business ROI, and value delivery.",
-      coreMembers: ["AI Product Managers", "UX/Conversational Designers", "Business Analysts", "Domain SMEs"]
+      coreMembers: ["AI Product Managers", "UX / Conversational Designers", "Business Analysts", "Domain & Business Process Owners", "Enterprise Application Owners", "Finance / FinOps Analysts", "Service Desk Leads"]
     },
     governance: {
       id: "governance",
@@ -45,7 +45,7 @@ const ARCHITECTURE_DATA = {
       lightBg: "rgba(245, 158, 11, 0.12)",
       border: "rgba(245, 158, 11, 0.4)",
       roleDescription: "Ensures compliance with EU AI Act, NIST AI RMF, ethical alignment, bias mitigation, and corporate auditability.",
-      coreMembers: ["AI Ethics Officers", "Compliance Analysts", "Legal Counsel", "Risk Officers", "Audit Leads"]
+      coreMembers: ["AI Ethics Officers", "Compliance Analysts", "Legal Counsel", "Model Risk Officers", "Privacy & Data Governance Officers", "Third-Party Risk Officers", "Audit Leads"]
     },
     security: {
       id: "security",
@@ -55,7 +55,7 @@ const ARCHITECTURE_DATA = {
       lightBg: "rgba(239, 68, 68, 0.12)",
       border: "rgba(239, 68, 68, 0.4)",
       roleDescription: "Protects against prompt injection, jailbreaks, data exfiltration, secret leakage, and enforces Zero-Trust boundaries.",
-      coreMembers: ["AppSec Engineers", "Red Teamers / Jailbreak Testers", "IAM Specialists", "SecOps Analysts"]
+      coreMembers: ["AppSec Engineers", "Red Teamers / Jailbreak Testers", "IAM Specialists", "Cloud Platform / SRE Engineers", "IT Operations & Incident Managers", "SecOps Analysts"]
     }
   },
 
@@ -142,9 +142,10 @@ const ARCHITECTURE_DATA = {
       name: "Multi-Agent Swarm & Specialists",
       category: "Cognitive Core",
       description: "Ecosystem of specialized autonomous agents (research, coding, data analysis, critique) operating in hierarchical or peer swarms.",
-      techStack: ["Hierarchical Supervisor Pattern", "A2A (Agent-to-Agent) Pub/Sub", "Python Dynamic Sandboxes", "Docker Tool Runners", "Ray Core Cluster"],
+      techStack: ["Hierarchical Supervisor Pattern", "Versioned Agent Skills Catalog", "A2A (Agent-to-Agent) Pub/Sub", "Python Dynamic Sandboxes", "Docker Tool Runners", "Ray Core Cluster"],
       components: [
         "Supervisor / Orchestrator Agent",
+        "Agent Skills Catalog & Registry",
         "Deep Research & Document Synthesis Agent",
         "Code Generation & Sandboxed Runner Agent",
         "SQL & Enterprise Data Analyst Agent",
@@ -243,17 +244,21 @@ const ARCHITECTURE_DATA = {
     },
     {
       id: "infra",
-      name: "Data & Core Infrastructure Tier",
-      category: "Infrastructure & Data",
-      description: "High-performance enterprise data layer powering hybrid search, vector storage, distributed memory, GPU clusters, and relational state.",
-      techStack: ["Milvus / Qdrant / Pinecone Vector DB", "PostgreSQL / pgvector", "Redis Enterprise (Cluster)", "Kubernetes (EKS/GKE with GPU Operator)", "NVIDIA H100/A100 Clusters", "Amazon S3 / GCS Storage"],
+      name: "Data, Software & Compute Infrastructure",
+      category: "Infrastructure, Software & Hardware",
+      description: "Enterprise platform foundation spanning cloud and on-prem compute, CPU/GPU hardware, network, storage, data services, orchestration software, capacity, and recovery.",
+      techStack: ["Kubernetes / Terraform / GitOps", "x86 / ARM CPU Nodes", "NVIDIA H100 / A100 or Equivalent GPU Accelerators", "VPC / Service Mesh / Load Balancers", "Milvus / Qdrant / pgvector", "PostgreSQL / Redis", "NVMe / Object Storage / Backup"],
       components: [
         "Distributed Vector Knowledge Base",
         "Hybrid Search (Dense + Sparse BM25) Engine",
         "Document Ingestion & Chunking Pipeline",
         "Distributed Session & Memory Store (Redis)",
-        "High-Speed GPU Inference Compute Cluster",
-        "Zero-Trust Object Storage & Document Lake"
+        "General-Purpose CPU Compute & Container Runtime Pools",
+        "GPU Accelerator, Inference & Training Hardware Pools",
+        "Network Fabric, DNS, Load Balancing & Service Mesh",
+        "Block, File, NVMe & Object Storage with Backup / Restore",
+        "Infrastructure Provisioning, Patching & Capacity Management",
+        "High Availability, Disaster Recovery & Regional Failover"
       ],
       raci: {
         ai: { role: "R", details: "Selects embedding models, chunking strategies, hybrid search reciprocal rank fusion (RRF), and vector indexes (HNSW)." },
@@ -261,11 +266,11 @@ const ARCHITECTURE_DATA = {
         governance: { role: "C", details: "Ensures data retention policies, right-to-be-forgotten deletion in vector indexes, and role-based data partitioning." },
         security: { role: "R/A", details: "Secures Kubernetes network policies, enforces AES-256 encryption at rest, vector multi-tenancy isolation, and secret management." }
       },
-      keyDeliverables: ["High-Scale Vector Search Cluster", "GPU Autoscaling Policies", "Document Chunking Ingestion Pipeline", "Disaster Recovery Playbooks"],
+      keyDeliverables: ["Compute / Network / Storage Service Catalog", "GPU Autoscaling and Capacity Plans", "Infrastructure-as-Code Modules", "Backup Restore and Disaster Recovery Playbooks"],
       governanceTouchpoints: ["Vector Multi-Tenant Tenant Separation", "Right-to-be-Forgotten Data Purge in Vector Indices"],
-      securityControls: ["Row-Level Security (RLS) in Vector Search", "K8s Network Policies & mTLS", "FIPS 140-2 Compliant Key Storage"],
-      finopsLevers: ["HNSW index quantization (SQ8/FP16) reducing RAM usage by 60%", "Spot GPU instance scaling for offline ingestion"],
-      aiopsMetrics: ["Vector Query Recall@10 (>94%)", "Vector Search P99 (<20ms)", "GPU Utilization (>75% sustained)", "Storage IOPS"]
+      securityControls: ["Row-Level Security (RLS) in Vector Search", "Kubernetes Network Policies & mTLS", "OS / Container / Firmware Patch Baselines", "FIPS 140-2 Compliant Key Storage"],
+      finopsLevers: ["HNSW index quantization reducing RAM use", "Right-size CPU and GPU pools", "Spot GPU scaling for eligible offline workloads", "Storage tiering and retention"],
+      aiopsMetrics: ["Vector Query Recall@10 (>94%)", "Vector Search P99 (<20ms)", "CPU / GPU / memory utilization", "Storage IOPS and capacity headroom", "Backup restore and failover time"]
     },
     {
       id: "aiops",
@@ -305,6 +310,8 @@ const ARCHITECTURE_DATA = {
         "Dynamic Rate Limiting & Hard Budget Caps",
         "Semantic Cache ROI & Token Savings Calculator",
         "Cost-per-Query & Unit Economics Dashboard",
+        "Enterprise AI TCO (Models, SaaS, Compute, Storage & Network)",
+        "Cost / Quality / Latency Trade-off Optimizer",
         "Automated Model Down-tiering Recommendations"
       ],
       raci: {
@@ -313,11 +320,87 @@ const ARCHITECTURE_DATA = {
         governance: { role: "C", details: "Ensures fair resource distribution across corporate business units and prevents rogue budget consumption." },
         security: { role: "I", details: "Coordinates on DoS-induced token exhaustion attacks (Financial Denial of Service / FDoS)." }
       },
-      keyDeliverables: ["Per-Department Cost Allocation Reports", "Real-Time Quota Breaker Service", "Token Optimization Audit Report"],
+      keyDeliverables: ["Per-Department and Per-Service Cost Allocation", "AI TCO / ROI Forecasts", "Real-Time Quota Breaker Service", "Token Optimization Audit Report"],
       governanceTouchpoints: ["Corporate Cost Transparency Audits", "Executive Budget Variance Notifications"],
       securityControls: ["Protection Against Financial Denial of Service (FDoS)", "API Key Hard Spend Thresholds", "Tamper-resistant Billing Records"],
       finopsLevers: ["Strict per-user token rate limits", "Automatic fallback to cheaper models when budget tier passes 80%", "Prompt compression"],
       aiopsMetrics: ["Cost Per Resolved Goal ($/task)", "Semantic Cache Dollar Savings ($ saved/month)", "Budget Forecast Accuracy (±5%)"]
+    },
+    {
+      id: "applications",
+      name: "Enterprise AI Applications & Business Workflows",
+      category: "Application & Business Process",
+      description: "Business-facing AI products and embedded workflows with named owners, approved use cases, integrations, user journeys, and measurable outcomes.",
+      techStack: ["Embedded Copilot / Workflow UI", "Enterprise API & Event Integration", "Use-Case Portfolio Registry", "Workflow Adapters", "Feedback & Case Management"],
+      components: ["Enterprise AI Application & Copilot Portfolio", "Use-Case Intake, Value Assessment & Prioritization", "Business Process Integration & Workflow Adapters", "Application-Specific Retrieval, Prompts & Agent Skills", "Document Intelligence, Vision, Speech & Multimodal Applications", "Predictive Analytics, Classification & Forecasting Applications", "Human Handoff, Case Management & User Feedback", "Business Outcome, Adoption & Service Ownership Metrics"],
+      raci: {
+        ai: { role: "C", details: "Advises on model fit, retrieval design, prompt and skill reuse, and technical feasibility." },
+        product: { role: "R/A", details: "Owns the application portfolio, process fit, user experience, product outcomes, and business service owner assignment." },
+        governance: { role: "C", details: "Reviews use-case purpose, impact classification, affected people, and required oversight." },
+        security: { role: "R", details: "Reviews application threat models, identity boundaries, API exposure, and data access." }
+      },
+      keyDeliverables: ["AI Use-Case Register", "Application Service Catalog", "Process Maps & Outcome Baselines", "Business Owner and Support Handoff"],
+      governanceTouchpoints: ["Use-Case Approval Before Build", "Business Process Owner Sign-Off", "User Disclosure and Human Handoff Design"],
+      securityControls: ["Application Threat Model", "Least-Privilege Identity & Data Scopes", "Approved Integration Inventory"],
+      finopsLevers: ["Value and cost per completed business outcome", "Application tier budgets", "Retire or redesign low-value use cases"],
+      aiopsMetrics: ["Adoption and task completion rate", "Business process cycle time", "Application availability and user satisfaction"]
+    },
+    {
+      id: "data-governance",
+      name: "Enterprise Data Governance & Knowledge Lifecycle",
+      category: "Data Management & Governance",
+      description: "Controls enterprise data from source onboarding through classification, quality, lineage, retrieval, retention, correction, and deletion for AI use.",
+      techStack: ["Enterprise Data Catalog & Lineage", "Data Quality / DLP Rules", "Lakehouse & ETL/ELT Pipelines", "Embedding / Index Build Pipeline", "Retention & Deletion Workflows"],
+      components: ["Source Registration, Data Contracts & Ownership", "Classification, Consent, Residency & Purpose Controls", "Data Quality, Provenance, Lineage & Freshness Checks", "Curated Dataset, Document & Knowledge Versioning", "RAG Ingestion, Chunking, Embedding & Index Promotion", "Retention, Correction, Legal Hold & Right-to-Erasure Workflow"],
+      raci: {
+        ai: { role: "R", details: "Defines dataset and retrieval requirements, validates grounding quality, and versions AI-ready corpora." },
+        product: { role: "C", details: "Identifies authoritative business sources, data owners, and freshness expectations." },
+        governance: { role: "A", details: "Approves purpose, classification, retention, residency, consent, and privacy requirements." },
+        security: { role: "R", details: "Enforces identity-aware access, encryption, DLP, isolation, and secure data movement." }
+      },
+      keyDeliverables: ["AI Data Source Register", "Dataset Cards & Lineage", "Approved Ingestion Pipelines", "Retention and Deletion Evidence"],
+      governanceTouchpoints: ["Data Owner Approval and Lawful Purpose", "Dataset / Knowledge Change Review", "Retention and Deletion Certification"],
+      securityControls: ["Row / Document-Level Authorization", "DLP and Secret Scanning", "Encrypted Transfer and Tenant Isolation"],
+      finopsLevers: ["Storage and embedding cost per corpus", "Incremental index refresh", "Archive stale or unused knowledge"],
+      aiopsMetrics: ["Source freshness lag", "Ingestion and index build duration", "Retrieval coverage and data quality failure rate"]
+    },
+    {
+      id: "ai-engineering",
+      name: "AI Engineering, MLOps & Release Lifecycle",
+      category: "Engineering & Change Management",
+      description: "Reproducible lifecycle for datasets, models, prompts, skills, agents, evaluations, approvals, deployment, monitoring, and rollback.",
+      techStack: ["Git / Artifact Repository", "Experiment Tracking & Model Registry", "Prompt / Agent / Skill Versioning", "CI/CD & Evaluation Gates", "Canary / Blue-Green Release Automation"],
+      components: ["Experiment, Dataset & Model Artifact Tracking", "Model, Prompt, Agent Graph & Skill Version Registry", "Feature Engineering, Training & Offline / Online Model Serving", "Automated Unit, Integration, Safety & Regression Evaluation", "Risk-Based Review, Approval & Release Gates", "Build, Package, Sign & Environment Promotion Pipeline", "Canary, A/B, Rollback & Model Retirement Controller"],
+      raci: {
+        ai: { role: "R", details: "Builds reproducible pipelines, evaluations, model packages, prompts, agents, and skills." },
+        product: { role: "C", details: "Approves user impact, release timing, acceptance criteria, and business readiness." },
+        governance: { role: "A", details: "Sets risk-based approval evidence and required validation for material changes." },
+        security: { role: "R", details: "Secures source, artifacts, build systems, signing keys, deployment identities, and supply chain." }
+      },
+      keyDeliverables: ["Versioned Model / Prompt / Agent / Skill Artifacts", "Evaluation Reports & Release Evidence", "Signed Deployment Packages", "Rollback and Retirement Records"],
+      governanceTouchpoints: ["Pre-Production Risk Review", "Independent Evaluation for Material Changes", "Release Approval and Change Record"],
+      securityControls: ["Protected Branches and Artifact Signing", "Dependency / Container Scanning", "Separated Build and Production Credentials"],
+      finopsLevers: ["Training and inference cost per release", "GPU queue and experiment budgets", "Release cost / quality comparison"],
+      aiopsMetrics: ["Change lead time", "Deployment frequency and failure rate", "Rollback time", "Evaluation gate pass rate"]
+    },
+    {
+      id: "operating-model",
+      name: "Enterprise AI Operating Model, Policies & Service Management",
+      category: "People, Process & Control Plane",
+      description: "Defines accountable people, lifecycle procedures, policy ownership, operational controls, service levels, training, incident response, and audit evidence.",
+      techStack: ["RACI & Service Ownership Register", "Policy / Procedure Repository", "ITSM Change / Incident / Problem Workflows", "Runbooks & On-Call Schedules", "Training & Competency Records"],
+      components: ["Named Business, Application, Data, Model & Service Owners", "AI Use-Case, Risk Classification & Approval Procedure", "Regulatory & Internal Policy Applicability Register", "Acceptable Use, Data Use, Human Oversight & Model Change Policies", "Standard Operating Procedures, Runbooks & Exception Handling", "Incident, Escalation, Complaint & Problem Management", "Service Levels, Support Handoff, Training & Competency Management", "Third-Party Model / Vendor Review, Renewal & Exit Procedure"],
+      raci: {
+        ai: { role: "R", details: "Maintains technical runbooks, model / agent ownership, evaluation operations, and on-call expertise." },
+        product: { role: "R", details: "Assigns business and application owners, process approvers, service desk paths, and continuity expectations." },
+        governance: { role: "A", details: "Owns enterprise AI policy, risk acceptance, review cadence, training requirements, and audit evidence." },
+        security: { role: "R", details: "Owns security incident procedures, platform operations controls, access reviews, and recovery coordination." }
+      },
+      keyDeliverables: ["AI Operating Model & Role Directory", "Approved Policy and Procedure Set", "Service Catalog, SLOs and Runbooks", "Training, Incident and Vendor Review Records"],
+      governanceTouchpoints: ["EU AI Act, NIST AI RMF, Sector and Jurisdiction Applicability Review", "Policy Approval and Scheduled Review", "Risk Acceptance and Exception Expiry", "Incident Notification and Audit Evidence Retention"],
+      securityControls: ["On-Call Escalation and Breach Procedures", "Privileged Access Review", "Business Continuity and Recovery Exercises"],
+      finopsLevers: ["Named budget owners and approval thresholds", "Service cost allocation", "Vendor renewal and exit cost review"],
+      aiopsMetrics: ["Incident response and recovery time", "SLO attainment", "Change approval duration", "Training and review completion"]
     }
   ],
 
@@ -331,11 +414,11 @@ const ARCHITECTURE_DATA = {
       nodes: [
         // Actors
         { id: "actor-business", type: "actor", label: "Business User / Employee", desc: "Interacts via Web Copilot, Slack/Teams to execute workflows and retrieve intelligence.", x: 100, y: 120 },
-        { id: "actor-dev", type: "actor", label: "AI Developer / Engineer", desc: "Builds agent graphs, deploys custom MCP servers, reviews traces, monitors evals.", x: 100, y: 320 },
+        { id: "actor-dev", type: "actor", label: "AI Developer / Engineer", desc: "Builds agent graphs and reusable skills, deploys custom MCP servers, reviews traces, and monitors evals.", x: 100, y: 320 },
         { id: "actor-auditor", type: "actor", label: "Governance & SecOps Auditor", desc: "Reviews safety logs, inspects policy decisions, verifies compliance with regulations.", x: 100, y: 520 },
 
         // Core System
-        { id: "system-platform", type: "system-core", label: "Enterprise Agentic AI Platform", desc: "Unified AI operating system coordinating multi-agent swarms, guardrails, multi-LLM routing, MCP tools, AIOps, and FinOps.", x: 480, y: 280, width: 340, height: 260 },
+        { id: "system-platform", type: "system-core", label: "Enterprise Agentic AI Platform", desc: "Enterprise AI applications and workflows supported by governed data, agent skills, model lifecycle controls, safety, inference, operations, and cost governance.", x: 480, y: 280, width: 340, height: 260 },
 
         // External Systems
         { id: "ext-llm-cloud", type: "system-ext", label: "Frontier Cloud LLMs", desc: "OpenAI (GPT-4o), Anthropic (Claude 3.5), Google Vertex AI (Gemini Pro/Flash).", x: 960, y: 100 },
@@ -366,6 +449,7 @@ const ARCHITECTURE_DATA = {
           name: "API & Channel Ingress Gateway",
           tech: "Kong Gateway / Envoy / Fastify",
           type: "container",
+          layerIds: ["channels", "applications"],
           desc: "Ingress proxy handling SSL termination, OAuth2 token validation, rate limiting, and multi-channel routing.",
           team: "security",
           x: 60, y: 140, w: 220, h: 110
@@ -375,6 +459,7 @@ const ARCHITECTURE_DATA = {
           name: "Guardrails & Safety Firewall",
           tech: "NeMo Guardrails / Presidio / Python",
           type: "container",
+          layerIds: ["guardrails"],
           desc: "Dual-sided safety interceptor executing prompt injection checks, PII redaction, jailbreak scans, and hallucination checks.",
           team: "security",
           x: 330, y: 140, w: 230, h: 110
@@ -384,7 +469,8 @@ const ARCHITECTURE_DATA = {
           name: "Agentic Orchestrator & Swarm Runtime",
           tech: "LangGraph / Python / AsyncIO / Redis",
           type: "container",
-          desc: "Core cognitive engine running multi-agent swarms, planning DAGs, session scratchpads, and reflection loops.",
+          layerIds: ["orchestrator", "multiagent", "applications"],
+          desc: "Core cognitive engine running multi-agent swarms, reusable skill discovery, planning DAGs, session scratchpads, and reflection loops.",
           team: "ai",
           x: 610, y: 140, w: 250, h: 110
         },
@@ -393,6 +479,7 @@ const ARCHITECTURE_DATA = {
           name: "Decision & Policy Engine",
           tech: "Open Policy Agent (OPA) / Rego / Go",
           type: "container",
+          layerIds: ["decisions", "operating-model"],
           desc: "Evaluates action authorization policies, confidence thresholds, and coordinates Human-in-the-Loop approval workflows.",
           team: "governance",
           x: 910, y: 140, w: 220, h: 110
@@ -402,6 +489,7 @@ const ARCHITECTURE_DATA = {
           name: "MCP Gateway & Tool Server Hub",
           tech: "Model Context Protocol / TypeScript / Docker",
           type: "container",
+          layerIds: ["mcps"],
           desc: "Standardized tool runtime discovering and executing tools against Enterprise DBs, SaaS APIs, and local code environments.",
           team: "ai",
           x: 610, y: 330, w: 250, h: 110
@@ -411,16 +499,28 @@ const ARCHITECTURE_DATA = {
           name: "Multi-LLM Gateway & Semantic Router",
           tech: "LiteLLM Proxy / Redis Semantic Cache",
           type: "container",
+          layerIds: ["multillm"],
           desc: "Intelligent inference gateway routing prompts across Frontier, Fast, and Self-hosted LLMs with caching and failover.",
           team: "ai",
           x: 330, y: 330, w: 230, h: 110
+        },
+        {
+          id: "cnt-ai-lifecycle",
+          name: "AI Engineering & Release Pipeline",
+          tech: "MLflow / Git / CI-CD / Eval Gates",
+          type: "container",
+          layerIds: ["ai-engineering"],
+          desc: "Versions models, prompts, agent graphs, and skills; runs evaluation and approval gates before signed deployment, canary, rollback, or retirement.",
+          team: "ai",
+          x: 910, y: 330, w: 220, h: 110
         },
         {
           id: "cnt-vector",
           name: "Vector & Knowledge Storage",
           tech: "Milvus / Qdrant / PostgreSQL pgvector",
           type: "container",
-          desc: "Stores enterprise embeddings, hybrid text search indexes, document chunks, and domain knowledge graphs.",
+          layerIds: ["infra", "data-governance"],
+          desc: "Stores governed enterprise embeddings, hybrid search indexes, versioned document chunks, and domain knowledge graphs with lineage and retention controls.",
           team: "ai",
           x: 60, y: 330, w: 220, h: 110
         },
@@ -429,7 +529,8 @@ const ARCHITECTURE_DATA = {
           name: "AIOps & Observability Platform",
           tech: "Langfuse / OpenTelemetry / Prometheus",
           type: "container",
-          desc: "Distributed tracing of all agent steps, synthetic RAG evals (Ragas), latency metrics, and model drift alerting.",
+          layerIds: ["aiops", "ai-engineering", "operating-model"],
+          desc: "Distributed tracing, quality and release evaluation gates, drift alerts, and operational service metrics across AI workloads.",
           team: "ai",
           x: 60, y: 520, w: 220, h: 110
         },
@@ -438,6 +539,7 @@ const ARCHITECTURE_DATA = {
           name: "FinOps Metering & Quota Controller",
           tech: "ClickHouse / Redis Token Bucket",
           type: "container",
+          layerIds: ["finops", "operating-model"],
           desc: "Real-time token usage meter, departmental cost attribution, budget cap enforcer, and cost optimization advisor.",
           team: "product",
           x: 330, y: 520, w: 230, h: 110
@@ -447,6 +549,7 @@ const ARCHITECTURE_DATA = {
           name: "Self-Hosted GPU Inference Cluster",
           tech: "vLLM / Triton / Kubernetes / NVIDIA GPUs",
           type: "container",
+          layerIds: ["infra", "multillm", "ai-engineering"],
           desc: "Private on-prem / sovereign GPU nodes running open-source foundation models (Llama 3.3, Mistral) for sensitive workloads.",
           team: "security",
           x: 610, y: 520, w: 250, h: 110
@@ -456,6 +559,7 @@ const ARCHITECTURE_DATA = {
           name: "Governance Audit Ledger",
           tech: "PostgreSQL / Cryptographic Hash Chain",
           type: "container",
+          layerIds: ["decisions", "guardrails", "operating-model", "data-governance"],
           desc: "Immutable append-only record of all AI actions, policy evaluations, human approvals, and guardrail intercepts.",
           team: "governance",
           x: 910, y: 520, w: 220, h: 110
@@ -471,7 +575,9 @@ const ARCHITECTURE_DATA = {
         { from: "cnt-orchestrator", to: "cnt-vector", label: "7. Performs hybrid vector search [gRPC]", team: "ai" },
         { from: "cnt-orchestrator", to: "cnt-aiops", label: "8. Emits trace spans & step durations [OTel]", team: "ai" },
         { from: "cnt-multillm", to: "cnt-finops", label: "9. Records token counts & model cost [Async Kafka]", team: "product" },
-        { from: "cnt-decision", to: "cnt-governance-ledger", label: "10. Logs policy decision & HITL signoffs", team: "governance" }
+        { from: "cnt-decision", to: "cnt-governance-ledger", label: "10. Logs policy decision & HITL signoffs", team: "governance" },
+        { from: "cnt-aiops", to: "cnt-ai-lifecycle", label: "Evaluation results gate model and agent releases", team: "ai" },
+        { from: "cnt-ai-lifecycle", to: "cnt-multillm", label: "Promotes approved signed model and prompt versions", team: "ai" }
       ]
     },
 
@@ -513,6 +619,14 @@ const ARCHITECTURE_DATA = {
           desc: "Dedicated prompt personalities with isolated system instructions and assigned domain tools.",
           team: "ai",
           x: 930, y: 120, w: 240, h: 110
+        },
+        {
+          id: "cmp-skills",
+          name: "Agent Skills Catalog & Registry",
+          tech: "Versioned Skill Definitions / Metadata Store",
+          desc: "Indexes reusable agent skills, instructions, and supporting assets; resolves versions and makes selected skills available to agents at runtime.",
+          team: "ai",
+          x: 490, y: 500, w: 240, h: 110
         },
         {
           id: "cmp-memory",
@@ -566,7 +680,8 @@ const ARCHITECTURE_DATA = {
       edges: [
         { from: "cmp-session", to: "cmp-planner", label: "Passes sanitized context & intent", team: "ai" },
         { from: "cmp-planner", to: "cmp-supervisor", label: "Assigns sub-task DAG to agent swarm", team: "ai" },
-        { from: "cmp-supervisor", to: "cmp-specialists", label: "Delegates sub-goal to Research / SQL Agent", team: "ai" },
+        { from: "cmp-supervisor", to: "cmp-skills", label: "Discovers skills for delegated task", team: "ai" },
+        { from: "cmp-skills", to: "cmp-specialists", label: "Loads selected skill definitions & assets", team: "ai" },
         { from: "cmp-specialists", to: "cmp-guardrail-hook", label: "Validates tool call parameters", team: "security" },
         { from: "cmp-guardrail-hook", to: "cmp-hitl", label: "Checks if action requires human review", team: "governance" },
         { from: "cmp-hitl", to: "cmp-mcp-client", label: "Approves safe execution of tool", team: "governance" },
@@ -642,8 +757,9 @@ const ARCHITECTURE_DATA = {
         layerId: "multiagent",
         containerId: "cnt-orchestrator",
         team: "ai",
-        summary: "Supervisor Agent dispatches Sub-Task 1 to the 'Enterprise SQL Specialist Agent' and Sub-Task 2 to the 'Compliance Research Agent'.",
+        summary: "Supervisor discovers versioned skills in the Agent Skills Catalog, loads the relevant instructions and assets, then dispatches work to the Enterprise SQL Specialist and Compliance Research Agent.",
         details: {
+          skillsCatalog: "Resolved finance.sql-analysis v2.1 and compliance.policy-research v1.4",
           agentA: "SQL Agent loaded with Snowflake read-only schema",
           agentB: "Research Agent loaded with Financial Policy embeddings",
           executionMode: "Parallel asynchronous dispatch"

@@ -67,6 +67,11 @@ class App {
     if (btnZoomOut) btnZoomOut.addEventListener("click", () => this.c4Renderer.zoomOut());
     if (btnZoomReset) btnZoomReset.addEventListener("click", () => this.c4Renderer.resetZoom());
 
+    const componentLayerSelect = document.getElementById("c4-component-layer");
+    if (componentLayerSelect) {
+      componentLayerSelect.addEventListener("change", (e) => this.c4Renderer.setComponentLayer(e.target.value));
+    }
+
     // Drawer Close Buttons
     const drawerOverlay = document.getElementById("drawer-overlay");
     const drawerCloseBtn = document.getElementById("btn-drawer-close");
@@ -116,6 +121,8 @@ class App {
       c4Section.style.display = "block";
       simSection.style.display = "none";
       this.c4Renderer.setView(viewKey);
+      const componentLayerWrap = document.getElementById("c4-component-layer-wrap");
+      if (componentLayerWrap) componentLayerWrap.style.display = viewKey === "c4-component" ? "flex" : "none";
     } else if (viewKey === "flow") {
       matrixSection.style.display = "none";
       c4Section.style.display = "none";
@@ -264,22 +271,20 @@ class App {
     if (c4Type === "container") {
       const cnt = this.data.c4.contextL2.containers.find(c => c.id === itemId);
       if (cnt) {
-        // Map container to closest architectural layer
-        const layerMap = {
-          "cnt-ingress": "channels",
-          "cnt-guardrails": "guardrails",
-          "cnt-orchestrator": "orchestrator",
-          "cnt-decision": "decisions",
-          "cnt-mcp": "mcps",
-          "cnt-multillm": "multillm",
-          "cnt-vector": "infra",
-          "cnt-aiops": "aiops",
-          "cnt-finops": "finops",
-          "cnt-gpu": "multillm",
-          "cnt-governance-ledger": "decisions"
-        };
-        const layerId = layerMap[itemId] || "orchestrator";
+        const layerId = cnt.layerIds?.[0];
         this.inspectLayer(layerId);
+        const mappedLayers = (cnt.layerIds || []).map(id => this.data.layers.find(layer => layer.id === id)).filter(Boolean);
+        if (mappedLayers.length > 1) {
+          const layerLinks = mappedLayers.map(layer => `
+            <li><button class="btn btn-ghost" onclick="window.app.inspectLayer('${layer.id}')">${layer.name}</button></li>
+          `).join("");
+          document.getElementById("drawer-body").insertAdjacentHTML("afterbegin", `
+            <div class="drawer-section">
+              <h4 class="drawer-section-title">All mapped architecture layers</h4>
+              <ul class="drawer-bullet-list">${layerLinks}</ul>
+            </div>
+          `);
+        }
         return;
       }
     }

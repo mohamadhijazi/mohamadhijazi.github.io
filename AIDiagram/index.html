@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Enterprise AI Architecture & C4 Governance Platform</title>
-  <meta name="description" content="Interactive AI Architecture Diagram covering Agentic Orchestrator, Multi-LLM, Multi-Agent Swarms, Guardrails, Decisions, MCPs, Infra, AIOps, FinOps, and Multi-Interaction Channels with Team RACI Matrix and C4 Models.">
+  <meta name="description" content="Interactive enterprise AI architecture covering applications, business processes, data governance, MLOps, policies, people, cost, software, hardware, infrastructure, agentic AI, and C4 diagrams.">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
 </head>
@@ -20,7 +20,7 @@
         <div class="brand-text">
           <h1>
             Enterprise Agentic AI Architecture
-            <span class="brand-version">v2.4 Enterprise</span>
+            <span class="brand-version">v2.5 Enterprise</span>
           </h1>
           <p class="brand-subtitle">
             Agentic Orchestration • Multi-LLM Gateway • Swarms • Guardrails • OPA Decisions • MCP Hub • Infra • AIOps • FinOps
@@ -97,7 +97,7 @@
             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
             <line x1="12" y1="22.08" x2="12" y2="12"></line>
           </svg>
-          4. C4 Components (L3 Orchestrator)
+          4. C4 Components (L3 All Layers)
         </button>
 
         <button class="nav-tab-btn" data-view="flow">
@@ -155,6 +155,10 @@
       <div class="c4-view-wrapper">
         <!-- Floating Canvas Toolbar -->
         <div class="c4-canvas-toolbar">
+          <label id="c4-component-layer-wrap" class="c4-component-layer-control" style="display:none;">
+            <span>Component layer:</span>
+            <select id="c4-component-layer" aria-label="Select architecture layer component diagram"></select>
+          </label>
           <button id="btn-zoom-in" class="btn btn-sm btn-ghost" title="Zoom in">+</button>
           <span id="zoom-level-text" class="zoom-indicator">100%</span>
           <button id="btn-zoom-out" class="btn btn-sm btn-ghost" title="Zoom out">-</button>
