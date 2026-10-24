@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101812">
+  <meta name="description" content="A private space for focus, ideas, systems, and purposeful collaboration.">
+  <title>Sandbox &amp; Sanctuary</title>
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="brand-lockup">
+      <div class="brand-mark" aria-hidden="true">S<span>&amp;</span>S</div>
+      <div>
+        <h1>Sandbox <span>&amp;</span> Sanctuary</h1>
+        <p>A steady foundation for bigger things</p>
+      </div>
+    </div>
+    <nav class="view-switcher" aria-label="Choose a workspace">
+      <button class="nav-button is-active" type="button" data-view="sanctuary" aria-current="page">Sanctuary</button>
+      <button class="nav-button" type="button" data-view="sandbox">Sandbox</button>
+    </nav>
+    <div class="header-actions">
+      <button class="button button-quiet" type="button" data-action="export-full">Export private backup</button>
+      <button class="button button-quiet" type="button" data-action="export-sandbox">Export Sandbox</button>
+      <button class="button button-quiet" type="button" data-action="trigger-import">Import backup</button>
+      <label class="visually-hidden" for="import-file">Choose a Sandbox &amp; Sanctuary JSON backup</label>
+      <input class="visually-hidden" id="import-file" type="file" accept="application/json,.json">
+    </div>
+  </header>
+
+  <div id="notice-region" class="notice-region" aria-live="polite" aria-atomic="true"></div>
+  <div id="persistence-notice" class="privacy-banner" role="note">
+    Records stay in this browser profile and are not encrypted, shared, or synchronized automatically. You can export a Sandbox-only file for manual exchange.
+  </div>
+  <div class="seed-banner" role="note">
+    Starter records are illustrative examples for exploring the workflows. Review, edit, or remove them before using this workspace for personal records.
+  </div>
+
+  <main id="main-content" class="page-shell">
+    <section id="sanctuary-view" aria-labelledby="sanctuary-heading"></section>
+    <section id="sandbox-view" aria-labelledby="sandbox-heading" hidden></section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Personal planning, not a clinical tool.</span>
+    <span>Local participant records do not represent live access.</span>
+  </footer>
+
+  <dialog id="app-dialog" class="app-dialog" aria-labelledby="dialog-title">
+    <form method="dialog" class="dialog-close-form">
+      <button class="icon-button dialog-close" value="cancel" aria-label="Close dialog">&times;</button>
+    </form>
+    <div id="dialog-content"></div>
+  </dialog>
+</body>
+</html>
