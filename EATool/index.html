@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EA Tool — Enterprise Architecture Workspace</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/app-shell.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/kanban.css">
+  <link rel="stylesheet" href="css/studio.css">
+</head>
+
+<body>
+  <div class="app-shell" id="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="#dashboard" class="sidebar-logo" aria-label="EA Tool home">
+        <div class="sidebar-logo-icon">EA</div>
+        <div>
+          <div class="sidebar-logo-text">EA Tool</div>
+          <div class="sidebar-logo-subtitle">Enterprise Architecture</div>
+        </div>
+      </a>
+      <div class="sidebar-body" id="sidebar-body">
+        <!-- Navigation built by app.js from MetaModel.csv -->
+      </div>
+      <div class="sidebar-footer">
+        <a href="#" class="sidebar-user" id="sidebar-user" aria-label="Account">
+          <div class="sidebar-avatar">EU</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name">Business User</div>
+            <div class="sidebar-user-role">EA Workspace</div>
+          </div>
+      </div>
+      </aside>
+  
+  
+
+  <!-- Topbar -->
+  <header class="topbar" id="topbar">
+    <button class="hamburger-btn" id="hamburger" aria-label="Toggle navigation">
+      <span class="hamburger-icon"><span></span><span></span><span></span></span>
+    </button>
+    <nav class="breadcrumb" id="breadcrumb">
+      <span class="breadcrumb-item active" id="breadcrumb-current">Dashboard</span>
+    </nav>
+    <div class="topbar-search">
+      <span class="topbar-search-icon">🔍</span>
+      <input type="search" id="topbar-search" placeholder="Search records…" aria-label="Global search">
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-icon-btn" id="btn-export" title="Export all data" aria-label="Export all data">📤</button>
+      <button class="topbar-icon-btn" id="btn-import" title="Import data" aria-label="Import data">📥</button>
+      <div class="dropdown" id="user-dropdown">
+        <button class="topbar-icon-btn topbar-avatar" id="btn-user" aria-label="User menu"
+          aria-haspopup="true">EU</button>
+        <div class="dropdown-menu hidden" id="user-menu">
+          <a href="#studio" class="dropdown-item">Studio</a>
+          <a href="#settings" class="dropdown-item">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item danger" id="btn-clear-data">Clear local data</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Workspace -->
+  <main class="workspace" id="workspace">
+    <div class="workspace-inner" id="app-content">
+      <!-- Content rendered by app.js -->
+    </div>
+  </main>
+  </div>
+
+  <!-- Modal area (populated by JS) -->
+  <div id="modals"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/metamodel.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/records.js"></script>
+  <script src="js/forms.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/studio.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/planning.js"></script>
+  <script src="data/sample-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
