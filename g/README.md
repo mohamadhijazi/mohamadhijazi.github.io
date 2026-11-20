@@ -9,7 +9,7 @@ This folder contains small, ordered implementation briefs for building the plain
 3. [03-schedule-and-puzzle-data.md](./03-schedule-and-puzzle-data.md) — 8-hour slots and deterministic 42-slot puzzle catalog.
 4. [04-storage-scoring-and-history.md](./04-storage-scoring-and-history.md) — versioned local state, completion scoring, and personal top 10.
 5. [05-pwa-and-local-notifications.md](./05-pwa-and-local-notifications.md) — installability, offline behavior, and foreground-aware notifications.
-6. [06-zip-and-sumfill.md](./06-zip-and-sumfill.md) — Zip and SumFill rules and engines.
+6. [06-zip-and-sumfill.md](./06-zip-and-sumfill.md) — Zip and SumBreak rules and engines.
 7. [07-break-and-tic-tac-toe.md](./07-break-and-tic-tac-toe.md) — BreakLogic and Tic-Tac-Toe rules and engines.
 8. [08-tango-and-queens.md](./08-tango-and-queens.md) — Tango and Queens rules and engines.
 9. [09-sharing-and-url-routing.md](./09-sharing-and-url-routing.md) — achievement sharing, challenge links, and route validation.

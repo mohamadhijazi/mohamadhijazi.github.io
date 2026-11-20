@@ -1,4 +1,4 @@
-# 06 — Game Modules: Zip and SumFill
+# 06 — Game Modules: Zip and SumBreak
 
 ## Shared game-module rule
 
@@ -40,48 +40,40 @@ Draw an accessible square grid with blocked cells, numbered waypoint labels, and
 
 Provide a pure progressive hint helper. Level 1 restates the next relevant path rule; level 2 identifies one useful next waypoint/path constraint without revealing the full path.
 
-## SumFill
+## SumBreak
 
 ### Player goal
 
-Fill every playable cell with a digit 1 through 9. Every defined horizontal/vertical run must sum to its target, and a digit cannot repeat within a run. Locked starter digits cannot be changed.
+Clear the grid by merging identical adjacent numbered tiles until only a single tile remains (similar to LinkedIn SumBreak). Drag or tap a number onto an orthogonally adjacent matching number to combine them into their sum (e.g. 2 + 2 = 4). The origin cell becomes empty.
 
 ### Puzzle data
 
 ```js
 {
-  rows: 4,
-  cols: 4,
-  playable: [[true, true, false, true], ...],
-  givens: [{ r: 0, c: 0, value: 4 }],
-  solution: [[4, 5, null, 2], ...],
-  runs: [
-    { id: "across-1", direction: "across", target: 9, cells: [[0,0],[0,1]] },
-    { id: "down-1", direction: "down", target: 7, cells: [[0,0],[1,0]] }
-  ]
+  rows: 3,
+  cols: 3,
+  board: [[2, 2, 4], [2, 4, 8], [null, 4, 8]],
+  target: 32
 }
 ```
 
-Every playable cell belongs to exactly one across run and one down run. Runs contain 1–9 playable cells, are contiguous in their direction, and do not include blocked cells. Targets must be feasible for run length with distinct digits 1–9. Every given references a playable cell and a value 1–9. `solution` is a full answer matrix with `null` at blocked cells; validate it and prove it is the only solution.
-
 ### Tutorial and state behavior
 
-Represent empty cells as `null`; all filled values are integers 1–9. Do not allow edits to givens. Provide per-run feedback for duplicate digits, impossible partial sums, exact target sums, and incomplete values. A puzzle is complete only if all playable cells are filled and every run has distinct digits summing exactly to target.
+Represent empty cells as `null`; filled values are integers. Drag or select a number and tap an orthogonally adjacent matching number to merge. The origin cell becomes `null`, and the target cell doubles its value. Completion requires reducing the board to exactly 1 tile.
 
-Tutorial: fill playable cells with 1–9; each across/down run must reach its target without repeated digits. Explain how to select a cell, enter/replace a digit, erase a value, and recognize locked givens.
-
-Use focused-cell navigation with arrow keys/Tab and numeric keys 1–9; provide on-screen digit controls for touch. Backspace/Delete clears the selected editable cell. Provide undo-last-edit and clear-editable-cells actions; never clear givens.
+Provide undo and reset actions to backtrack from dead ends.
 
 ### Hints
 
-Level 1 reminds the player to check the selected cell's across and down sums and no-repeat rule. Level 2 points to one constrained unfilled cell or one candidate-elimination step without filling the whole board. Return no hint when there is no useful safe nudge.
+Level 1 reminds the player of the merge rule and single-tile goal. Level 2 points to an available valid merge without solving the entire board.
 
 ### Acceptance checks
 
 - Zip rejects diagonal steps, repeats, blocked cells, skipped/future waypoints, and paths ending before all open cells are visited.
 - Zip accepts a known valid full path from a catalog puzzle.
-- SumFill catches a repeated digit even if the run sum happens to match.
-- SumFill accepts a known solution, rejects a bad target, and preserves locked starter digits.
+- SumBreak combines adjacent identical numbers into their sum and leaves the origin cell empty.
+- SumBreak detects completion when exactly 1 tile remains.
 - Both modules reject malformed dimensions/coordinates without throwing.
+
 - Both tutorials explain objective, legal moves, input, and undo; keyboard and touch controls are discoverable.
 - Hints provide a rule reminder before a state-specific nudge and never return the full solution.

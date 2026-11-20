@@ -7,7 +7,7 @@ Do this after the relevant modules exist. Keep each change small and verify afte
 1. Create the page shell, styles, and module entry point (brief 02).
 2. Add schedule functions and catalog lookup/validation (brief 03).
 3. Add storage, run clock, duration tier function, and leaderboard (brief 04).
-4. Implement games in the order Zip, SumFill, BreakLogic, Tic-Tac-Toe, Tango, Queens (briefs 06–08).
+4. Implement games in the order Zip, SumBreak, BreakLogic, Tic-Tac-Toe, Tango, Queens (briefs 06–08).
 5. Add each game's tutorial, controls, undo behavior, and progressive hint helper (briefs 02, 06–08).
 6. Connect daily challenge and practice modes, keeping their state and records separate. Only the shell handles mode, slot, clock, profile, hints-used count, and completion persistence.
 7. Add local stats and profile backup/import/reset (brief 04).
@@ -33,7 +33,7 @@ When rendering a current slot, keep one active challenge run per `(game, slotInd
 - [ ] Six games each have exactly 42 puzzle definitions (252 total).
 - [ ] All definitions are stable and unique within each game's 14-day cycle.
 - [ ] Every definition has `easy`, `medium`, or `hard` difficulty and passes its solver/solution policy.
-- [ ] Zip, SumFill, Tango, and Queens have exactly one valid solution; Tic-Tac-Toe challenges have a verified forced-win strategy; BreakLogic targets obey their rules.
+- [ ] Zip, SumBreak, Tango, and Queens have exactly one valid solution; Tic-Tac-Toe challenges have a verified forced-win strategy; BreakLogic targets obey their rules.
 - [ ] 00:00, 08:00, and 16:00 boundaries and countdown rollover are correct.
 - [ ] Changing the active slot does not mutate an already-started run.
 - [ ] Practice can select catalog puzzles independently of the current slot.
