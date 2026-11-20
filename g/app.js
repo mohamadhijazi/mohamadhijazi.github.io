@@ -64,10 +64,70 @@ document.getElementById('close-dialog').addEventListener('click',()=>document.ge
 document.getElementById('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({formatVersion:3,schemaVersion:3,exportedAt:new Date().toISOString(),userId:profile.userId,history:profile.history,practiceHistory:profile.practiceHistory,totalHintsUsed:profile.stats.totalHintsUsed||0},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='puzzle-hub-backup.json';a.click();URL.revokeObjectURL(a.href)});
 document.getElementById('import').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>1_000_000)throw Error('File is larger than 1 MB.');const d=JSON.parse(await f.text());if(d.schemaVersion!==3&&d.schemaVersion!==2||!Array.isArray(d.history)||!Array.isArray(d.practiceHistory))throw Error('Backup format is not supported.');const pairs=new Set();const history=d.history.map(r=>{if(!gameIds.includes(r.game)||!Number.isSafeInteger(r.slotIndex)||r.slotIndex<0||!Number.isFinite(r.timeSeconds)||r.timeSeconds<0||!Number.isFinite(Date.parse(r.completedAt))||typeof r.puzzleId!=='string'||!['easy','medium','hard'].includes(r.difficulty))throw Error('A daily record is invalid.');const key=`${r.slotIndex}:${r.game}`;if(pairs.has(key))throw Error('Backup has duplicate daily records.');pairs.add(key);const [rankTier,score]=getTier(Math.floor(r.timeSeconds));return {...r,timeSeconds:Math.floor(r.timeSeconds),rankTier,score,hintsUsed:Math.max(0,Math.floor(Number(r.hintsUsed)||0))}});const practiceHistory=d.practiceHistory.map(r=>{if(!gameIds.includes(r.game)||typeof r.puzzleId!=='string'||!Number.isFinite(r.timeSeconds)||r.timeSeconds<0||!Number.isFinite(Date.parse(r.completedAt))||!['easy','medium','hard'].includes(r.difficulty))throw Error('A practice record is invalid.');return {game:r.game,puzzleId:r.puzzleId,completedAt:new Date(r.completedAt).toISOString(),timeSeconds:Math.floor(r.timeSeconds),difficulty:r.difficulty,hintsUsed:Math.max(0,Math.floor(Number(r.hintsUsed)||0))}});if(!confirm(`Replace this profile with ${history.length} daily and ${practiceHistory.length} practice records?`))return;profile={...fresh(),userId:String(d.userId||fresh().userId).slice(0,80),history,practiceHistory,stats:{totalHintsUsed:Math.max(0,Math.floor(Number(d.totalHintsUsed)||0))}};recompute();persist();render()}catch(err){showFeedback(`Import failed: ${err.message}`)}finally{e.target.value=''}});
 document.getElementById('reset-profile').addEventListener('click',()=>{if(!confirm('Reset this browser’s Puzzle Hub profile, scores, and saved runs? Browser notification permission is controlled in browser settings and will not be changed.'))return;profile=fresh();persist();run=loadRun(currentPuzzle());saveRun();render()});
-document.getElementById('install').addEventListener('click',async()=>{if(window._installPrompt){window._installPrompt.prompt();await window._installPrompt.userChoice;window._installPrompt=null;return}showFeedback('On iPhone/iPad Safari, use Share → Add to Home Screen. On other browsers, installation is available from the browser menu when supported.')});window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();window._installPrompt=e;document.getElementById('pwa-status').textContent='Install available in this browser.'});
-document.getElementById('notifications').addEventListener('click',async()=>{if(!('Notification'in window)||!('serviceWorker'in navigator)){showFeedback('Notifications are not supported here.');return}const perm=await Notification.requestPermission();profile.notificationsEnabled=perm==='granted';persist();showFeedback(perm==='granted'?'Reminders enabled while the page is active.':'Notification permission was not granted.');scheduleNotify()});
+let installPrompt=null,pwaInstallStatus='Install depends on browser support.',pwaOfflineStatus='Preparing';
+function updatePwaUI(){
+  const isStandalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+  const status=document.getElementById('pwa-status');
+  const installBtn=document.getElementById('install');
+  const notifBtn=document.getElementById('notifications');
+  if(isStandalone){
+    pwaInstallStatus='Installed · standalone mode.';
+    if(installBtn){installBtn.textContent='Installed';installBtn.disabled=true;installBtn.classList.add('secondary');}
+  }else if(installPrompt){
+    pwaInstallStatus='Install available in this browser.';
+    if(installBtn){installBtn.textContent='Install app';installBtn.disabled=false;installBtn.classList.remove('secondary');}
+  }else{
+    pwaInstallStatus='Install depends on browser support.';
+    if(installBtn){installBtn.textContent='Install help';installBtn.disabled=false;installBtn.classList.add('secondary');}
+  }
+  if(status)status.textContent=`${pwaInstallStatus} ${pwaOfflineStatus}.`;
+  if(notifBtn){
+    if(!('Notification'in window)||!('serviceWorker'in navigator)){
+      notifBtn.textContent='Reminders unsupported here';notifBtn.disabled=true;
+    }else if(Notification.permission==='granted'&&profile.notificationsEnabled){
+      notifBtn.textContent='Reminders enabled';notifBtn.classList.add('secondary');
+    }else if(Notification.permission==='denied'){
+      notifBtn.textContent='Reminders blocked in browser';notifBtn.disabled=true;
+    }else{
+      notifBtn.textContent='Enable drop reminders';notifBtn.disabled=false;
+    }
+  }
+}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;window._installPrompt=e;updatePwaUI();});
+window.addEventListener('appinstalled',()=>{installPrompt=null;window._installPrompt=null;pwaInstallStatus='Installed · standalone mode.';updatePwaUI();showFeedback('Puzzle Hub installed successfully!');});
+document.getElementById('install').addEventListener('click',async()=>{
+  if(installPrompt){
+    installPrompt.prompt();
+    const res=await installPrompt.userChoice;
+    if(res.outcome==='accepted'){installPrompt=null;window._installPrompt=null;}
+    updatePwaUI();return;
+  }
+  showFeedback('On iPhone/iPad Safari, use Share (box with arrow) → Add to Home Screen. On Chrome/Edge desktop, click the install icon in the address bar.');
+});
+document.getElementById('notifications').addEventListener('click',async()=>{
+  if(!('Notification'in window)||!('serviceWorker'in navigator)){showFeedback('Notifications are not supported here.');return}
+  const perm=await Notification.requestPermission();
+  profile.notificationsEnabled=perm==='granted';
+  persist();
+  showFeedback(perm==='granted'?'Reminders enabled while the page is active.':'Notification permission was not granted.');
+  updatePwaUI();
+  scheduleNotify();
+});
 let notifyTimer;async function scheduleNotify(){clearTimeout(notifyTimer);if(!profile.notificationsEnabled||Notification.permission!=='granted')return;try{const reg=await navigator.serviceWorker.ready;const s=schedule();if(profile.lastNotifiedSlot!==null&&s.slotIndex>profile.lastNotifiedSlot){await reg.showNotification('New 8-Hour Puzzle Drop Ready!',{body:'Zip, Tango, Queens & more are live.',tag:`puzzle-drop-${s.slotIndex}`});profile.lastNotifiedSlot=s.slotIndex;persist()}notifyTimer=setTimeout(async()=>{const now=schedule();try{await reg.showNotification('New 8-Hour Puzzle Drop Ready!',{body:'Zip, Tango, Queens & more are live.',tag:`puzzle-drop-${now.slotIndex}`});profile.lastNotifiedSlot=now.slotIndex;persist()}catch{}scheduleNotify()},s.msLeft+50)}catch{}}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)scheduleNotify()});window.addEventListener('focus',scheduleNotify);
-async function setupPwa(){const status=document.getElementById('pwa-status');status.textContent=matchMedia('(display-mode: standalone)').matches||navigator.standalone?'Installed · standalone mode.':'Install depends on browser support.';if(!('serviceWorker'in navigator)){status.textContent+=' Offline support unavailable.';return}try{const reg=await navigator.serviceWorker.register('./sw.js');await navigator.serviceWorker.ready;offlineStatus='Offline ready';status.textContent+=` ${offlineStatus}.`;scheduleNotify()}catch{status.textContent+=' Offline cache setup failed; app remains available online.'}}
+async function setupPwa(){
+  updatePwaUI();
+  if(!('serviceWorker'in navigator)){pwaOfflineStatus='Offline support unavailable';updatePwaUI();return}
+  try{
+    const reg=await navigator.serviceWorker.register('./sw.js',{scope:'./'});
+    await navigator.serviceWorker.ready;
+    pwaOfflineStatus='Offline ready';
+    updatePwaUI();
+    scheduleNotify();
+  }catch{
+    pwaOfflineStatus='Offline cache setup failed; app remains available online';
+    updatePwaUI();
+  }
+}
 function updateClock(){const s=schedule(),d=new Date();document.getElementById('drop-label').textContent=s.label;document.getElementById('countdown').textContent=formatTime(Math.ceil(s.msLeft/1000));document.getElementById('local-date').textContent=d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});if(run&&mode==='daily'&&run.key!==runKey(currentPuzzle())){saveRun();start()}}
 buildSelector();if(!catalogIntegrity())document.getElementById('storage-status').textContent='Puzzle catalog integrity issue detected.';const params=new URLSearchParams(location.search),linkedSlot=Number(params.get('slot'));if(params.has('slot')&&Number.isSafeInteger(linkedSlot)&&linkedSlot>=0&&linkedSlot!==schedule().slotIndex){mode='practice';document.querySelector('input[value=practice]').checked=true;const p=catalog[game][((Math.floor(linkedSlot/3)%14+14)%14)*3+((linkedSlot%3)+3)%3];practiceId=p.id;showFeedback('Past drop link opened as unscored practice.')}else practiceId=catalog[game][0].id;start();setupPwa();updateClock();setInterval(updateClock,500);window.addEventListener('pagehide',saveRun);
