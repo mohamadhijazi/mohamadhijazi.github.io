@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#132d38">
+  <meta name="description" content="A calm daily hub for six logic puzzles.">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Puzzle Hub</title>
+</head>
+<body>
+  <header class="topbar"><div><p class="eyebrow">YOUR DAILY LOGIC BREAK</p><h1>Puzzle Hub</h1></div><div class="drop-clock"><span id="drop-label">Drop</span><strong id="countdown">08:00:00</strong><span id="local-date"></span></div></header>
+  <main>
+    <section class="intro"><p>Six small challenges. A fresh drop every eight hours.</p><p id="storage-status" role="status">Your games and records stay in this browser.</p></section>
+    <nav id="game-selector" class="game-selector" aria-label="Choose a game"></nav>
+    <section class="controls-row" aria-label="Puzzle settings"><fieldset><legend>Play mode</legend><label><input type="radio" name="mode" value="daily" checked> Daily challenge</label><label><input type="radio" name="mode" value="practice"> Practice <span class="muted">(unscored)</span></label></fieldset><label id="practice-picker-wrap" hidden>Practice puzzle<select id="practice-picker"></select></label></section>
+    <div class="layout"><section class="card game-card" aria-labelledby="game-title"><div class="game-heading"><div><p class="eyebrow" id="drop-meta"></p><h2 id="game-title">Loading puzzle…</h2></div><span class="difficulty" id="difficulty"></span></div><details open class="tutorial"><summary>How to play</summary><p id="tutorial-text"></p></details><div class="hud"><div><span>Time</span><strong id="timer">00:00</strong></div><div><span id="rank-label">Rank preview</span><strong id="rank">Lightning</strong></div><div><span>Score</span><strong id="score">0 pts</strong></div></div><div id="board" class="board" aria-label="Puzzle board"></div><div class="actions"><button id="undo" type="button">Undo</button><button id="clear" type="button" class="secondary">Reset</button><button id="hint" type="button" class="secondary">Hint</button></div><p id="feedback" role="status" aria-live="polite"></p><div id="game-controls"></div></section>
+      <aside class="side-column"><section class="card"><h2>Your records</h2><p class="muted">Fastest daily finishes on this browser.</p><ol id="leaderboard"></ol><details><summary>Local stats</summary><div id="stats"></div></details></section><section class="card"><h2>Install & reminders</h2><p id="pwa-status" class="muted">Checking app support…</p><button id="install" class="secondary" type="button">Install help</button><button id="notifications" class="secondary" type="button">Enable drop reminders</button><p class="fine">Reminders can run only while this page is active. Opening the app catches up missed drops.</p></section><section class="card"><h2>Profile backup</h2><p class="fine">Records are stored locally in this browser. Clearing site data can remove them.</p><div class="actions"><button id="export" class="secondary" type="button">Export backup</button><label class="button secondary">Import backup<input id="import" type="file" accept="application/json,.json" hidden></label><button id="reset-profile" class="danger" type="button">Reset profile</button></div></section><section class="card"><h2>Share</h2><p class="fine">Share a challenge link after finishing a daily puzzle.</p><button id="share" class="secondary" type="button" disabled>Share result</button></section></aside></div>
+  </main><dialog id="result-dialog"><div class="dialog-content"><button id="close-dialog" class="close" aria-label="Close result">×</button><p class="eyebrow">PUZZLE COMPLETE</p><h2 id="result-title"></h2><p id="result-summary"></p><textarea id="share-text" readonly aria-label="Achievement text"></textarea><div class="actions"><button id="share-whatsapp" class="secondary">WhatsApp</button><button id="share-facebook" class="secondary">Facebook</button><button id="copy-share" class="secondary">Copy</button><button id="native-share" class="secondary">Share…</button></div></div></dialog>
+  <script type="module" src="./app.js"></script>
+</body></html>
